@@ -1,0 +1,11 @@
+package org.casa.backend.service;
+
+import java.util.List;
+import org.casa.backend.dto.AsistenciaDto;
+
+public interface AsistenciaService {
+    AsistenciaDto registrarAsistencia(AsistenciaDto dto);
+    AsistenciaDto obtenerPorId(String idAsistencia);
+    List<AsistenciaDto> listarAsistencias();
+    void eliminarAsistencia(String idAsistencia);
+}
