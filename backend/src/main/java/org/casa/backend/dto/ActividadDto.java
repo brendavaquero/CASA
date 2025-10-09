@@ -20,4 +20,5 @@ public class ActividadDto {
     private LocalDateTime fechaCreacion;
     private String requisitos;
     private String estado;
+    private String tipoActividad;
 }

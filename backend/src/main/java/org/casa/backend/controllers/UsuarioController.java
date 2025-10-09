@@ -55,49 +55,4 @@ public class UsuarioController {
         usuarioService.deleteUsuario(usuarioId);
         return ResponseEntity.ok("Usuario eliminado correctamente");
     }
-/*
-    @GetMapping
-    public List<Usuario> listar() {
-        return usuarioService.listarUsuarios();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> obtener(@PathVariable String id) {
-        return usuarioService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        if (usuario.getUltimo_acceso() == null) {
-            usuario.setUltimo_acceso(LocalDateTime.now());
-        }
-        return usuarioService.guardar(usuario);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizar(@PathVariable String id, @RequestBody Usuario usuario) {
-        return usuarioService.obtenerPorId(id).map(u -> {
-            u.setNombre(usuario.getNombre());
-            u.setApellidos(usuario.getApellidos());
-            u.setCorreo(usuario.getCorreo());
-            u.setRol(usuario.getRol());
-            u.setActivo(usuario.isActivo());
-            if (usuario.getUltimo_acceso() != null) {
-                u.setUltimo_acceso(usuario.getUltimo_acceso());
-            }
-            //usuario.setIdUsuario(id);
-            return ResponseEntity.ok(usuarioService.guardar(usuario));
-        }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable String id) {
-        if (usuarioService.obtenerPorId(id).isPresent()) {
-            usuarioService.eliminar(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }*/
 }

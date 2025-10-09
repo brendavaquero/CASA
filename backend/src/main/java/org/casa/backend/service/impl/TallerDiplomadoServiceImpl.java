@@ -49,7 +49,7 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
         }
         taller.setRequisitos(tallerDto.getRequisitos());
         taller.setEstado(tallerDto.getEstado());
-        taller.setTipo(tallerDto.getTipo());
+        taller.setTipoActividad(tallerDto.getTipoActividad());
         taller.setCupo(tallerDto.getCupo());
         taller.setObjetivoGeneral(tallerDto.getObjetivoGeneral());
         taller.setObjetivosEspecificos(tallerDto.getObjetivosEspecificos());

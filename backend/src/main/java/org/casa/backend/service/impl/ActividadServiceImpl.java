@@ -32,23 +32,6 @@ public class ActividadServiceImpl implements ActividadService {
                 .orElse(null);
     }
 
-    /*
-    @Override
-    public ActividadDto createActividad(ActividadDto actividadDto) {
-        Actividad actividad = new Actividad();
-        actividad.setTitulo(actividadDto.getTitulo());
-        actividad.setDescripcion(actividadDto.getDescripcion());
-        actividad.setFechaInicio(actividadDto.getFechaInicio());
-        actividad.setFechaCierre(actividadDto.getFechaCierre());
-        actividad.setFechaResultados(actividadDto.getFechaResultados());
-        actividad.setFechaCreacion(actividadDto.getFechaCreacion());
-        actividad.setRequisitos(actividadDto.getRequisitos());
-        actividad.setEstado(actividadDto.getEstado());
-
-        Actividad guardada = actividadRepository.save(actividad);
-        return ActividadMapper.mapToDto(guardada);
-    }*/
-
     @Override
     public void deleteActividad(String idActividad) {
         actividadRepository.deleteById(idActividad);

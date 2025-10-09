@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlumnoDto {
-    private String idAlumno;
-    private String idPostulacion;
-    private Boolean constancia;
+public class ProgramaDto {
+    private String nombre;
+    private String descripcion;
+    private String idActividad;
+    private String idUsuario;
 }

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -21,7 +23,8 @@ import lombok.Setter;
 public abstract class Actividad { 
 
     @Id
-    @Column(name = "id_actividad", length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_actividad", length = 50, insertable = false, updatable = false)
     private String idActividad;
 
     @Column(name = "num", insertable = false, updatable = false)
@@ -51,21 +54,20 @@ public abstract class Actividad {
     @Column(name = "estado", length = 50)
     private String estado;
 
+    @Column(name = "tipo_actividad",length=31)
+    private String tipoActividad;
+
     @PrePersist
     protected void onCreate() {
         if (fechaCreacion == null) {
             fechaCreacion = LocalDateTime.now();
         }
-        /*
-        if (idActividad == null) {
-            idActividad = "TEMP_" + System.currentTimeMillis();
-        }*/
     }
     public Actividad() {
         
     }
 
-    public Actividad(String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados, LocalDateTime fechaCreacion, String requisitos, String estado ) {
+    public Actividad(String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados, LocalDateTime fechaCreacion, String requisitos, String estado,String tipoActividad ) {
         this.titulo=titulo;
         this.descripcion=descripcion;
         this.fechaInicio=fechaInicio;
@@ -74,5 +76,6 @@ public abstract class Actividad {
         this.fechaCreacion = fechaCreacion;
         this.requisitos = requisitos;
         this.estado = estado;
+        this.tipoActividad = tipoActividad;
     }
 }

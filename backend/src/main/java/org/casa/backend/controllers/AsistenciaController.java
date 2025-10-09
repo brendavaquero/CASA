@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/asistencias")
+@RequestMapping("/api/asistencias")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AsistenciaController {

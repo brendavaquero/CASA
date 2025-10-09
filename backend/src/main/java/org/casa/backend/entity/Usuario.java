@@ -71,19 +71,4 @@ public class Usuario {
         this.activo = true;
         this.ultimo_acceso = LocalDateTime.now();
     }
-    /* 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "idUsuario='" + idUsuario + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", correo='" + correo + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
-                ", rol=" + rol +
-                ", activo=" + activo +
-                ", fechaRegistro=" + fecha_registro +
-                ", ultimoAcceso=" + ultimo_acceso +
-                '}';
-    }*/
 }

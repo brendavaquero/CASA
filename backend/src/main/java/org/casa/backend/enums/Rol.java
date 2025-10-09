@@ -4,7 +4,8 @@ public enum Rol {
     ADMINISTRADOR("ADMINISTRADOR"),
     JURADO("JURADO"),
     PARTICIPANTE("PARTICIPANTE"),
-    TRABAJADOR("TRABAJADOR");
+    TRABAJADOR("TRABAJADOR"),
+    INVITADO("INVITADO");
 
     private final String valor;
     Rol(String valor){

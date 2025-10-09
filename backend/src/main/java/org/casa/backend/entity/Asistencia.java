@@ -13,7 +13,8 @@ import lombok.Setter;
 public class Asistencia {
 
     @Id
-    @Column(name = "id_asistencia", length = 50, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_asistencia", length = 50, insertable = false, updatable = false)
     private String idAsistencia;
 
     @Column(name = "num", insertable = false, updatable = false)

@@ -12,35 +12,4 @@ public interface ParticipanteService {
     List<ParticipanteDto> getAllParticipantes();
     ParticipanteDto updateParticipante(String idParticipante, ParticipanteDto participanteDto);
     void deleteParticipante(String idParticipante);
-    /*
-    private final ParticipanteRepository participanteRepository;
-    
-    public ParticipanteService(ParticipanteRepository participanteRepository) {
-        this.participanteRepository = participanteRepository;
-    }
-    
-    public List<Participante> listarTodos() {
-        return participanteRepository.findAll();
-    }
-    
-    public Optional<Participante> obtenerPorId(String id) {
-        return participanteRepository.findById(id);
-    }
-    
-    public Optional<Participante> obtenerPorCurp(String curp) {
-        return participanteRepository.findByCurp(curp);
-    }
-    
-    public Participante guardar(Participante participante) {
-        return participanteRepository.save(participante);
-    }
-    
-    public void eliminar(String id) {
-        participanteRepository.deleteById(id);
-    }
-    
-    public boolean existePorCurp(String curp) {
-        return participanteRepository.existsByCurp(curp);
-    }
-*/
 }

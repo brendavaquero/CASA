@@ -31,11 +31,12 @@ public class AlumnoServiceImpl implements AlumnoService {
         Postulacion postulacion = postulacionRepository.findById(alumnoDto.getIdPostulacion())
             .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada con id: " + alumnoDto.getIdPostulacion()));
 
+        /*
         if (!postulacion.getEstadoPos().name().equals("APROBADA")) {
             throw new IllegalArgumentException("Solo se pueden crear alumnos de postulaciones ACEPTADAS");
-        }
-        Alumno alumno = AlumnoMapper.mapToAlumno(alumnoDto);
-        alumno.setPostulacion(postulacion);
+        }*/
+        Alumno alumno = AlumnoMapper.mapToAlumno(alumnoDto, postulacion);
+        //alumno.setPostulacion(postulacion);
         
 
         Alumno saved = alumnoRepository.save(alumno);

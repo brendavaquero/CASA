@@ -7,8 +7,6 @@ public class TallerDiplomadoMapper {
 
     public static TallerDiplomadoDto mapToDto(TallerDiplomado taller) {
         TallerDiplomadoDto dto = new TallerDiplomadoDto();
-        
-        
         dto.setIdActividad(taller.getIdActividad());
         dto.setTitulo(taller.getTitulo());
         dto.setDescripcion(taller.getDescripcion());
@@ -18,8 +16,8 @@ public class TallerDiplomadoMapper {
         dto.setFechaCreacion(taller.getFechaCreacion());
         dto.setRequisitos(taller.getRequisitos());
         dto.setEstado(taller.getEstado());
-        
-        dto.setTipo(taller.getTipo());
+        dto.setTipoActividad(taller.getTipoActividad());
+
         dto.setCupo(taller.getCupo());
         dto.setObjetivoGeneral(taller.getObjetivoGeneral());
         dto.setObjetivosEspecificos(taller.getObjetivosEspecificos());

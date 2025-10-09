@@ -11,13 +11,14 @@ import lombok.Setter;
 public class Alumno {
 
     @Id
-    @Column(name = "id_alumno", length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_alumno", length = 50, insertable = false, updatable = false)
     private String idAlumno;
 
     @Column(name = "num", insertable = false, updatable = false)
     private Integer num;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_postulacion", nullable = false)
     private Postulacion postulacion;
 

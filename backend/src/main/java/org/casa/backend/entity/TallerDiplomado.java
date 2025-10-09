@@ -17,9 +17,6 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "id_actividad")
 public class TallerDiplomado extends Actividad {
 
-    @Column(name = "tipo", length = 100)
-    private String tipo;
-
     @Column(name = "cupo")
     private Integer cupo;
 
@@ -47,8 +44,26 @@ public class TallerDiplomado extends Actividad {
     public TallerDiplomado() {
         super();
     }
-
-    public TallerDiplomado(String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados, LocalDateTime fechaCreacion, String requisitos, String estado) {
-        super(titulo,descripcion,fechaInicio,fechaCierre,fechaResultados,fechaCreacion,requisitos,estado);
+    public TallerDiplomado(
+            String idActividad,
+            String titulo,
+            String descripcion,
+            LocalDate fechaInicio,
+            LocalDate fechaCierre,
+            LocalDate fechaResultados,
+            LocalDateTime fechaCreacion,
+            String requisitos,
+            String estado,
+            String tipoActividad,
+            Integer cupo,
+            String objetivoGeneral,
+            String objetivosEspecificos,
+            String temas,
+            String materialSol,
+            String criteriosSeleccion,
+            String notas,
+            Integer numSesiones
+    ){
+        super(titulo,descripcion,fechaInicio,fechaCierre,fechaResultados,fechaCreacion,requisitos,estado,tipoActividad);
     }
 }

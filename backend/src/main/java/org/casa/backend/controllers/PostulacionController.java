@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/postulaciones")
+@RequestMapping("/api/postulaciones")
 @AllArgsConstructor
 public class PostulacionController {
 

@@ -22,8 +22,8 @@ public class TallerDiplomadoDto{
     private LocalDateTime fechaCreacion;
     private String requisitos;
     private String estado;
+    private String tipoActividad;
 
-    private String tipo;
     private Integer cupo;
     private String objetivoGeneral;
     private String objetivosEspecificos;

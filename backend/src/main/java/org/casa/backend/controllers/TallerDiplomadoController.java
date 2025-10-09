@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/talleres")
+@RequestMapping("/api/talleres")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class TallerDiplomadoController {
