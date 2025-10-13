@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.casa.backend.enums.EstadoActividad;
 //import org.casa.backend.entity.ConvocatoriaResidencia;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Getter
@@ -20,8 +21,8 @@ public class ActividadDto {
     private LocalDate fechaInicio;
     private LocalDate fechaCierre;
     private LocalDate fechaResultados;
+    private Instant fechaCreacion;
     private String requisitos;
     private EstadoActividad estado;
-
 
 }

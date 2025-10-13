@@ -3,6 +3,7 @@ package org.casa.backend.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "archivo")
 public class Archivo {
     @Column(name = "num", insertable = false, updatable = false)
@@ -40,13 +42,11 @@ public class Archivo {
     @Column(name = "fecha", insertable = false, updatable = false)
     private Instant fecha;
 
-    public Archivo(String nombre, String ruta, String tipo, Instant fecha) {
-        //this.idArchivo = idArchivo;
+    public Archivo(String idArchivo,String nombre, String ruta, String tipo, Instant fecha) {
+        this.idArchivo = idArchivo;
         this.nombre = nombre;
         this.ruta = ruta;
         this.tipo = tipo;
-        //this.fecha = fecha;
+        this.fecha = fecha;
     }
-
-
 }

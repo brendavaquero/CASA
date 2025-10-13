@@ -6,6 +6,7 @@ import org.casa.backend.entity.Archivo;
 public class ArchivoMapper {
     public static ArchivoDto mapToArchivoDto(Archivo archivo) {
         return new ArchivoDto(
+                archivo.getIdArchivo(),
                 archivo.getNombre(),
                 archivo.getRuta(),
                 archivo.getTipo(),
@@ -15,6 +16,7 @@ public class ArchivoMapper {
 
     public static Archivo mapToArchivo(ArchivoDto archivoDto) {
         return new Archivo(
+                archivoDto.getIdArchivo(),
                 archivoDto.getNombre(),
                 archivoDto.getRuta(),
                 archivoDto.getTipo(),

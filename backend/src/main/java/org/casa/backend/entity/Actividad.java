@@ -58,13 +58,14 @@ public abstract class Actividad {
     @Column(name = "estado", nullable = false, length = 20)
     private EstadoActividad estado;
 
-    public Actividad(String idActividad, String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados, String requisitos, EstadoActividad estado) {
+    public Actividad(String idActividad, String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado) {
         this.idActividad = idActividad;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
         this.fechaCierre = fechaCierre;
         this.fechaResultados = fechaResultados;
+        this.fechaCreacion = fechaCreacion;
         this.requisitos = requisitos;
         this.estado = estado;
     }

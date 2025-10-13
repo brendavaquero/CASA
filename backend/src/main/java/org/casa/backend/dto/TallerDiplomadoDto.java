@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.enums.EstadoActividad;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Getter
@@ -29,7 +30,7 @@ public class TallerDiplomadoDto extends ActividadDto{
             LocalDate fechaInicio,
             LocalDate fechaCierre,
             LocalDate fechaResultados,
-            //Instant fechaCreacion,
+            Instant fechaCreacion,
             String requisitos,
             EstadoActividad estado,
             String tipo,
@@ -42,7 +43,7 @@ public class TallerDiplomadoDto extends ActividadDto{
             String notas,
             Integer numSesiones
     ) {
-        super(idActividad, titulo, descripcion, fechaInicio, fechaCierre, fechaResultados, requisitos, estado);
+        super(idActividad, titulo, descripcion, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
         this.tipo = tipo;
         this.cupo = cupo;
         this.objetivoGeneral = objetivoGeneral;
