@@ -1,0 +1,51 @@
+package org.casa.backend.enums;
+
+public enum Estado {
+    AGUASCALIENTES("Aguascalientes"),
+    BAJA_CALIFORNIA("Baja California"),
+    BAJA_CALIFORNIA_SUR("Baja California Sur"),
+    CAMPECHE("Campeche"),
+    CHIAPAS("Chiapas"),
+    CHIHUAHUA("Chihuahua"),
+    CIUDAD_DE_MEXICO("Ciudad de México"),
+    COAHUILA("Coahuila"),
+    COLIMA("Colima"),
+    DURANGO("Durango"),
+    ESTADO_DE_MEXICO("Estado de México"),
+    GUANAJUATO("Guanajuato"),
+    GUERRERO("Guerrero"),
+    HIDALGO("Hidalgo"),
+    JALISCO("Jalisco"),
+    MICHOACAN("Michoacán"),
+    MORELOS("Morelos"),
+    NAYARIT("Nayarit"),
+    NUEVO_LEON("Nuevo León"),
+    OAXACA("Oaxaca"),
+    PUEBLA("Puebla"),
+    QUERETARO("Querétaro"),
+    QUINTANA_ROO("Quintana Roo"),
+    SAN_LUIS_POTOSI("San Luis Potosí"),
+    SINALOA("Sinaloa"),
+    SONORA("Sonora"),
+    TABASCO("Tabasco"),
+    TAMAULIPAS("Tamaulipas"),
+    TLAXCALA("Tlaxcala"),
+    VERACRUZ("Veracruz"),
+    YUCATAN("Yucatán"),
+    ZACATECAS("Zacatecas");
+
+    private final String nombre;
+
+    Estado(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+}
