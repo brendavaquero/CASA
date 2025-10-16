@@ -49,4 +49,12 @@ public class Archivo {
         this.tipo = tipo;
         this.fecha = fecha;
     }
+    @ManyToOne
+    @JoinColumn(name = "id_actividad")
+    private Actividad actividad;
+
+    @ManyToOne
+    @JoinColumn(name = "id_postulacion")
+    private Postulacion postulacion;
+
 }

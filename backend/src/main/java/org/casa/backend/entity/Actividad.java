@@ -1,5 +1,4 @@
 package org.casa.backend.entity;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,9 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +22,6 @@ import java.time.LocalDate;
 
 @Table(name = "actividad")
 @Inheritance(strategy = InheritanceType.JOINED) // herencia JOINED
-@DiscriminatorColumn(name = "tipo_actividad")
 
 public abstract class Actividad {
     @Column(name = "num", insertable = false, updatable = false)
@@ -38,6 +39,14 @@ public abstract class Actividad {
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
+
+    /*@Size(max = 100)
+    @Column(name = "tipo", length = 100)
+    private String tipo;*/
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false, length = 20)
+    private TipoActividad tipo;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
@@ -58,10 +67,11 @@ public abstract class Actividad {
     @Column(name = "estado", nullable = false, length = 20)
     private EstadoActividad estado;
 
-    public Actividad(String idActividad, String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado) {
+    public Actividad(String idActividad, String titulo, String descripcion, TipoActividad tipo, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado) {
         this.idActividad = idActividad;
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.tipo = tipo;
         this.fechaInicio = fechaInicio;
         this.fechaCierre = fechaCierre;
         this.fechaResultados = fechaResultados;
@@ -69,6 +79,6 @@ public abstract class Actividad {
         this.requisitos = requisitos;
         this.estado = estado;
     }
-
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Archivo> archivos = new ArrayList<>();
 }
-

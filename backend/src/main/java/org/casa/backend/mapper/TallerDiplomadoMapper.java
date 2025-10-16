@@ -9,13 +9,13 @@ public class TallerDiplomadoMapper {
                 tallerDiplomado.getIdActividad(),
                 tallerDiplomado.getTitulo(),
                 tallerDiplomado.getDescripcion(),
+                tallerDiplomado.getTipo(),
                 tallerDiplomado.getFechaInicio(),
                 tallerDiplomado.getFechaCierre(),
                 tallerDiplomado.getFechaResultados(),
                 tallerDiplomado.getFechaCreacion(),
                 tallerDiplomado.getRequisitos(),
                 tallerDiplomado.getEstado(),
-                tallerDiplomado.getTipo(),
                 tallerDiplomado.getCupo(),
                 tallerDiplomado.getObjetivoGeneral(),
                 tallerDiplomado.getObjetivosEspecificos(),
@@ -23,7 +23,8 @@ public class TallerDiplomadoMapper {
                 tallerDiplomado.getMaterialSol(),
                 tallerDiplomado.getCriteriosSeleccion(),
                 tallerDiplomado.getNotas(),
-                tallerDiplomado.getNumSesiones()
+                tallerDiplomado.getNumSesiones(),
+                tallerDiplomado.getPrograma()
         );
     }
 
@@ -32,13 +33,13 @@ public class TallerDiplomadoMapper {
                 tallerDiplomadoDto.getIdActividad(),
                 tallerDiplomadoDto.getTitulo(),
                 tallerDiplomadoDto.getDescripcion(),
+                tallerDiplomadoDto.getTipo(),
                 tallerDiplomadoDto.getFechaInicio(),
                 tallerDiplomadoDto.getFechaCierre(),
                 tallerDiplomadoDto.getFechaResultados(),
                 tallerDiplomadoDto.getFechaCreacion(),
                 tallerDiplomadoDto.getRequisitos(),
                 tallerDiplomadoDto.getEstado(),
-                tallerDiplomadoDto.getTipo(),
                 tallerDiplomadoDto.getCupo(),
                 tallerDiplomadoDto.getObjetivoGeneral(),
                 tallerDiplomadoDto.getObjetivosEspecificos(),
@@ -46,7 +47,8 @@ public class TallerDiplomadoMapper {
                 tallerDiplomadoDto.getMaterialSol(),
                 tallerDiplomadoDto.getCriteriosSeleccion(),
                 tallerDiplomadoDto.getNotas(),
-                tallerDiplomadoDto.getNumSesiones()
+                tallerDiplomadoDto.getNumSesiones(),
+                tallerDiplomadoDto.getPrograma()
         );
     }
 }

@@ -3,7 +3,9 @@ package org.casa.backend.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.entity.Programa;
 import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -13,7 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 public class TallerDiplomadoDto extends ActividadDto{
-    private String tipo;
     private Integer cupo;
     private String objetivoGeneral;
     private String objetivosEspecificos;
@@ -22,18 +23,19 @@ public class TallerDiplomadoDto extends ActividadDto{
     private String criteriosSeleccion;
     private String notas;
     private Integer numSesiones;
+    private Programa programa;
 
     public TallerDiplomadoDto(
             String idActividad,
             String titulo,
             String descripcion,
+            TipoActividad tipo,
             LocalDate fechaInicio,
             LocalDate fechaCierre,
             LocalDate fechaResultados,
             Instant fechaCreacion,
             String requisitos,
             EstadoActividad estado,
-            String tipo,
             Integer cupo,
             String objetivoGeneral,
             String objetivosEspecificos,
@@ -41,10 +43,10 @@ public class TallerDiplomadoDto extends ActividadDto{
             String materialSol,
             String criteriosSeleccion,
             String notas,
-            Integer numSesiones
+            Integer numSesiones,
+            Programa programa
     ) {
-        super(idActividad, titulo, descripcion, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
-        this.tipo = tipo;
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
         this.cupo = cupo;
         this.objetivoGeneral = objetivoGeneral;
         this.objetivosEspecificos = objetivosEspecificos;
@@ -53,5 +55,6 @@ public class TallerDiplomadoDto extends ActividadDto{
         this.criteriosSeleccion = criteriosSeleccion;
         this.notas = notas;
         this.numSesiones = numSesiones;
+        this.programa = programa;
     }
 }

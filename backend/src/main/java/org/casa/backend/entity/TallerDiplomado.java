@@ -1,14 +1,16 @@
 package org.casa.backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,10 +20,6 @@ import java.time.LocalDate;
 @Table(name = "taller_diplomado")
 @PrimaryKeyJoinColumn(name = "id_actividad")
 public class TallerDiplomado extends Actividad {
-
-    @Size(max = 100)
-    @Column(name = "tipo", length = 100)
-    private String tipo;
 
     @Column(name = "cupo")
     private Integer cupo;
@@ -47,17 +45,21 @@ public class TallerDiplomado extends Actividad {
     @Column(name = "num_sesiones")
     private Integer numSesiones;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_programa", nullable = true)
+    private Programa programa;
+
     public TallerDiplomado(
             String idActividad,
             String titulo,
             String descripcion,
+            TipoActividad tipo,
             LocalDate fechaInicio,
             LocalDate fechaCierre,
             LocalDate fechaResultados,
             Instant fechaCreacion,
             String requisitos,
             EstadoActividad estado,
-            String tipo,
             Integer cupo,
             String objetivoGeneral,
             String objetivosEspecificos,
@@ -65,10 +67,10 @@ public class TallerDiplomado extends Actividad {
             String materialSol,
             String criteriosSeleccion,
             String notas,
-            Integer numSesiones
+            Integer numSesiones,
+            Programa programa
     ) {
-        super(idActividad, titulo, descripcion, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
-        this.tipo = tipo;
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
         this.cupo = cupo;
         this.objetivoGeneral = objetivoGeneral;
         this.objetivosEspecificos = objetivosEspecificos;
@@ -77,17 +79,10 @@ public class TallerDiplomado extends Actividad {
         this.criteriosSeleccion = criteriosSeleccion;
         this.notas = notas;
         this.numSesiones = numSesiones;
+        this.programa = programa;
     }
 
-
-    /*@ManyToMany
-    @JoinTable(name = "programa_taller",
-            joinColumns = @JoinColumn(name = "id_taller_dip"),
-            inverseJoinColumns = @JoinColumn(name = "id_programa"))
-    private Set<Programa> programas = new LinkedHashSet<>();
-
-    @OneToMany
-    @JoinColumn(name = "id_taller_diplomado")
-    private Set<Sesion> sesions = new LinkedHashSet<>();*/
+    @OneToMany(mappedBy = "tallerDiplomado", cascade = CascadeType.ALL)
+    private List<Sesion> sesiones = new ArrayList<>();
 
 }

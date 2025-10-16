@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/talleresydiplomados")
@@ -25,5 +27,11 @@ public class TallerDiplomadoController {
     public ResponseEntity<TallerDiplomadoDto> getTallerDiplomadoById(@PathVariable("id") String idActividad) {
         TallerDiplomadoDto tallerDiplomadoDto = tallerDiplomadoService.getTallerDiplomadoById(idActividad);
         return ResponseEntity.ok(tallerDiplomadoDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TallerDiplomadoDto>> getAllTalleresDiplomados() {
+        List<TallerDiplomadoDto> talleresDiplomados = tallerDiplomadoService.getAllTalleresDiplomados();
+        return ResponseEntity.ok(talleresDiplomados);
     }
 }

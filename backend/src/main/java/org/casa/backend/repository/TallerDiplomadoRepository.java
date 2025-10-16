@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TallerDiplomadoRepositorio extends JpaRepository<TallerDiplomado, String> {
+public interface TallerDiplomadoRepository extends JpaRepository<TallerDiplomado, String> {
 }
