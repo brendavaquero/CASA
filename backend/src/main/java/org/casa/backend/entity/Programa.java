@@ -1,30 +1,29 @@
 package org.casa.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "programa")
 public class Programa {
+
+    @Column(name = "num", insertable = false, updatable = false)
+    private Integer num;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_programa", length = 20, insertable = false)
     private String idPrograma;
-
-    @Column(name = "num", insertable = false, updatable = false)
-    private Integer num;
 
     @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
@@ -32,22 +31,22 @@ public class Programa {
     @Column(name = "descripcion", columnDefinition = "text")
     private String descripcion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_actividad",nullable = false)
-    private TallerDiplomado idActividad;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario idUsuario;
-
-    public Programa() {
-    }
-
-    public Programa(String nombre, String descripcion, TallerDiplomado activDiplomado, Usuario usuario) {
+    public Programa(String idPrograma, String nombre, String descripcion, List<Usuario> responsables) {
+        this.idPrograma = idPrograma;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.idActividad = activDiplomado;
-        this.idUsuario = usuario;
-
+        this.responsables = responsables;
     }
+
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<TallerDiplomado> talleres = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "programa_responsable",
+            joinColumns = @JoinColumn(name = "id_programa"),
+            inverseJoinColumns = @JoinColumn(name = "id_usuario")
+    )
+    private List<Usuario> responsables = new ArrayList<>();
+
 }

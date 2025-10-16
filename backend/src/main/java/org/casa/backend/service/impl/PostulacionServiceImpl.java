@@ -9,9 +9,9 @@ import org.casa.backend.entity.Participante;
 import org.casa.backend.entity.Postulacion;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.PostulacionMapper;
-import org.casa.backend.repository.ActividadRepository;
 import org.casa.backend.repository.ParticipanteRepository;
 import org.casa.backend.repository.PostulacionRepository;
+import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +23,14 @@ public class PostulacionServiceImpl implements PostulacionService {
 
     private PostulacionRepository postulacionRepository;
     private ParticipanteRepository participanteRepository;
-    private ActividadRepository actividadRepository;
+    private TallerDiplomadoRepository tallerDiplomadoRepositoryR;
 
     @Override
     public PostulacionDto createPostulacion(PostulacionDto dto) {
         Participante participante = participanteRepository.findById(dto.getIdUsuario())
             .orElseThrow(() -> new ResourceNotFoundException("Participante no encontrado"));
 
-        Actividad actividad = actividadRepository.findById(dto.getIdActividad())
+        Actividad actividad = tallerDiplomadoRepositoryR.findById(dto.getIdActividad())
             .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
 
         Postulacion postulacion = new Postulacion();

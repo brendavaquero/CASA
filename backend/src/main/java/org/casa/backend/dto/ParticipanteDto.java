@@ -1,6 +1,8 @@
 package org.casa.backend.dto;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.casa.backend.enums.Estado;
 import org.casa.backend.enums.GradoEstudio;
@@ -26,7 +28,8 @@ public class ParticipanteDto {
     private String contrasenia;
     private Rol rol;
     private Boolean activo;
-    private LocalDate ultimoAcceso;
+    private LocalDateTime ultimoAcceso;
+    private Instant fecha_registro;
     private String nombreParticipante;
     private Character sexo;
     private LocalDate fechaNacimiento;

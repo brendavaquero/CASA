@@ -1,18 +1,13 @@
 package org.casa.backend.entity;
 
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.*;
 import org.casa.backend.enums.Rol;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,24 +46,31 @@ public class Usuario {
     @Column(name = "rol", length = 20, nullable = false)
     private Rol rol;
 
-    @Column(name = "activo")
+    @Column(name = "activo", insertable = false)
     private boolean activo = true;
 
-    @Column(name = "fecha_registro",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime  fecha_registro;
+    @Column(name = "fecha_registro", insertable = false, updatable = false)
+    private Instant  fecha_registro;
 
-    @Column(name = "ultimo_acceso", columnDefinition = "timestamp without time zone")
+    @Column(name = "ultimo_acceso", insertable = false)
     private LocalDateTime  ultimo_acceso = LocalDateTime.now();;
 
     @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
-    public Usuario(String nombre, String apellidos, String correo, String contrasenia, Rol rol) {
+
+    public Usuario(String idUsuario, String nombre, String apellidos, String correo, String contrasenia, Rol rol, boolean activo, Instant fecha_registro, LocalDateTime ultimo_acceso) {
+        this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
         this.contrasenia = contrasenia;
         this.rol = rol;
-        this.activo = true;
-        this.ultimo_acceso = LocalDateTime.now();
+        this.activo = activo;
+        this.fecha_registro = fecha_registro;
+        this.ultimo_acceso = ultimo_acceso;
     }
+
+    @ManyToMany(mappedBy = "responsables")
+    private List<Programa> programas = new ArrayList<>();
+
 }

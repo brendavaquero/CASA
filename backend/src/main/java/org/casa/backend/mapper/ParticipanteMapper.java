@@ -18,7 +18,9 @@ public class ParticipanteMapper {
         dto.setCorreo(participante.getCorreo());
         dto.setContrasenia(participante.getContrasenia());
         dto.setRol(participante.getRol());
-
+        dto.setActivo(participante.isActivo());
+        dto.setFecha_registro(participante.getFecha_registro());
+        dto.setUltimoAcceso(participante.getUltimo_acceso());
         dto.setNombreParticipante(participante.getNombreParticipante());
         dto.setSexo(participante.getSexo());
         dto.setFechaNacimiento(participante.getFechaNacimiento());

@@ -38,12 +38,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+<<<<<<< HEAD
+
+=======
 		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 			-->
+>>>>>>> dd3cd6136354ffa36e0fd332da98cdaa1dfa5d43
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -64,7 +68,15 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+<<<<<<< HEAD
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+=======
 
+>>>>>>> dd3cd6136354ffa36e0fd332da98cdaa1dfa5d43
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -75,6 +87,8 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
 		<!--
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -93,6 +107,7 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+>>>>>>> dd3cd6136354ffa36e0fd332da98cdaa1dfa5d43
 
 	</dependencies>
 

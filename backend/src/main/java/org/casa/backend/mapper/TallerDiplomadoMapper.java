@@ -4,29 +4,51 @@ import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.TallerDiplomado;
 
 public class TallerDiplomadoMapper {
+    public static TallerDiplomadoDto mapToTallerDiplomadoDto(TallerDiplomado tallerDiplomado) {
+        return new TallerDiplomadoDto(
+                tallerDiplomado.getIdActividad(),
+                tallerDiplomado.getTitulo(),
+                tallerDiplomado.getDescripcion(),
+                tallerDiplomado.getTipo(),
+                tallerDiplomado.getFechaInicio(),
+                tallerDiplomado.getFechaCierre(),
+                tallerDiplomado.getFechaResultados(),
+                tallerDiplomado.getFechaCreacion(),
+                tallerDiplomado.getRequisitos(),
+                tallerDiplomado.getEstado(),
+                tallerDiplomado.getCupo(),
+                tallerDiplomado.getObjetivoGeneral(),
+                tallerDiplomado.getObjetivosEspecificos(),
+                tallerDiplomado.getTemas(),
+                tallerDiplomado.getMaterialSol(),
+                tallerDiplomado.getCriteriosSeleccion(),
+                tallerDiplomado.getNotas(),
+                tallerDiplomado.getNumSesiones(),
+                tallerDiplomado.getPrograma()
+        );
+    }
 
-    public static TallerDiplomadoDto mapToDto(TallerDiplomado taller) {
-        TallerDiplomadoDto dto = new TallerDiplomadoDto();
-        dto.setIdActividad(taller.getIdActividad());
-        dto.setTitulo(taller.getTitulo());
-        dto.setDescripcion(taller.getDescripcion());
-        dto.setFechaInicio(taller.getFechaInicio());
-        dto.setFechaCierre(taller.getFechaCierre());
-        dto.setFechaResultados(taller.getFechaResultados());
-        dto.setFechaCreacion(taller.getFechaCreacion());
-        dto.setRequisitos(taller.getRequisitos());
-        dto.setEstado(taller.getEstado());
-        dto.setTipoActividad(taller.getTipoActividad());
-
-        dto.setCupo(taller.getCupo());
-        dto.setObjetivoGeneral(taller.getObjetivoGeneral());
-        dto.setObjetivosEspecificos(taller.getObjetivosEspecificos());
-        dto.setTemas(taller.getTemas());
-        dto.setMaterialSol(taller.getMaterialSol());
-        dto.setCriteriosSeleccion(taller.getCriteriosSeleccion());
-        dto.setNotas(taller.getNotas());
-        dto.setNumSesiones(taller.getNumSesiones());
-        
-        return dto;
+    public static TallerDiplomado mapToTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
+        return new TallerDiplomado(
+                tallerDiplomadoDto.getIdActividad(),
+                tallerDiplomadoDto.getTitulo(),
+                tallerDiplomadoDto.getDescripcion(),
+                tallerDiplomadoDto.getTipo(),
+                tallerDiplomadoDto.getFechaInicio(),
+                tallerDiplomadoDto.getFechaCierre(),
+                tallerDiplomadoDto.getFechaResultados(),
+                tallerDiplomadoDto.getFechaCreacion(),
+                tallerDiplomadoDto.getRequisitos(),
+                tallerDiplomadoDto.getEstado(),
+                tallerDiplomadoDto.getCupo(),
+                tallerDiplomadoDto.getObjetivoGeneral(),
+                tallerDiplomadoDto.getObjetivosEspecificos(),
+                tallerDiplomadoDto.getTemas(),
+                tallerDiplomadoDto.getMaterialSol(),
+                tallerDiplomadoDto.getCriteriosSeleccion(),
+                tallerDiplomadoDto.getNotas(),
+                tallerDiplomadoDto.getNumSesiones(),
+                tallerDiplomadoDto.getPrograma()
+        );
     }
 }

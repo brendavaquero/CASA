@@ -1,41 +1,37 @@
 package org.casa.backend.controllers;
 
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.service.TallerDiplomadoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/talleres")
-@RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/talleresydiplomados")
 public class TallerDiplomadoController {
+    private TallerDiplomadoService tallerDiplomadoService;
 
-    private final TallerDiplomadoService tallerService;
+    //Rest API ADD
+    @PostMapping
+    public ResponseEntity<TallerDiplomadoDto> createTallerDiplomado(@RequestBody TallerDiplomadoDto tallerDiplomadoDto) {
+        TallerDiplomadoDto savedTallerDiplomado = tallerDiplomadoService.createTallerDiplomado(tallerDiplomadoDto);
+        return new ResponseEntity<>(savedTallerDiplomado, HttpStatus.CREATED);
+    }
+
+    //Rest API GET
+    @GetMapping("{id}")
+    public ResponseEntity<TallerDiplomadoDto> getTallerDiplomadoById(@PathVariable("id") String idActividad) {
+        TallerDiplomadoDto tallerDiplomadoDto = tallerDiplomadoService.getTallerDiplomadoById(idActividad);
+        return ResponseEntity.ok(tallerDiplomadoDto);
+    }
 
     @GetMapping
-    public ResponseEntity<List<TallerDiplomadoDto>> listarTalleres() {
-        return ResponseEntity.ok(tallerService.listarTalleres());
-    }
-
-    @GetMapping("/{idActividad}")
-    public ResponseEntity<TallerDiplomadoDto> obtenerPorId(@PathVariable String idActividad) {
-        TallerDiplomadoDto taller = tallerService.getTallerById(idActividad);
-        return taller != null ? ResponseEntity.ok(taller) : ResponseEntity.notFound().build();
-    }
-
-    @PostMapping
-    public ResponseEntity<TallerDiplomadoDto> crearTaller(@RequestBody TallerDiplomadoDto tallerDto) {
-        return ResponseEntity.ok(tallerService.createTaller(tallerDto));
-    }
-
-    @DeleteMapping("/{idActividad}")
-    public ResponseEntity<Void> eliminarTaller(@PathVariable String idActividad) {
-        tallerService.deleteTaller(idActividad);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<List<TallerDiplomadoDto>> getAllTalleresDiplomados() {
+        List<TallerDiplomadoDto> talleresDiplomados = tallerDiplomadoService.getAllTalleresDiplomados();
+        return ResponseEntity.ok(talleresDiplomados);
     }
 }

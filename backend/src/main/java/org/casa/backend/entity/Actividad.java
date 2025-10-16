@@ -1,40 +1,52 @@
 package org.casa.backend.entity;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+
 @Table(name = "actividad")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Actividad { 
+@Inheritance(strategy = InheritanceType.JOINED) // herencia JOINED
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_actividad", length = 50, insertable = false, updatable = false)
-    private String idActividad;
-
+public abstract class Actividad {
     @Column(name = "num", insertable = false, updatable = false)
     private Integer num;
 
-    @Column(name = "titulo", length = 200, nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_actividad", insertable = false, updatable = false)
+    private String idActividad;
+
+    @Size(max = 200)
+    @NotNull
+    @Column(name = "titulo", nullable = false, length = 200)
     private String titulo;
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
+
+    /*@Size(max = 100)
+    @Column(name = "tipo", length = 100)
+    private String tipo;*/
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false, length = 20)
+    private TipoActividad tipo;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
@@ -45,37 +57,28 @@ public abstract class Actividad {
     @Column(name = "fecha_resultados")
     private LocalDate fechaResultados;
 
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaCreacion;
+    @Column(name = "fecha_creacion", insertable = false, updatable = false)
+    private Instant fechaCreacion;
 
     @Column(name = "requisitos", columnDefinition = "TEXT")
     private String requisitos;
 
-    @Column(name = "estado", length = 50)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false, length = 20)
+    private EstadoActividad estado;
 
-    @Column(name = "tipo_actividad",length=31)
-    private String tipoActividad;
-
-    @PrePersist
-    protected void onCreate() {
-        if (fechaCreacion == null) {
-            fechaCreacion = LocalDateTime.now();
-        }
-    }
-    public Actividad() {
-        
-    }
-
-    public Actividad(String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados, LocalDateTime fechaCreacion, String requisitos, String estado,String tipoActividad ) {
-        this.titulo=titulo;
-        this.descripcion=descripcion;
-        this.fechaInicio=fechaInicio;
-        this.fechaCierre=fechaCierre;
-        this.fechaResultados=fechaResultados;
+    public Actividad(String idActividad, String titulo, String descripcion, TipoActividad tipo, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado) {
+        this.idActividad = idActividad;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.fechaInicio = fechaInicio;
+        this.fechaCierre = fechaCierre;
+        this.fechaResultados = fechaResultados;
         this.fechaCreacion = fechaCreacion;
         this.requisitos = requisitos;
         this.estado = estado;
-        this.tipoActividad = tipoActividad;
     }
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Archivo> archivos = new ArrayList<>();
 }

@@ -2,9 +2,9 @@ package org.casa.backend.enums;
 
 public enum Rol {
     ADMINISTRADOR("ADMINISTRADOR"),
+    DOCENTE("DOCENTE"),
     JURADO("JURADO"),
     PARTICIPANTE("PARTICIPANTE"),
-    TRABAJADOR("TRABAJADOR"),
     INVITADO("INVITADO");
 
     private final String valor;

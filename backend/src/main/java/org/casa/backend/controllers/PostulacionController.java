@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import org.casa.backend.dto.PostulacionDto;
+import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,15 @@ public class PostulacionController {
         return new ResponseEntity<>(postulacionService.createPostulacion(dto), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostulacionDto> getPostulacionById(@PathVariable("id") String idPostulacion) {
+        PostulacionDto postulacionDto = postulacionService.getPostulacionById(idPostulacion);
+        return ResponseEntity.ok(postulacionDto);
+    }
+
     @GetMapping
     public ResponseEntity<List<PostulacionDto>> getAll() {
         return ResponseEntity.ok(postulacionService.getAllPostulaciones());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PostulacionDto> getById(@PathVariable String id) {
-        return ResponseEntity.ok(postulacionService.getPostulacionById(id));
     }
 
     @DeleteMapping("/{id}")

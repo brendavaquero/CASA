@@ -1,29 +1,20 @@
 package org.casa.backend.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.entity.Programa;
+import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
+
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class TallerDiplomadoDto{
-    private String idActividad;
-    private String titulo;
-    private String descripcion;
-    private LocalDate fechaInicio;
-    private LocalDate fechaCierre;
-    private LocalDate fechaResultados;
-    private LocalDateTime fechaCreacion;
-    private String requisitos;
-    private String estado;
-    private String tipoActividad;
 
+public class TallerDiplomadoDto extends ActividadDto{
     private Integer cupo;
     private String objetivoGeneral;
     private String objetivosEspecificos;
@@ -32,4 +23,38 @@ public class TallerDiplomadoDto{
     private String criteriosSeleccion;
     private String notas;
     private Integer numSesiones;
+    private Programa programa;
+
+    public TallerDiplomadoDto(
+            String idActividad,
+            String titulo,
+            String descripcion,
+            TipoActividad tipo,
+            LocalDate fechaInicio,
+            LocalDate fechaCierre,
+            LocalDate fechaResultados,
+            Instant fechaCreacion,
+            String requisitos,
+            EstadoActividad estado,
+            Integer cupo,
+            String objetivoGeneral,
+            String objetivosEspecificos,
+            String temas,
+            String materialSol,
+            String criteriosSeleccion,
+            String notas,
+            Integer numSesiones,
+            Programa programa
+    ) {
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
+        this.cupo = cupo;
+        this.objetivoGeneral = objetivoGeneral;
+        this.objetivosEspecificos = objetivosEspecificos;
+        this.temas = temas;
+        this.materialSol = materialSol;
+        this.criteriosSeleccion = criteriosSeleccion;
+        this.notas = notas;
+        this.numSesiones = numSesiones;
+        this.programa = programa;
+    }
 }

@@ -1,18 +1,22 @@
 package org.casa.backend.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
+
 @Table(name = "taller_diplomado")
 @PrimaryKeyJoinColumn(name = "id_actividad")
 public class TallerDiplomado extends Actividad {
@@ -20,10 +24,10 @@ public class TallerDiplomado extends Actividad {
     @Column(name = "cupo")
     private Integer cupo;
 
-    @Column(name = "objetivo_general", columnDefinition = "TEXT")
+    @Column(name = "objetivo_general", length = Integer.MAX_VALUE)
     private String objetivoGeneral;
 
-    @Column(name = "objetivos_especificos", columnDefinition = "TEXT")
+    @Column(name = "objetivos_especificos", length = Integer.MAX_VALUE)
     private String objetivosEspecificos;
 
     @Column(name = "temas", columnDefinition = "TEXT")
@@ -41,20 +45,21 @@ public class TallerDiplomado extends Actividad {
     @Column(name = "num_sesiones")
     private Integer numSesiones;
 
-    public TallerDiplomado() {
-        super();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_programa", nullable = true)
+    private Programa programa;
+
     public TallerDiplomado(
             String idActividad,
             String titulo,
             String descripcion,
+            TipoActividad tipo,
             LocalDate fechaInicio,
             LocalDate fechaCierre,
             LocalDate fechaResultados,
-            LocalDateTime fechaCreacion,
+            Instant fechaCreacion,
             String requisitos,
-            String estado,
-            String tipoActividad,
+            EstadoActividad estado,
             Integer cupo,
             String objetivoGeneral,
             String objetivosEspecificos,
@@ -62,8 +67,22 @@ public class TallerDiplomado extends Actividad {
             String materialSol,
             String criteriosSeleccion,
             String notas,
-            Integer numSesiones
-    ){
-        super(titulo,descripcion,fechaInicio,fechaCierre,fechaResultados,fechaCreacion,requisitos,estado,tipoActividad);
+            Integer numSesiones,
+            Programa programa
+    ) {
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
+        this.cupo = cupo;
+        this.objetivoGeneral = objetivoGeneral;
+        this.objetivosEspecificos = objetivosEspecificos;
+        this.temas = temas;
+        this.materialSol = materialSol;
+        this.criteriosSeleccion = criteriosSeleccion;
+        this.notas = notas;
+        this.numSesiones = numSesiones;
+        this.programa = programa;
     }
+
+    @OneToMany(mappedBy = "tallerDiplomado", cascade = CascadeType.ALL)
+    private List<Sesion> sesiones = new ArrayList<>();
+
 }

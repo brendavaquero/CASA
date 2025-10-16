@@ -1,6 +1,8 @@
 package org.casa.backend.entity;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.casa.backend.enums.Estado;
 import org.casa.backend.enums.GradoEstudio;
@@ -68,11 +70,11 @@ public class Participante extends Usuario{
     @Column(name = "seudonimo", length = 100)
     private String seudonimo;
 
-     public Participante() {
+    public Participante() {
         super();
     }
 
-    public Participante(String nombre, String apellidos, String correo, String contrasenia, Rol rol) {
-        super(nombre, apellidos, correo, contrasenia, rol);
+    public Participante(String idUsuario, String nombre, String apellidos, String correo, String contrasenia, Rol rol, boolean activo, Instant fecha_registro, LocalDateTime ultimo_acceso) {
+        super(idUsuario, nombre, apellidos, correo, contrasenia, rol, activo, fecha_registro, ultimo_acceso);
     }
 }
