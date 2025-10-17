@@ -25,6 +25,11 @@ public class AsistenciaController {
     public ResponseEntity<AsistenciaDto> obtenerPorId(@PathVariable String id) {
         return ResponseEntity.ok(asistenciaService.obtenerPorId(id));
     }
+    
+    @GetMapping("/alumno/{idAlumno}")
+    public List<AsistenciaDto> obtenerAsistenciasPorAlumno(@PathVariable String idAlumno) {
+        return asistenciaService.obtenerAsistenciasPorAlumno(idAlumno);
+    }
 
     @PostMapping
     public ResponseEntity<AsistenciaDto> registrar(@RequestBody AsistenciaDto dto) {

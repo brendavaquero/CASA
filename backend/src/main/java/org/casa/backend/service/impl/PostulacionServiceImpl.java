@@ -3,6 +3,7 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.entity.Actividad;
 import org.casa.backend.entity.Participante;
@@ -65,5 +66,19 @@ public class PostulacionServiceImpl implements PostulacionService {
         Postulacion postulacion = postulacionRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("No existe la postulacion con id: " + id));
         postulacionRepository.delete(postulacion);
+    }
+
+    @Override
+    public List<AlumnoActividadDto> getAlumnosPorActividad(String idActividad) {
+        List<Object[]> resultados = postulacionRepository.alumnosByActividad(idActividad);
+        return resultados.stream()
+                .map(r -> new AlumnoActividadDto(
+                        (String) r[0],  // nombre
+                        (String) r[1],  // apellidos
+                        (String) r[2],  // idAlumno
+                        (String) r[3],  // idPostulacion
+                        (String) r[4]   // tituloActividad
+                ))
+                .collect(Collectors.toList());
     }
 }

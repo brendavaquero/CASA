@@ -2,8 +2,8 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,11 @@ public class PostulacionController {
     @GetMapping
     public ResponseEntity<List<PostulacionDto>> getAll() {
         return ResponseEntity.ok(postulacionService.getAllPostulaciones());
+    }
+
+    @GetMapping("/alumnos/{idActividad}")
+    public List<AlumnoActividadDto> obtenerAlumnosPorActividad(@PathVariable String idActividad) {
+        return postulacionService.getAlumnosPorActividad(idActividad);
     }
 
     @DeleteMapping("/{id}")

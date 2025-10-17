@@ -49,4 +49,16 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     public void eliminarAsistencia(String idAsistencia) {
         asistenciaRepository.deleteById(idAsistencia);
     }
+
+    public List<AsistenciaDto> obtenerAsistenciasPorAlumno(String idAlumno) {
+        return asistenciaRepository.findByAlumno_IdAlumno(idAlumno)
+                .stream()
+                .map(a -> new AsistenciaDto(
+                        a.getIdAsistencia(),
+                        a.getAlumno().getIdAlumno(),
+                        a.getFecha(),
+                        a.getPresente()
+                ))
+                .collect(Collectors.toList());
+    }
 }
