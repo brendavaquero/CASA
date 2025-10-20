@@ -52,4 +52,20 @@ public class SesionServiceImpl implements SesionService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public SesionDto updateSesion(String sesionId, SesionDto updatedSesion) {
+        Sesion sesion = sesionRepository.findById(sesionId).orElseThrow(
+        () -> new ResourceNotFoundException("Sesión no encontrado con ese id "+ sesionId)
+       );
+
+       sesion.setFechaInicio(updatedSesion.getFechaInicio());
+       sesion.setFechaFin(updatedSesion.getFechaFin());
+       sesion.setHoraInicio(updatedSesion.getHoraInicio());
+       sesion.setHoraFin(updatedSesion.getHoraFin());
+       sesion.setAula(updatedSesion.getAula());
+
+       Sesion sesionObj = sesionRepository.save(sesion);
+       return SesionMapper.mapToSesionDto(sesionObj);
+    }
+
 }

@@ -36,6 +36,13 @@ public class AsistenciaController {
         return ResponseEntity.ok(asistenciaService.registrarAsistencia(dto));
     }
 
+    @PutMapping ("/presente/{id}")
+    public ResponseEntity<AsistenciaDto> updateAsistencia(@PathVariable("id") String asistenciaId, @RequestBody AsistenciaDto updatedAsistencia)
+    {
+        AsistenciaDto asistencia = asistenciaService.updateAsistencia(asistenciaId, updatedAsistencia);
+        return ResponseEntity.ok(asistencia);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable String id) {
         asistenciaService.eliminarAsistencia(id);

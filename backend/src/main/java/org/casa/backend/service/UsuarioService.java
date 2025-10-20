@@ -13,5 +13,7 @@ public interface UsuarioService {
     List<UsuarioDto> getAllUsuarios();
     UsuarioDto updateUsuario(String usuarioId, UsuarioDto updatedUsuario);
     void deleteUsuario(String usuarioId);
+    //Exclusivo para editar el ultimo acceso
+    UsuarioDto updateAcceso(String usuarioId);
 
 }

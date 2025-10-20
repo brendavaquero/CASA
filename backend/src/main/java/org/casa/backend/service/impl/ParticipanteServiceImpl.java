@@ -48,14 +48,9 @@ public class ParticipanteServiceImpl implements ParticipanteService {
 
         participante.setNombre(participanteDto.getNombre());
         participante.setApellidos(participanteDto.getApellidos());
-        participante.setCorreo(participanteDto.getCorreo());
-        participante.setContrasenia(participanteDto.getContrasenia());
-        participante.setRol(participanteDto.getRol());
-
+        participante.setActivo(participanteDto.getActivo());
+        participante.setUltimo_acceso(participanteDto.getUltimoAcceso());
         participante.setNombreParticipante(participanteDto.getNombreParticipante());
-        participante.setSexo(participanteDto.getSexo());
-        participante.setFechaNacimiento(participanteDto.getFechaNacimiento());
-        participante.setCurp(participanteDto.getCurp());
         participante.setNumeroTelefono(participanteDto.getNumeroTelefono());
         participante.setCodigoPostal(participanteDto.getCodigoPostal());
         participante.setPais(participanteDto.getPais());
@@ -63,7 +58,6 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         participante.setMunicipio(participanteDto.getMunicipio());
         participante.setGradoEstudio(participanteDto.getGradoEstudio());
         participante.setOcupacion(participanteDto.getOcupacion());
-        participante.setLenguaIndigena(participanteDto.getLenguaIndigena());
         participante.setSeudonimo(participanteDto.getSeudonimo());
 
         Participante updatedParticipante = participanteRepository.save(participante);

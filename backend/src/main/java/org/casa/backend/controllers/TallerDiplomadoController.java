@@ -34,4 +34,17 @@ public class TallerDiplomadoController {
         List<TallerDiplomadoDto> talleresDiplomados = tallerDiplomadoService.getAllTalleresDiplomados();
         return ResponseEntity.ok(talleresDiplomados);
     }
+
+    //Editar una actividad
+    @PutMapping("/actividad/{id}")
+    public ResponseEntity<TallerDiplomadoDto> updateActividad(@PathVariable("id") String actividadId, @RequestBody TallerDiplomadoDto updatedActividad){
+        TallerDiplomadoDto actividad = tallerDiplomadoService.updateActividad(actividadId, updatedActividad);
+        return ResponseEntity.ok(actividad);
+    }
+    //editar el taller o el diplomado
+    @PutMapping("/{id}")
+    public ResponseEntity<TallerDiplomadoDto> updateTallerDiplomado(@PathVariable("id") String tallerId, @RequestBody TallerDiplomadoDto updatedTallerDipl){
+        TallerDiplomadoDto tallerDipDto = tallerDiplomadoService.updateTallerDiplo(tallerId, updatedTallerDipl);
+        return ResponseEntity.ok(tallerDipDto);
+    }
 }

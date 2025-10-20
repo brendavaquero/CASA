@@ -1,9 +1,11 @@
 package org.casa.backend.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
+import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,16 @@ public class PostulacionController {
     @GetMapping("/alumnos/{idActividad}")
     public List<AlumnoActividadDto> obtenerAlumnosPorActividad(@PathVariable String idActividad) {
         return postulacionService.getAlumnosPorActividad(idActividad);
+    }
+
+    //Editar el estado de una postulacion
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<PostulacionDto> actualizarEstado(@PathVariable("id") String postulacionId, @RequestBody Map<String, String> body) {
+        String estadoString = body.get("estadoPos");
+        EstadoPost estado = EstadoPost.valueOf(estadoString.toUpperCase());
+
+        PostulacionDto postulacionDto = postulacionService.updateEstadoPos(postulacionId, estado);
+        return ResponseEntity.ok(postulacionDto);
     }
 
     @DeleteMapping("/{id}")

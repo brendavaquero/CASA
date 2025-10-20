@@ -42,11 +42,17 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    //Actualizar un empleado
+    //Actualizar un usuario
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDto> updateUsuario(@PathVariable("id") String usuarioId, @RequestBody UsuarioDto updatedUsuario){
         UsuarioDto usuarioDto = usuarioService.updateUsuario(usuarioId, updatedUsuario);
         return ResponseEntity.ok(usuarioDto);
+    }
+    //Actualizar su ultimo acceso de un usuario
+    @PutMapping("/acceso/{id}")
+    public ResponseEntity<UsuarioDto> updateUltimoAcceso(@PathVariable("id") String usuarioId) {
+        UsuarioDto updated = usuarioService.updateAcceso(usuarioId);
+        return ResponseEntity.ok(updated);
     }
 
     //Eliminar el usuario

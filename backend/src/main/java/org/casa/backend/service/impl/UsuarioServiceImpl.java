@@ -1,5 +1,6 @@
 package org.casa.backend.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +47,8 @@ public class UsuarioServiceImpl implements UsuarioService{
        );
         usuario.setNombre(updatedUsuario.getNombre());
         usuario.setApellidos(updatedUsuario.getApellidos());
-        usuario.setCorreo(updatedUsuario.getCorreo());
         usuario.setContrasenia(updatedUsuario.getContrasenia());
+        usuario.setActivo(updatedUsuario.isActivo());
         usuario.setRol(updatedUsuario.getRol());
         Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
 
@@ -60,6 +61,18 @@ public class UsuarioServiceImpl implements UsuarioService{
         () -> new ResourceNotFoundException("Usuario no encontrado con ese id "+ usuarioId)
        );
        usuarioRepository.deleteById(usuarioId);
+    }
+
+    //Editar exclusivamente el ultimo acceso
+    @Override
+    public UsuarioDto updateAcceso(String usuarioId) {
+        Usuario usuario =  usuarioRepository.findById(usuarioId).orElseThrow(
+        () -> new ResourceNotFoundException("Usuario no encontrado con ese id "+ usuarioId)
+       );
+        usuario.setUltimo_acceso(LocalDateTime.now());
+        Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
+
+        return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);   
     }
 
 

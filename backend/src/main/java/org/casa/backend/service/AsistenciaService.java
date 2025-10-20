@@ -9,4 +9,5 @@ public interface AsistenciaService {
     List<AsistenciaDto> listarAsistencias();
     void eliminarAsistencia(String idAsistencia);
     List<AsistenciaDto> obtenerAsistenciasPorAlumno(String idAlumno);
+    AsistenciaDto updateAsistencia(String asistenciaId, AsistenciaDto updateAsistencia);
 }

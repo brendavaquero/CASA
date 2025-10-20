@@ -33,4 +33,10 @@ public class SesionController {
         List<SesionDto> sesiones = sesionService.getSesionesByTaller(idTallerDiplomado);
         return ResponseEntity.ok(sesiones);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SesionDto> updateSesion(@PathVariable("id") String idSesion, @RequestBody SesionDto updateSesion){
+        SesionDto sesion = sesionService.updateSesion(idSesion, updateSesion);
+        return ResponseEntity.ok(sesion);
+    }
 }

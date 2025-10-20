@@ -61,4 +61,16 @@ public class AsistenciaServiceImpl implements AsistenciaService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public AsistenciaDto updateAsistencia(String asistenciaId, AsistenciaDto updateAsistencia) {
+        Asistencia asistencia = asistenciaRepository.findById(asistenciaId).orElseThrow(
+        () -> new ResourceNotFoundException("Asistencia no encontrada con ese id "+ asistenciaId)
+       );
+
+       asistencia.setPresente(updateAsistencia.getPresente());
+
+       Asistencia asistenciaObj = asistenciaRepository.save(asistencia);
+       return AsistenciaMapper.mapToDto(asistenciaObj);
+    }
 }

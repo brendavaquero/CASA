@@ -8,6 +8,7 @@ import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.entity.Actividad;
 import org.casa.backend.entity.Participante;
 import org.casa.backend.entity.Postulacion;
+import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.repository.ParticipanteRepository;
@@ -80,5 +81,17 @@ public class PostulacionServiceImpl implements PostulacionService {
                         (String) r[4]   // tituloActividad
                 ))
                 .collect(Collectors.toList());
+    }
+
+    //Editar el estado de la postulacion
+    @Override
+    public PostulacionDto updateEstadoPos(String postulacionId, EstadoPost estado) {
+        Postulacion postulacion = postulacionRepository.findById(postulacionId)
+        .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada con id " + postulacionId));
+
+        postulacion.setEstadoPos(estado);
+        Postulacion updated = postulacionRepository.save(postulacion);
+
+        return PostulacionMapper.mapToPostulacionDto(updated);
     }
 }

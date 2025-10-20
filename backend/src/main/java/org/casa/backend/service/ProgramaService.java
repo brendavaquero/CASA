@@ -10,4 +10,5 @@ public interface ProgramaService {
     ProgramaDto getById(String id);
     ProgramaDto createPrograma(ProgramaDto dto);
     void deletePrograma(String id);
+    ProgramaDto updatePrograma(String programaId, ProgramaDto updatePrograma);
 } 
