@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.enums.TipoActividad;
+import org.casa.backend.enums.TipoArchivo;
 
 import java.time.Instant;
 
@@ -35,20 +37,13 @@ public class Archivo {
     @Column(name = "ruta", nullable = false)
     private String ruta;
 
-    @Size(max = 50)
-    @Column(name = "tipo", length = 50)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false, length = 20)
+    private TipoArchivo tipo;
 
     @Column(name = "fecha", insertable = false, updatable = false)
     private Instant fecha;
 
-    public Archivo(String idArchivo,String nombre, String ruta, String tipo, Instant fecha) {
-        this.idArchivo = idArchivo;
-        this.nombre = nombre;
-        this.ruta = ruta;
-        this.tipo = tipo;
-        this.fecha = fecha;
-    }
     @ManyToOne
     @JoinColumn(name = "id_actividad")
     private Actividad actividad;
@@ -56,5 +51,15 @@ public class Archivo {
     @ManyToOne
     @JoinColumn(name = "id_postulacion")
     private Postulacion postulacion;
+
+    //quitar
+    public Archivo(String idArchivo,String nombre, String ruta, TipoArchivo tipo, Instant fecha) {
+        this.idArchivo = idArchivo;
+        this.nombre = nombre;
+        this.ruta = ruta;
+        this.tipo = tipo;
+        this.fecha = fecha;
+    }
+
 
 }
