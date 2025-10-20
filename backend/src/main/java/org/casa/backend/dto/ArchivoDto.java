@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.enums.TipoArchivo;
 
 import java.time.Instant;
 import java.util.LinkedHashSet;
@@ -18,8 +19,10 @@ public class ArchivoDto {
     private String idArchivo;
     private String nombre;
     private String ruta;
-    private String tipo;
+    private TipoArchivo tipo;
     private Instant fecha;
+    private String idActividad;
+    private String idPostulacion;
 
     /*public ArchivoDto(String nombre, String ruta, String tipo, Instant fecha) {
         this.idArchivo = idArchivo;
