@@ -26,4 +26,11 @@ public class ArchivoController {
         ArchivoDto archivoDto = archivoService.getArchivoById(idArchivo);
         return ResponseEntity.ok(archivoDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarAlumno(@PathVariable("id") String idArchivo) {
+        archivoService.deleteArchivo(idArchivo);
+        return ResponseEntity.noContent().build();
+    }
+
 }
