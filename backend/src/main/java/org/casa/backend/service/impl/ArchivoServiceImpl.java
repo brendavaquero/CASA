@@ -3,6 +3,7 @@ package org.casa.backend.service.impl;
 import lombok.AllArgsConstructor;
 import org.casa.backend.dto.ArchivoDto;
 import org.casa.backend.entity.Actividad;
+import org.casa.backend.entity.Alumno;
 import org.casa.backend.entity.Archivo;
 import org.casa.backend.entity.Postulacion;
 import org.casa.backend.exception.ResourceNotFoundException;
@@ -65,6 +66,13 @@ public class ArchivoServiceImpl implements ArchivoService {
         Archivo archivo = archivoRepository.findById(idArchivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Archivo no encontrado. ID: " + idArchivo));
         return ArchivoMapper.mapToArchivoDto(archivo);
+    }
+
+    @Override
+    public void deleteArchivo(String idArchivo) {
+        Archivo archivo = archivoRepository.findById(idArchivo)
+                .orElseThrow(() -> new ResourceNotFoundException("Archivo no encontrado. ID: " + idArchivo));
+        archivoRepository.delete(archivo);
     }
 
     @Override
