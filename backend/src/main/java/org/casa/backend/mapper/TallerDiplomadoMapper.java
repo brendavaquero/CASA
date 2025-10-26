@@ -2,6 +2,8 @@ package org.casa.backend.mapper;
 
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.TallerDiplomado;
+import org.casa.backend.entity.Docente;
+import org.casa.backend.entity.Programa;
 
 public class TallerDiplomadoMapper {
     public static TallerDiplomadoDto mapToTallerDiplomadoDto(TallerDiplomado tallerDiplomado) {
@@ -24,11 +26,12 @@ public class TallerDiplomadoMapper {
                 tallerDiplomado.getCriteriosSeleccion(),
                 tallerDiplomado.getNotas(),
                 tallerDiplomado.getNumSesiones(),
-                tallerDiplomado.getPrograma()
+                tallerDiplomado.getPrograma().getIdPrograma(),
+                tallerDiplomado.getDocente().getIdUsuario()
         );
     }
 
-    public static TallerDiplomado mapToTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
+    public static TallerDiplomado mapToTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto,Programa programa, Docente docente ) {
         return new TallerDiplomado(
                 tallerDiplomadoDto.getIdActividad(),
                 tallerDiplomadoDto.getTitulo(),
@@ -48,7 +51,8 @@ public class TallerDiplomadoMapper {
                 tallerDiplomadoDto.getCriteriosSeleccion(),
                 tallerDiplomadoDto.getNotas(),
                 tallerDiplomadoDto.getNumSesiones(),
-                tallerDiplomadoDto.getPrograma()
+                programa,
+                docente
         );
     }
 }
