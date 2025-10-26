@@ -2,9 +2,13 @@ package org.casa.backend.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.casa.backend.dto.TallerDiplomadoDto;
+import org.casa.backend.entity.Docente;
+import org.casa.backend.entity.Programa;
 import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.TallerDiplomadoMapper;
+import org.casa.backend.repository.DocenteRepository;
+import org.casa.backend.repository.ProgramaRepository;
 import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.service.TallerDiplomadoService;
 import org.springframework.stereotype.Service;
@@ -17,11 +21,20 @@ import java.util.stream.Collectors;
 public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
 
     private TallerDiplomadoRepository tallerDiplomadoRepository;
+    private DocenteRepository docenteRepository;
+    private ProgramaRepository programaRepository;
     @Override
     public TallerDiplomadoDto createTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
-        TallerDiplomado tallerDiplomado = TallerDiplomadoMapper.mapToTallerDiplomado(tallerDiplomadoDto);
+        Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdDocente())
+            .orElseThrow(() -> new ResourceNotFoundException("Docente no encontrado"));
+
+        Programa programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())
+            .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado"));
+
+
+        TallerDiplomado tallerDiplomado = TallerDiplomadoMapper.mapToTallerDiplomado(tallerDiplomadoDto,programa,docente);
         TallerDiplomado savedTallerDiplomado = tallerDiplomadoRepository.save(tallerDiplomado);
-        return null;
+        return TallerDiplomadoMapper.mapToTallerDiplomadoDto(savedTallerDiplomado);
 
     }
 

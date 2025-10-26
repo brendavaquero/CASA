@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,6 +51,11 @@ public class TallerDiplomado extends Actividad {
     @JoinColumn(name = "id_programa", nullable = true)
     private Programa programa;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    @JsonBackReference
+    private Docente docente;
+
     public TallerDiplomado(
             String idActividad,
             String titulo,
@@ -68,7 +75,8 @@ public class TallerDiplomado extends Actividad {
             String criteriosSeleccion,
             String notas,
             Integer numSesiones,
-            Programa programa
+            Programa programa,
+            Docente docente
     ) {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
         this.cupo = cupo;
@@ -80,6 +88,7 @@ public class TallerDiplomado extends Actividad {
         this.notas = notas;
         this.numSesiones = numSesiones;
         this.programa = programa;
+        this.docente = docente;
     }
 
     @OneToMany(mappedBy = "tallerDiplomado", cascade = CascadeType.ALL)

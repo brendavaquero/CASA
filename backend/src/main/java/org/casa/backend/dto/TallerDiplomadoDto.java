@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.entity.Programa;
+import org.casa.backend.entity.Docente;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 
@@ -23,7 +24,8 @@ public class TallerDiplomadoDto extends ActividadDto{
     private String criteriosSeleccion;
     private String notas;
     private Integer numSesiones;
-    private Programa programa;
+    private String idPrograma;
+    private String idDocente;
 
     public TallerDiplomadoDto(
             String idActividad,
@@ -44,7 +46,8 @@ public class TallerDiplomadoDto extends ActividadDto{
             String criteriosSeleccion,
             String notas,
             Integer numSesiones,
-            Programa programa
+            String idPrograma,
+            String idDocente
     ) {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado);
         this.cupo = cupo;
@@ -55,6 +58,7 @@ public class TallerDiplomadoDto extends ActividadDto{
         this.criteriosSeleccion = criteriosSeleccion;
         this.notas = notas;
         this.numSesiones = numSesiones;
-        this.programa = programa;
+        this.idPrograma = idPrograma;
+        this.idDocente = idDocente;
     }
 }
