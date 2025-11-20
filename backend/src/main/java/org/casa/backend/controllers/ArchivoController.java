@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/archivos")
@@ -39,19 +38,6 @@ public class ArchivoController {
         archivoService.deleteArchivo(idArchivo);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/upload")
-    public ResponseEntity<ArchivoDto> upload(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(required = false) String idActividad,
-            @RequestParam(required = false) String idPostulacion
-    ) {
-        return ResponseEntity.ok(archivoService.uploadArchivo(file, idActividad, idPostulacion));
-    }
-    @GetMapping("/actividad/{idActividad}")
-    public ResponseEntity<List<ArchivoDto>> getArchivosActividad(@PathVariable String idActividad) {
-        return ResponseEntity.ok(archivoService.getArchivosByActividad(idActividad));
-    }
-
     @PostMapping("/upload")
     public ResponseEntity<ArchivoDto> upload(
             @RequestParam("file") MultipartFile file,

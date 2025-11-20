@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.casa.backend.dto.DocenteDto;
 import org.casa.backend.dto.ProgramaDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
-import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.service.DocenteService;
 import org.casa.backend.service.ProgramaService;
 import org.casa.backend.service.TallerDiplomadoService;
@@ -14,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/talleresydiplomados")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class TallerDiplomadoController {
     private TallerDiplomadoService tallerDiplomadoService;
     private DocenteService docenteService;

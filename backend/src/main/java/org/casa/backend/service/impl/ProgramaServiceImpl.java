@@ -9,7 +9,6 @@ import org.casa.backend.entity.Usuario;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ProgramaMapper;
 import org.casa.backend.repository.ProgramaRepository;
-import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.repository.UsuarioRepository;
 import org.casa.backend.service.ProgramaService;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import lombok.AllArgsConstructor;
 public class ProgramaServiceImpl implements ProgramaService {
 
     private ProgramaRepository programaRepository;
-    private TallerDiplomadoRepository tallerDiplomadoRepository;
     private UsuarioRepository usuarioRepository;
 
     @Override

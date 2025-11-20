@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.casa.backend.enums.TipoActividad;
 import org.casa.backend.enums.TipoArchivo;
 
 import java.time.Instant;

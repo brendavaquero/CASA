@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.casa.backend.enums.TipoArchivo;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter

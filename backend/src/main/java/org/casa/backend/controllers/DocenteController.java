@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
-@CrossOrigin("*")
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/docentes")
