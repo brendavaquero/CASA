@@ -56,6 +56,9 @@ public class TallerDiplomado extends Actividad {
     @JsonBackReference
     private Docente docente;
 
+    @Column(name = "infantil", nullable = false)
+    private boolean infantil = false;
+
     public TallerDiplomado(
             String idActividad,
             String titulo,
@@ -78,7 +81,8 @@ public class TallerDiplomado extends Actividad {
             String notas,
             Integer numSesiones,
             Programa programa,
-            Docente docente
+            Docente docente,
+            boolean infantil
     ) {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo);
         this.cupo = cupo;
@@ -91,6 +95,7 @@ public class TallerDiplomado extends Actividad {
         this.numSesiones = numSesiones;
         this.programa = programa;
         this.docente = docente;
+        this.infantil = infantil;
     }
 
     @OneToMany(mappedBy = "tallerDiplomado", cascade = CascadeType.ALL)
