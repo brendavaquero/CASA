@@ -1,7 +1,9 @@
 package org.casa.backend.controllers;
 
 import lombok.AllArgsConstructor;
+
 import java.util.List;
+
 import org.casa.backend.dto.ArchivoDto;
 import org.casa.backend.service.ArchivoService;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/archivos")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArchivoController {
     private ArchivoService archivoService;
 
@@ -35,6 +38,18 @@ public class ArchivoController {
     public ResponseEntity<Void> eliminarAlumno(@PathVariable("id") String idArchivo) {
         archivoService.deleteArchivo(idArchivo);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/upload")
+    public ResponseEntity<ArchivoDto> upload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(required = false) String idActividad,
+            @RequestParam(required = false) String idPostulacion
+    ) {
+        return ResponseEntity.ok(archivoService.uploadArchivo(file, idActividad, idPostulacion));
+    }
+    @GetMapping("/actividad/{idActividad}")
+    public ResponseEntity<List<ArchivoDto>> getArchivosActividad(@PathVariable String idActividad) {
+        return ResponseEntity.ok(archivoService.getArchivosByActividad(idActividad));
     }
 
     @PostMapping("/upload")

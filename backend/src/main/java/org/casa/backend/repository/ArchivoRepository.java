@@ -1,5 +1,7 @@
 package org.casa.backend.repository;
 
+import java.util.List;
+
 import org.casa.backend.entity.Archivo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

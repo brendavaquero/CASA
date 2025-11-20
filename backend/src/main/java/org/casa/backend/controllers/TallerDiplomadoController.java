@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/talleresydiplomados")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TallerDiplomadoController {
     private TallerDiplomadoService tallerDiplomadoService;
     private DocenteService docenteService;
@@ -55,7 +56,6 @@ public class TallerDiplomadoController {
         TallerDiplomadoDto tallerDipDto = tallerDiplomadoService.updateTallerDiplo(tallerId, updatedTallerDipl);
         return ResponseEntity.ok(tallerDipDto);
     }
-
     @GetMapping("/docente/{idUsuario}")
     public ResponseEntity<List<TallerDiplomadoDto>> getTalleresDocente(@PathVariable String idUsuario) {
         return ResponseEntity.ok(tallerDiplomadoService.getTalleresByDocente(idUsuario));

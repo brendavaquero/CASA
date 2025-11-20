@@ -44,7 +44,6 @@ public class AlumnoController {
     public ResponseEntity<List<AlumnoDto>> obtenerPorPostulacion(@PathVariable String idPostulacion) {
         return ResponseEntity.ok(alumnoService.getAlumnosByPostulacion(idPostulacion));
     }
-
     @GetMapping("/{idUsuario}/talleres")
     public ResponseEntity<List<AlumnoTallerDto>> obtenerTalleres(
             @PathVariable String idUsuario) {

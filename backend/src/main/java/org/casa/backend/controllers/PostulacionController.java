@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/postulaciones")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class PostulacionController {
 
     private PostulacionService postulacionService;
