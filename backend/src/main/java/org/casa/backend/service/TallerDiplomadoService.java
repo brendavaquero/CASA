@@ -10,4 +10,5 @@ public interface TallerDiplomadoService {
     List<TallerDiplomadoDto> getAllTalleresDiplomados();
     TallerDiplomadoDto updateActividad(String actividadId, TallerDiplomadoDto updatedActividad);
     TallerDiplomadoDto updateTallerDiplo(String tallerId, TallerDiplomadoDto updatedTD);
+    List<TallerDiplomadoDto> getTalleresByDocente(String idUsuario);
 }

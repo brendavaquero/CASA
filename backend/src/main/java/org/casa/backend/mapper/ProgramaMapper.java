@@ -2,7 +2,6 @@ package org.casa.backend.mapper;
 
 import org.casa.backend.dto.ProgramaDto;
 import org.casa.backend.entity.Programa;
-import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.entity.Usuario;
 import org.casa.backend.repository.UsuarioRepository;
 

@@ -3,6 +3,7 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.casa.backend.dto.AlumnoDto;
+import org.casa.backend.dto.AlumnoTallerDto;
 import org.casa.backend.entity.Alumno;
 import org.casa.backend.entity.Postulacion;
 import org.casa.backend.exception.ResourceNotFoundException;
@@ -70,5 +71,19 @@ public class AlumnoServiceImpl implements AlumnoService {
             .stream()
             .map(AlumnoMapper::mapToAlumnoDto)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AlumnoTallerDto> obtenerTalleresDeAlumno(String idUsuario) {
+        List<Object[]> rows = alumnoRepository.obtenerTalleresDeAlumno(idUsuario);
+
+        return rows.stream().map(row -> new AlumnoTallerDto(
+                (String) row[0],  // id_usuario
+                (String) row[1],  // nombre
+                (String) row[2],  // apellidos
+                (String) row[3],  // id_alumno
+                (String) row[4],  // id_actividad
+                (String) row[5]   // titulo
+        )).collect(Collectors.toList());
     }
 }

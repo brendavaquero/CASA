@@ -3,8 +3,6 @@ package org.casa.backend.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.casa.backend.entity.Programa;
-import org.casa.backend.entity.Docente;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 

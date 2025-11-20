@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import org.casa.backend.dto.AlumnoDto;
+import org.casa.backend.dto.AlumnoTallerDto;
 import org.casa.backend.service.AlumnoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,10 @@ public class AlumnoController {
     @GetMapping("/postulacion/{idPostulacion}")
     public ResponseEntity<List<AlumnoDto>> obtenerPorPostulacion(@PathVariable String idPostulacion) {
         return ResponseEntity.ok(alumnoService.getAlumnosByPostulacion(idPostulacion));
+    }
+    @GetMapping("/{idUsuario}/talleres")
+    public ResponseEntity<List<AlumnoTallerDto>> obtenerTalleres(
+            @PathVariable String idUsuario) {
+        return ResponseEntity.ok(alumnoService.obtenerTalleresDeAlumno(idUsuario));
     }
 }

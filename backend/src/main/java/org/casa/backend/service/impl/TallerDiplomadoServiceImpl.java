@@ -85,4 +85,12 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
 
         return TallerDiplomadoMapper.mapToTallerDiplomadoDto(updatedTallerDiploObj);
     }
+
+    @Override
+    public List<TallerDiplomadoDto> getTalleresByDocente(String idUsuario) {
+        return tallerDiplomadoRepository.findByDocenteIdUsuario(idUsuario)
+            .stream()
+            .map(TallerDiplomadoMapper::mapToTallerDiplomadoDto)
+            .collect(Collectors.toList());
+    }
 }
