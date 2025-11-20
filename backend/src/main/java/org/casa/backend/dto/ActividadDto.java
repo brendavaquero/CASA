@@ -26,4 +26,6 @@ public class ActividadDto {
     private Instant fechaCreacion;
     private String requisitos;
     private EstadoActividad estado;
+    private String imagen;
+    private boolean requiereMuestraTrabajo;
 }

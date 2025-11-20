@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
+
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/postulaciones")
 @AllArgsConstructor

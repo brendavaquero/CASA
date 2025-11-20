@@ -14,12 +14,10 @@ import org.casa.backend.repository.PostulacionRepository;
 import org.casa.backend.service.ArchivoService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -91,7 +89,7 @@ public class ArchivoServiceImpl implements ArchivoService {
 
     @Override
     public ArchivoDto uploadArchivo(MultipartFile file, String idActividad, String idPostulacion) {
-            try {
+        try {
             // 1. Validar archivo
             if (file.isEmpty()) {
                 throw new RuntimeException("El archivo está vacío");

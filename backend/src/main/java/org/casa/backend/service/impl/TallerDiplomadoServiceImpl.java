@@ -1,11 +1,13 @@
 package org.casa.backend.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.casa.backend.dto.DocenteDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.Docente;
 import org.casa.backend.entity.Programa;
 import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.exception.ResourceNotFoundException;
+import org.casa.backend.mapper.DocenteMapper;
 import org.casa.backend.mapper.TallerDiplomadoMapper;
 import org.casa.backend.repository.DocenteRepository;
 import org.casa.backend.repository.ProgramaRepository;
@@ -25,7 +27,7 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
     private ProgramaRepository programaRepository;
     @Override
     public TallerDiplomadoDto createTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
-        Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdDocente())
+        Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdUsuario())
             .orElseThrow(() -> new ResourceNotFoundException("Docente no encontrado"));
 
         Programa programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())

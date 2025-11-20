@@ -16,7 +16,9 @@ public class ActividadMapper {
                 actividad.getFechaResultados(),
                 actividad.getFechaCreacion(),
                 actividad.getRequisitos(),
-                actividad.getEstado()
+                actividad.getEstado(),
+                actividad.getImagen(),
+                actividad.isRequiereMuestraTrabajo()
         );
     }
 
