@@ -24,6 +24,7 @@ public class TallerDiplomadoDto extends ActividadDto{
     private Integer numSesiones;
     private String idPrograma;
     private String idUsuario;
+    private boolean infantil;
 
     public TallerDiplomadoDto(
             String idActividad,
@@ -47,7 +48,8 @@ public class TallerDiplomadoDto extends ActividadDto{
             String notas,
             Integer numSesiones,
             String idPrograma,
-            String idUsuario
+            String idUsuario,
+            boolean infantil
     ) {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo);
         this.cupo = cupo;
@@ -60,5 +62,6 @@ public class TallerDiplomadoDto extends ActividadDto{
         this.numSesiones = numSesiones;
         this.idPrograma = idPrograma;
         this.idUsuario = idUsuario;
+        this.infantil = infantil;
     }
 }

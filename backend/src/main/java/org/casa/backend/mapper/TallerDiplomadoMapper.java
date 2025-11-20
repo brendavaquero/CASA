@@ -39,7 +39,8 @@ public class TallerDiplomadoMapper {
                 t.getNotas(),
                 t.getNumSesiones(),
                 programaId,
-                docenteId
+                docenteId,
+                t.isInfantil()
         );
     }
 
@@ -70,7 +71,8 @@ public class TallerDiplomadoMapper {
                 dto.getNotas(),
                 dto.getNumSesiones(),
                 programa,
-                docente
+                docente,
+                dto.isInfantil()
         );
     }
 }
