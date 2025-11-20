@@ -1,7 +1,12 @@
 package org.casa.backend.controllers;
 
 import lombok.AllArgsConstructor;
+import org.casa.backend.dto.DocenteDto;
+import org.casa.backend.dto.ProgramaDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
+import org.casa.backend.entity.TallerDiplomado;
+import org.casa.backend.service.DocenteService;
+import org.casa.backend.service.ProgramaService;
 import org.casa.backend.service.TallerDiplomadoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/talleresydiplomados")
 @CrossOrigin(origins = "http://localhost:3000")
 public class TallerDiplomadoController {
     private TallerDiplomadoService tallerDiplomadoService;
+    private DocenteService docenteService;
+    private ProgramaService programaService;
 
     //Rest API ADD
     @PostMapping
@@ -52,4 +60,52 @@ public class TallerDiplomadoController {
     public ResponseEntity<List<TallerDiplomadoDto>> getTalleresDocente(@PathVariable String idUsuario) {
         return ResponseEntity.ok(tallerDiplomadoService.getTalleresByDocente(idUsuario));
     }
+
+    // por probar
+    @GetMapping("/{id}/docente")
+    public ResponseEntity<DocenteDto> getDocenteByTaller(@PathVariable String id) {
+
+        TallerDiplomadoDto tallerDto = tallerDiplomadoService.getTallerDiplomadoById(id);
+
+        if (tallerDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String idDocente = tallerDto.getIdUsuario();
+
+        if (idDocente == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        DocenteDto docenteDto = docenteService.getDocenteById(idDocente);
+
+        if (docenteDto == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(docenteDto);
+    }
+
+    // por probar
+    @GetMapping("/{id}/programa")
+    public ResponseEntity<ProgramaDto> getProgramaByTaller(@PathVariable String id) {
+        TallerDiplomadoDto tallerDto = tallerDiplomadoService.getTallerDiplomadoById(id);
+
+        if (tallerDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String idPrograma = tallerDto.getIdPrograma();
+
+        if (idPrograma == null) {
+            return ResponseEntity.noContent().build();
+        }
+        ProgramaDto programaDto = programaService.getById(idPrograma);
+
+        if (programaDto == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(programaDto);
+    }
+
 }

@@ -1,8 +1,7 @@
 package org.casa.backend.enums;
 
 public enum TipoActividad {
-    TALLER_PRESENCIAL("Taller presencial"),
-    TALLER_EN_LINEA("Taller en línea"),
+    TALLER("Taller"),
     DIPLOMADO("Diplomado"),
     CONVOCATORIA("Convocatoria"),
     RESIDENCIA("Residencia");

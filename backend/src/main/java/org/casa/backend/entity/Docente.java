@@ -41,4 +41,32 @@ public class Docente extends Usuario{
     public Docente(String idUsuario, String nombre, String apellidos, String correo, String contrasenia, Rol rol, boolean activo, Instant fecha_registro, LocalDateTime ultimo_acceso) {
         super(idUsuario, nombre, apellidos, correo, contrasenia, rol, activo, fecha_registro, ultimo_acceso);
     }
+
+    public Docente(
+            String idUsuario,
+            String nombre,
+            String apellidos,
+            String correo,
+            String contrasenia,
+            Rol rol,
+            boolean activo,
+            Instant fecha_registro,
+            LocalDateTime ultimo_acceso,
+            String foto,
+            String semblanza
+    ){
+        super(
+                idUsuario,
+                nombre,
+                apellidos,
+                correo,
+                contrasenia,
+                rol,
+                activo,
+                fecha_registro,
+                ultimo_acceso
+        );
+        this.foto=foto;
+        this.semblanza=semblanza;
+    }
 }

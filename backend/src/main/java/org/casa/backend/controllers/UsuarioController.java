@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import java.util.List;
 
+
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/usuarios")

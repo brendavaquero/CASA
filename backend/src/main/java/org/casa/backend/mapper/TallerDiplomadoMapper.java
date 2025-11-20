@@ -6,51 +6,69 @@ import org.casa.backend.entity.Docente;
 import org.casa.backend.entity.Programa;
 
 public class TallerDiplomadoMapper {
-    public static TallerDiplomadoDto mapToTallerDiplomadoDto(TallerDiplomado tallerDiplomado) {
+
+    public static TallerDiplomadoDto mapToTallerDiplomadoDto(TallerDiplomado t) {
+
+        String programaId = (t.getPrograma() != null)
+                ? t.getPrograma().getIdPrograma()
+                : null;
+
+        String docenteId = (t.getDocente() != null)
+                ? t.getDocente().getIdUsuario()
+                : null;
+
         return new TallerDiplomadoDto(
-                tallerDiplomado.getIdActividad(),
-                tallerDiplomado.getTitulo(),
-                tallerDiplomado.getDescripcion(),
-                tallerDiplomado.getTipo(),
-                tallerDiplomado.getFechaInicio(),
-                tallerDiplomado.getFechaCierre(),
-                tallerDiplomado.getFechaResultados(),
-                tallerDiplomado.getFechaCreacion(),
-                tallerDiplomado.getRequisitos(),
-                tallerDiplomado.getEstado(),
-                tallerDiplomado.getCupo(),
-                tallerDiplomado.getObjetivoGeneral(),
-                tallerDiplomado.getObjetivosEspecificos(),
-                tallerDiplomado.getTemas(),
-                tallerDiplomado.getMaterialSol(),
-                tallerDiplomado.getCriteriosSeleccion(),
-                tallerDiplomado.getNotas(),
-                tallerDiplomado.getNumSesiones(),
-                tallerDiplomado.getPrograma().getIdPrograma(),
-                tallerDiplomado.getDocente().getIdUsuario()
+                t.getIdActividad(),
+                t.getTitulo(),
+                t.getDescripcion(),
+                t.getTipo(),
+                t.getFechaInicio(),
+                t.getFechaCierre(),
+                t.getFechaResultados(),
+                t.getFechaCreacion(),
+                t.getRequisitos(),
+                t.getEstado(),
+                t.getImagen(),
+                t.isRequiereMuestraTrabajo(),
+                t.getCupo(),
+                t.getObjetivoGeneral(),
+                t.getObjetivosEspecificos(),
+                t.getTemas(),
+                t.getMaterialSol(),
+                t.getCriteriosSeleccion(),
+                t.getNotas(),
+                t.getNumSesiones(),
+                programaId,
+                docenteId
         );
     }
 
-    public static TallerDiplomado mapToTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto,Programa programa, Docente docente ) {
+    public static TallerDiplomado mapToTallerDiplomado(
+            TallerDiplomadoDto dto,
+            Programa programa,
+            Docente docente
+    ) {
         return new TallerDiplomado(
-                tallerDiplomadoDto.getIdActividad(),
-                tallerDiplomadoDto.getTitulo(),
-                tallerDiplomadoDto.getDescripcion(),
-                tallerDiplomadoDto.getTipo(),
-                tallerDiplomadoDto.getFechaInicio(),
-                tallerDiplomadoDto.getFechaCierre(),
-                tallerDiplomadoDto.getFechaResultados(),
-                tallerDiplomadoDto.getFechaCreacion(),
-                tallerDiplomadoDto.getRequisitos(),
-                tallerDiplomadoDto.getEstado(),
-                tallerDiplomadoDto.getCupo(),
-                tallerDiplomadoDto.getObjetivoGeneral(),
-                tallerDiplomadoDto.getObjetivosEspecificos(),
-                tallerDiplomadoDto.getTemas(),
-                tallerDiplomadoDto.getMaterialSol(),
-                tallerDiplomadoDto.getCriteriosSeleccion(),
-                tallerDiplomadoDto.getNotas(),
-                tallerDiplomadoDto.getNumSesiones(),
+                dto.getIdActividad(),
+                dto.getTitulo(),
+                dto.getDescripcion(),
+                dto.getTipo(),
+                dto.getFechaInicio(),
+                dto.getFechaCierre(),
+                dto.getFechaResultados(),
+                dto.getFechaCreacion(),
+                dto.getRequisitos(),
+                dto.getEstado(),
+                dto.getImagen(),
+                dto.isRequiereMuestraTrabajo(),
+                dto.getCupo(),
+                dto.getObjetivoGeneral(),
+                dto.getObjetivosEspecificos(),
+                dto.getTemas(),
+                dto.getMaterialSol(),
+                dto.getCriteriosSeleccion(),
+                dto.getNotas(),
+                dto.getNumSesiones(),
                 programa,
                 docente
         );

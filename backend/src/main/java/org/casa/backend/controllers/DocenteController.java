@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/docentes")
@@ -41,4 +42,6 @@ public class DocenteController {
         List<DocenteDto> docentes = docenteService.getAllDocentes();
         return ResponseEntity.ok(docentes);
     }
+
+
 }

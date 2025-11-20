@@ -67,7 +67,13 @@ public abstract class Actividad {
     @Column(name = "estado", nullable = false, length = 20)
     private EstadoActividad estado;
 
-    public Actividad(String idActividad, String titulo, String descripcion, TipoActividad tipo, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado) {
+    @Column(name = "imagen", nullable = false, length = 300)
+    private String imagen;
+
+    @Column(name = "requiereMuestraTrabajo", nullable = false)
+    private boolean requiereMuestraTrabajo = false;
+
+    public Actividad(String idActividad, String titulo, String descripcion, TipoActividad tipo, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado, String imagen, boolean requiereMuestraTrabajo) {
         this.idActividad = idActividad;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -78,6 +84,8 @@ public abstract class Actividad {
         this.fechaCreacion = fechaCreacion;
         this.requisitos = requisitos;
         this.estado = estado;
+        this.imagen = imagen;
+        this.requiereMuestraTrabajo = requiereMuestraTrabajo;
     }
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Archivo> archivos = new ArrayList<>();
