@@ -1,0 +1,59 @@
+package org.casa.backend.controllers;
+
+import org.casa.backend.dto.UsuarioDto;
+import org.casa.backend.service.UsuarioService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import lombok.AllArgsConstructor;
+import java.util.List;
+
+
+@CrossOrigin("*")
+@AllArgsConstructor
+@RestController
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
+    private  UsuarioService usuarioService;
+
+    //Crear un usuario nuevo
+    @PostMapping
+    public ResponseEntity<UsuarioDto> createUsuario(@RequestBody UsuarioDto usuarioDto){
+        UsuarioDto savedUsuario =  usuarioService.createUsuario(usuarioDto);
+        return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
+    }
+
+    //Obtener un usuario
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDto> getUsuarioById(@PathVariable("id") String usuarioId){
+        UsuarioDto usuarioDto = usuarioService.getUsuarioById(usuarioId);
+        return ResponseEntity.ok(usuarioDto);
+    }
+    //Obtener todos los usuarios
+    @GetMapping
+    public ResponseEntity<List<UsuarioDto>> getAllUsuarios(){
+        List<UsuarioDto> usuarios = usuarioService.getAllUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    //Actualizar un usuario
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDto> updateUsuario(@PathVariable("id") String usuarioId, @RequestBody UsuarioDto updatedUsuario){
+        UsuarioDto usuarioDto = usuarioService.updateUsuario(usuarioId, updatedUsuario);
+        return ResponseEntity.ok(usuarioDto);
+    }
+    //Actualizar su ultimo acceso de un usuario
+    @PutMapping("/acceso/{id}")
+    public ResponseEntity<UsuarioDto> updateUltimoAcceso(@PathVariable("id") String usuarioId) {
+        UsuarioDto updated = usuarioService.updateAcceso(usuarioId);
+        return ResponseEntity.ok(updated);
+    }
+
+    //Eliminar el usuario
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUsuario(@PathVariable("id") String usuarioId) {
+        usuarioService.deleteUsuario(usuarioId);
+        return ResponseEntity.ok("Usuario eliminado correctamente");
+    }
+}
