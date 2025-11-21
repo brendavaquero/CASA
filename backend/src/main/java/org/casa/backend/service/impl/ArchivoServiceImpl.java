@@ -95,8 +95,56 @@ public class ArchivoServiceImpl implements ArchivoService {
                 throw new RuntimeException("El archivo está vacío");
             }
 
-            // 2. Crear carpeta /uploads si no existe
-            String uploadDir = "uploads/";
+            // Detectar extensión
+            String originalName = file.getOriginalFilename();
+            String extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
+
+            TipoArchivo tipo;
+            switch (extension) {
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "gif":
+                    tipo = TipoArchivo.IMAGEN;
+                    break;
+
+                case "pdf":
+                case "doc":
+                case "docx":
+                case "xls":
+                case "xlsx":
+                case "ppt":
+                case "pptx":
+                    tipo = TipoArchivo.DOCUMENTO;
+                    break;
+
+                case "mp4":
+                case "mp3":
+                    tipo = TipoArchivo.AUDIO_VIDEO;
+                    break;
+
+                default:
+                    tipo = TipoArchivo.OTRO;
+            }
+
+            String folder;
+
+            switch (tipo) {
+                case IMAGEN:
+                    folder = "images/";
+                    break;
+                case DOCUMENTO:
+                    folder = "documents/";
+                    break;
+                case AUDIO_VIDEO:
+                    folder = "videos/";
+                    break;
+                default:
+                    folder = "others/";
+            }
+
+            String uploadDir = "uploads/" + folder;
+
             File directory = new File(uploadDir);
             if (!directory.exists()) {
                 directory.mkdirs();
@@ -111,13 +159,13 @@ public class ArchivoServiceImpl implements ArchivoService {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
             // 5. Convertir ruta en URL accesible
-            String url = "/uploads/" + fileName;
+            String url = "/uploads/" + folder + fileName;
 
             // 6. Crear entidad Archivo
             Archivo archivo = new Archivo();
-            archivo.setNombre(file.getOriginalFilename());
+            archivo.setNombre(originalName);
             archivo.setRuta(url);
-            archivo.setTipo(TipoArchivo.IMAGEN); // O imagen, depende de tu enum
+            archivo.setTipo(tipo);
 
             // Asociar actividad
             if (idActividad != null) {
