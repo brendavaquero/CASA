@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.enums.TipoArchivo;
+import org.casa.backend.enums.CategoriaArchivo;
 
 import java.time.Instant;
 
@@ -21,6 +22,7 @@ public class ArchivoDto {
     private Instant fecha;
     private String idActividad;
     private String idPostulacion;
+    private CategoriaArchivo categoria;
 
     /*public ArchivoDto(String nombre, String ruta, String tipo, Instant fecha) {
         this.idArchivo = idArchivo;

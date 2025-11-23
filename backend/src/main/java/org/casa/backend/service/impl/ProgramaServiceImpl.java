@@ -64,4 +64,20 @@ public class ProgramaServiceImpl implements ProgramaService {
         return ProgramaMapper.mapProgramaToDto(updated);
     }
 
+    @Override
+    public List<ProgramaDto> getProgramasByUsuario(String usuarioId) {
+
+        // Validar que el usuario exista
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Usuario no encontrado con id " + usuarioId));
+
+        // Obtener programas donde él es responsable
+        return programaRepository.findByResponsableId(usuarioId)
+                .stream()
+                .map(ProgramaMapper::mapProgramaToDto)
+                .collect(Collectors.toList());
+    }
+
+
 }

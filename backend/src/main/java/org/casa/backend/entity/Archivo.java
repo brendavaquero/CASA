@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.casa.backend.enums.TipoArchivo;
+import org.casa.backend.enums.CategoriaArchivo;
 
 import java.time.Instant;
 
@@ -51,13 +52,18 @@ public class Archivo {
     @JoinColumn(name = "id_postulacion")
     private Postulacion postulacion;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false, length = 20)
+    private CategoriaArchivo categoria;
+
     //quitar
-    public Archivo(String idArchivo,String nombre, String ruta, TipoArchivo tipo, Instant fecha) {
+    public Archivo(String idArchivo,String nombre, String ruta, TipoArchivo tipo, Instant fecha, CategoriaArchivo categoria) {
         this.idArchivo = idArchivo;
         this.nombre = nombre;
         this.ruta = ruta;
         this.tipo = tipo;
         this.fecha = fecha;
+        this.categoria = categoria;
     }
 
 
