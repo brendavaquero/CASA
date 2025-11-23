@@ -2,15 +2,15 @@ package org.casa.backend.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.casa.backend.dto.ArchivoDto;
-import org.casa.backend.entity.Actividad;
-import org.casa.backend.entity.Archivo;
-import org.casa.backend.entity.Postulacion;
+import org.casa.backend.entity.*;
+import org.casa.backend.enums.CategoriaArchivo;
 import org.casa.backend.enums.TipoArchivo;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ArchivoMapper;
 import org.casa.backend.repository.ActividadRepository;
 import org.casa.backend.repository.ArchivoRepository;
 import org.casa.backend.repository.PostulacionRepository;
+import org.casa.backend.repository.ProgramaRepository;
 import org.casa.backend.service.ArchivoService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.io.ByteArrayOutputStream;
+import java.util.zip.ZipOutputStream;
+
 
 @Service
 @AllArgsConstructor
@@ -29,6 +33,7 @@ public class ArchivoServiceImpl implements ArchivoService {
     private ArchivoRepository archivoRepository;
     private ActividadRepository actividadRepository;
     private PostulacionRepository postulacionRepository;
+    private ProgramaRepository programaRepository;
 
     /*@Override
     public ArchivoDto createArchivo(ArchivoDto archivoDto) {
@@ -156,6 +161,7 @@ public class ArchivoServiceImpl implements ArchivoService {
 
             // 4. Guardar archivo en el servidor
             Path path = Paths.get(filePath);
+
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
             // 5. Convertir ruta en URL accesible
@@ -191,6 +197,7 @@ public class ArchivoServiceImpl implements ArchivoService {
             throw new RuntimeException("Error al subir archivo: " + e.getMessage());
         }
     }
+
     @Override
     public List<ArchivoDto> getArchivosByActividad(String idActividad) {
         return archivoRepository.findByActividad_IdActividad(idActividad)
@@ -198,4 +205,117 @@ public class ArchivoServiceImpl implements ArchivoService {
                 .map(ArchivoMapper::mapToArchivoDto)
                 .toList();
     }
+
+    @Override
+    public List<ArchivoDto> getEvidenciasByActividad(String idActividad) {
+        return archivoRepository
+                .findByActividad_IdActividadAndCategoria(idActividad, CategoriaArchivo.EVIDENCIA)
+                .stream()
+                .map(ArchivoMapper::mapToArchivoDto)
+                .toList();
+    }
+
+    /*@Override
+    public byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException {
+
+        Programa programa = programaRepository.findById(idPrograma)
+                .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado: " + idPrograma));
+
+        // obtener actividades del programa
+        List<TallerDiplomado> talleres = programa.getTalleres();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+
+        for (TallerDiplomado taller : talleres) {
+
+            // Archivos de tipo EVIDENCIA
+            List<Archivo> evidencias = archivoRepository
+                    .findByActividad_IdActividadAndCategoria(taller.getIdActividad(), CategoriaArchivo.EVIDENCIA);
+
+            for (Archivo archivo : evidencias) {
+
+                // ruta física del archivo
+                //Path filePath = Paths.get(archivo.getRuta());
+                String rutaPublica = archivo.getRuta();   // "/uploads/documents/archivo.pdf"
+
+                // Convertir a ruta física real
+                Path filePath = Paths.get("." + rutaPublica);  // "./uploads/documents/archivo.pdf"
+
+
+                if (!Files.exists(filePath))
+                    continue;
+
+                // Nombre dentro del ZIP: Carpeta-por-actividad/archivo
+                String zipEntryName = taller.getTitulo() + "/" + archivo.getNombre();
+                zos.putNextEntry(new ZipEntry(zipEntryName));
+
+                Files.copy(filePath, zos);
+                zos.closeEntry();
+            }
+        }
+
+        zos.close();
+        return baos.toByteArray();
+    }*/
+
+    @Override
+    public byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException {
+
+        Programa programa = programaRepository.findById(idPrograma)
+                .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado: " + idPrograma));
+
+        List<TallerDiplomado> talleres = programa.getTalleres();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+
+        for (TallerDiplomado taller : talleres) {
+
+            List<Archivo> evidencias = archivoRepository
+                    .findByActividad_IdActividadAndCategoria(taller.getIdActividad(), CategoriaArchivo.EVIDENCIA);
+
+            for (Archivo archivo : evidencias) {
+
+                String rutaPublica = archivo.getRuta();   // "/uploads/documents/file.pdf"
+
+                // Convertir URL pública → ruta física real
+                String physicalPath = rutaPublica.replaceFirst("^/uploads/", "uploads/");
+
+                Path filePath = Paths.get(physicalPath);
+
+                /*Path filePath = Paths.get(physicalPath);
+
+                if (!Files.exists(filePath)) {
+                    // Intento alternativo sin subcarpetas (uploadDir plano)
+                    Path alt = Paths.get("uploads/" + archivo.getNombre());
+                    System.out.println("Alternativo: " + alt.toAbsolutePath());
+                    if (Files.exists(alt)) {
+                        filePath = alt;
+                    } else {
+                        System.out.println("NO ENCONTRADO: " + filePath.toAbsolutePath());
+                        continue;
+                    }
+                }*/
+
+
+                if (!Files.exists(filePath)) {
+                    System.out.println("NO ENCONTRADO: " + filePath.toAbsolutePath());
+                    continue;
+                }
+
+                String zipEntryName = taller.getTitulo() + "/" + archivo.getNombre();
+                zos.putNextEntry(new ZipEntry(zipEntryName));
+
+                Files.copy(filePath, zos);
+                zos.closeEntry();
+            }
+        }
+
+        zos.close();
+        return baos.toByteArray();
+    }
+
+
+
 }

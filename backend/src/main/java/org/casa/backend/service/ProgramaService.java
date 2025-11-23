@@ -11,4 +11,5 @@ public interface ProgramaService {
     ProgramaDto createPrograma(ProgramaDto dto);
     void deletePrograma(String id);
     ProgramaDto updatePrograma(String programaId, ProgramaDto updatePrograma);
+    List<ProgramaDto> getProgramasByUsuario(String usuarioId);
 } 

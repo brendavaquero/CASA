@@ -22,6 +22,7 @@ public class ArchivoMapper {
         if (archivo.getPostulacion() != null) {
             dto.setIdPostulacion(archivo.getPostulacion().getIdPostulacion());
         }
+        dto.setCategoria(archivo.getCategoria());
 
         return dto;
     }
@@ -45,6 +46,8 @@ public class ArchivoMapper {
             postulacionRef.setIdPostulacion(archivoDto.getIdPostulacion());
             archivo.setPostulacion(postulacionRef);
         }
+
+        archivo.setCategoria(archivoDto.getCategoria());
         return archivo;
     }
 }

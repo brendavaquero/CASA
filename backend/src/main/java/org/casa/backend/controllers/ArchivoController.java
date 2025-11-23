@@ -50,4 +50,10 @@ public class ArchivoController {
     public ResponseEntity<List<ArchivoDto>> getArchivosActividad(@PathVariable String idActividad) {
         return ResponseEntity.ok(archivoService.getArchivosByActividad(idActividad));
     }
+
+    @GetMapping("/{idActividad}/evidencias")
+    public ResponseEntity<List<ArchivoDto>> getEvidenciasByActividad(@PathVariable String idActividad) {
+        return ResponseEntity.ok(archivoService.getEvidenciasByActividad(idActividad));
+    }
+
 }
