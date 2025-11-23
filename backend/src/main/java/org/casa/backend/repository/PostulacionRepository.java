@@ -4,6 +4,7 @@ package org.casa.backend.repository;
 import java.util.List;
 
 import org.casa.backend.entity.Postulacion;
+import org.casa.backend.enums.EstadoPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,18 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
         nativeQuery = true)
     
     List<Object[]> alumnosByActividad(@Param("idActividad") String idActividad);
+    List<Postulacion> findByActividad_IdActividad(String idActividad);
+    List<Postulacion> findByActividad_IdActividadAndEstadoPos(
+            String idActividad,
+            EstadoPost estadoPos
+    );
+
+    //postulaciones estado: PENDIENTE
+    @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estadoPos = 'PENDIENTE'")
+    List<Postulacion> findPendientesByActividad(@Param("idActividad") String idActividad);
+
+    /* estado: APROBADA
+    @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estado = 'aprobada'")
+    List<Postulacion> findAprobadasByActividad(@Param("idActividad") String idActividad);*/
+
 }

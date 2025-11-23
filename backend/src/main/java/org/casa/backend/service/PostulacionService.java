@@ -13,4 +13,11 @@ public interface PostulacionService {
     void deletePostulacion(String id);
     List<AlumnoActividadDto> getAlumnosPorActividad(String idActividad);
     PostulacionDto updateEstadoPos(String postulacionId, EstadoPost estado);
+    List<PostulacionDto> getPostulacionesByActividad(String idActividad);
+    void seleccionarPostulantes(String idActividad, List<String> postulacionesAprobadas);
+    List<PostulacionDto> getPostulacionesPendientes(String idActividad);
+    /*PostulacionDto aprobarPostulacion(String idPostulacion);
+    PostulacionDto rechazarPostulacion(String idPostulacion);
+    List<PostulacionDto> getPostulacionesAprobadas(String idActividad);*/
+
 }

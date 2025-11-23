@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.casa.backend.dto.AlumnoDto;
 import org.casa.backend.dto.AlumnoTallerDto;
+import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.entity.Alumno;
 import org.casa.backend.entity.Postulacion;
 import org.casa.backend.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import org.casa.backend.service.AlumnoService;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -85,5 +87,44 @@ public class AlumnoServiceImpl implements AlumnoService {
                 (String) row[4],  // id_actividad
                 (String) row[5]   // titulo
         )).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void crearAlumnosDesdePostulaciones(List<PostulacionDto> postulacionesAprobadasDto) {
+
+        if (postulacionesAprobadasDto == null || postulacionesAprobadasDto.isEmpty()) {
+            return;
+        }
+
+        for (PostulacionDto pDto : postulacionesAprobadasDto) {
+            // Asumimos que el DTO contiene el idPostulacion
+            String idPost = pDto.getIdPostulacion();
+            if (idPost == null) continue;
+
+            // Intentar usar existsByPostulacion_IdPostulacion primero (evita cargar entidad)
+            boolean existsById = alumnoRepository.existsByPostulacion_IdPostulacion(idPost);
+            if (existsById) {
+                // ya existe alumno para esta postulacion -> saltar
+                continue;
+            }
+
+            // Cargar la entidad Postulacion (necesaria para la relación)
+            Postulacion postulacion = postulacionRepository.findById(idPost)
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Postulacion no encontrada: " + idPost));
+
+            // doble chequeo por si otro proceso la creó entre tanto
+            if (alumnoRepository.existsByPostulacion(postulacion)) {
+                continue;
+            }
+
+            Alumno alumno = new Alumno();
+            alumno.setPostulacion(postulacion);
+            // Puedes cambiar el valor por default que quieras:
+            alumno.setConstancia(false);
+
+            alumnoRepository.save(alumno);
+        }
     }
 }

@@ -1,13 +1,18 @@
 package org.casa.backend.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.Docente;
+import org.casa.backend.entity.Postulacion;
 import org.casa.backend.entity.Programa;
 import org.casa.backend.entity.TallerDiplomado;
+import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
+import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.mapper.TallerDiplomadoMapper;
 import org.casa.backend.repository.DocenteRepository;
+import org.casa.backend.repository.PostulacionRepository;
 import org.casa.backend.repository.ProgramaRepository;
 import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.service.TallerDiplomadoService;
@@ -23,6 +28,8 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
     private TallerDiplomadoRepository tallerDiplomadoRepository;
     private DocenteRepository docenteRepository;
     private ProgramaRepository programaRepository;
+    private PostulacionRepository postulacionRepository;
+
     @Override
     public TallerDiplomadoDto createTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
         Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdUsuario())
@@ -93,4 +100,23 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
             .map(TallerDiplomadoMapper::mapToTallerDiplomadoDto)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PostulacionDto> obtenerPostulacionesPendientes(String idActividad) {
+
+        // 1. Validar que la actividad exista
+        TallerDiplomado actividad = tallerDiplomadoRepository.findById(idActividad)
+                .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
+
+        // 2. Obtener postulaciones pendientes asociadas a esta actividad
+        List<Postulacion> postulaciones = postulacionRepository
+                .findByActividad_IdActividadAndEstadoPos(idActividad, EstadoPost.PENDIENTE);
+
+        // 3. Convertir a DTOs
+        return postulaciones.stream()
+                .map(PostulacionMapper::mapToPostulacionDto)
+                .toList();
+    }
+
+
 }

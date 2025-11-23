@@ -1,6 +1,8 @@
 package org.casa.backend.service;
 
+import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
+
 
 import java.util.List;
 
@@ -11,4 +13,6 @@ public interface TallerDiplomadoService {
     TallerDiplomadoDto updateActividad(String actividadId, TallerDiplomadoDto updatedActividad);
     TallerDiplomadoDto updateTallerDiplo(String tallerId, TallerDiplomadoDto updatedTD);
     List<TallerDiplomadoDto> getTalleresByDocente(String idUsuario);
+    public List<PostulacionDto> obtenerPostulacionesPendientes(String idActividad);
+
 }

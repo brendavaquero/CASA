@@ -2,6 +2,7 @@ package org.casa.backend.repository;
 
 import java.util.List;
 import org.casa.backend.entity.Alumno;
+import org.casa.backend.entity.Postulacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,7 @@ public interface AlumnoRepository extends JpaRepository<Alumno, String> {
         WHERE u.id_usuario = :idUsuario
         """, nativeQuery = true)
     List<Object[]> obtenerTalleresDeAlumno(@Param("idUsuario") String idUsuario);
+    boolean existsByPostulacion(Postulacion postulacion);
+    boolean existsByPostulacion_IdPostulacion(String idPostulacion);
+    List<Alumno> findByPostulacion_Actividad_IdActividad(String idActividad);
 }

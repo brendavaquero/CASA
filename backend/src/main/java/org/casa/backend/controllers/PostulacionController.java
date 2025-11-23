@@ -58,4 +58,16 @@ public class PostulacionController {
         postulacionService.deletePostulacion(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/pendientes/{idActividad}")
+    public ResponseEntity<List<PostulacionDto>> obtenerPendientesPorActividad(
+            @PathVariable String idActividad) {
+
+        List<PostulacionDto> pendientes = postulacionService.getPostulacionesPendientes(idActividad);
+        return ResponseEntity.ok(pendientes);
+    }
+
+
+
+
 }
