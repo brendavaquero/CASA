@@ -93,7 +93,7 @@ public class ArchivoServiceImpl implements ArchivoService {
     }
 
     @Override
-    public ArchivoDto uploadArchivo(MultipartFile file, String idActividad, String idPostulacion) {
+    public ArchivoDto uploadArchivo(MultipartFile file, String idActividad, String idPostulacion,CategoriaArchivo categoria) {
         try {
             // 1. Validar archivo
             if (file.isEmpty()) {
@@ -172,6 +172,7 @@ public class ArchivoServiceImpl implements ArchivoService {
             archivo.setNombre(originalName);
             archivo.setRuta(url);
             archivo.setTipo(tipo);
+            archivo.setCategoria(categoria);
 
             // Asociar actividad
             if (idActividad != null) {

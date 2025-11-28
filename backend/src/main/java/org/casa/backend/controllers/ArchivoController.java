@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 import org.casa.backend.dto.ArchivoDto;
+import org.casa.backend.enums.CategoriaArchivo;
 import org.casa.backend.service.ArchivoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +43,10 @@ public class ArchivoController {
     public ResponseEntity<ArchivoDto> upload(
             @RequestParam("file") MultipartFile file,
             @RequestParam(required = false) String idActividad,
-            @RequestParam(required = false) String idPostulacion
+            @RequestParam(required = false) String idPostulacion,
+            @RequestParam(required = false) CategoriaArchivo categoria
     ) {
-        return ResponseEntity.ok(archivoService.uploadArchivo(file, idActividad, idPostulacion));
+        return ResponseEntity.ok(archivoService.uploadArchivo(file, idActividad, idPostulacion, categoria));
     }
     @GetMapping("/actividad/{idActividad}")
     public ResponseEntity<List<ArchivoDto>> getArchivosActividad(@PathVariable String idActividad) {
