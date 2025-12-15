@@ -57,5 +57,9 @@ public class ArchivoController {
     public ResponseEntity<List<ArchivoDto>> getEvidenciasByActividad(@PathVariable String idActividad) {
         return ResponseEntity.ok(archivoService.getEvidenciasByActividad(idActividad));
     }
-
+    @DeleteMapping("/archivo/{id}")
+    public ResponseEntity<String> deleteArchivo(@PathVariable String id) {
+        archivoService.deleteArchivoFisicoYRegistro(id);
+        return ResponseEntity.ok("Archivo eliminado correctamente.");
+    }
 }

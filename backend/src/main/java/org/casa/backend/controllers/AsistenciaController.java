@@ -1,6 +1,8 @@
 package org.casa.backend.controllers;
 
 import java.util.List;
+
+import org.casa.backend.dto.AsistenciaAlumnoDto;
 import org.casa.backend.dto.AsistenciaDto;
 import org.casa.backend.service.AsistenciaService;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +49,14 @@ public class AsistenciaController {
     public ResponseEntity<Void> eliminar(@PathVariable String id) {
         asistenciaService.eliminarAsistencia(id);
         return ResponseEntity.noContent().build();
+    }
+    //Validar asistencias para constancias
+    @GetMapping("/actividad/{idActividad}/aprobados")
+    public ResponseEntity<List<AsistenciaAlumnoDto>> obtenerAsistencias(
+            @PathVariable String idActividad) {
+
+        return ResponseEntity.ok(
+                asistenciaService.obtenerAsistencias(idActividad)
+        );
     }
 }

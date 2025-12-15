@@ -74,6 +74,7 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
         actividad.setFechaInicio(updatedActividad.getFechaInicio());
         actividad.setFechaCierre(updatedActividad.getFechaCierre());
         actividad.setFechaResultados(updatedActividad.getFechaResultados());
+        actividad.setNumSesiones(updatedActividad.getNumSesiones());
         /*actividad.setRequisitos(updatedActividad.getRequisitos());
         actividad.setEstado(updatedActividad.getEstado());*/
         TallerDiplomado updatedActividadObj = tallerDiplomadoRepository.save(actividad);

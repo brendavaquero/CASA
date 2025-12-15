@@ -10,6 +10,7 @@ import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.AsistenciaMapper;
 import org.casa.backend.repository.AlumnoRepository;
 import org.casa.backend.repository.AsistenciaRepository;
+import org.casa.backend.dto.AsistenciaAlumnoDto;
 import org.casa.backend.service.AsistenciaService;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +73,22 @@ public class AsistenciaServiceImpl implements AsistenciaService {
 
        Asistencia asistenciaObj = asistenciaRepository.save(asistencia);
        return AsistenciaMapper.mapToDto(asistenciaObj);
+    }
+
+    @Override
+    public List<AsistenciaAlumnoDto> obtenerAsistencias(String idActividad) {
+         List<Object[]> rows = asistenciaRepository.obtenerAsistenciasPorTaller(idActividad);
+        return rows.stream()
+                .map(row -> {
+                    AsistenciaAlumnoDto dto = new AsistenciaAlumnoDto();
+                    dto.setIdUsuario(((String) row[0]));
+                    dto.setNombre((String) row[1]);
+                    dto.setApellidos((String) row[2]);
+                    dto.setIdAlumno(((String) row[3]));
+                    dto.setAsistenciasPresentes(((Number) row[4]).longValue());
+                    dto.setPorcentajeAsistencia(((Number) row[5]).doubleValue());
+                    return dto;
+                })
+                .toList();
     }
 }

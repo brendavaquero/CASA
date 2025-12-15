@@ -317,6 +317,33 @@ public class ArchivoServiceImpl implements ArchivoService {
         return baos.toByteArray();
     }
 
+    @Override
+    public void deleteArchivoFisicoYRegistro(String idArchivo) {
+        //Buscar en la bd
+        Archivo archivo = archivoRepository.findById(idArchivo)
+                .orElseThrow(() -> new ResourceNotFoundException("Archivo no encontrado. ID: " + idArchivo));
 
+        //borrar fisicamente
+        if (archivo.getRuta() != null && !archivo.getRuta().isEmpty()) {
+
+            //Convertir ruta pública → ruta física
+            String physicalPath = archivo.getRuta().replaceFirst("^/uploads/", "uploads/");
+            Path path = Paths.get(physicalPath);
+
+            try {
+                if (Files.exists(path)) {
+                    Files.delete(path);
+                    System.out.println("Archivo físico eliminado: " + path.toAbsolutePath());
+                } else {
+                    System.out.println("Archivo físico NO encontrado: " + path.toAbsolutePath());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error al eliminar archivo físico: " + e.getMessage());
+            }
+        }
+
+        //registro en la base de datos
+        archivoRepository.delete(archivo);
+    }
 
 }

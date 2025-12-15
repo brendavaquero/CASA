@@ -16,4 +16,5 @@ public interface ArchivoService {
     List<ArchivoDto> getArchivosByActividad(String idActividad);
     List<ArchivoDto> getEvidenciasByActividad(String idActividad);
     byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException;
+    void deleteArchivoFisicoYRegistro(String idArchivo);
 }
