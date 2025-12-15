@@ -18,7 +18,8 @@ public class ActividadMapper {
                 actividad.getRequisitos(),
                 actividad.getEstado(),
                 actividad.getImagen(),
-                actividad.isRequiereMuestraTrabajo()
+                actividad.isRequiereMuestraTrabajo(),
+                actividad.isVisible()
         );
     }
 

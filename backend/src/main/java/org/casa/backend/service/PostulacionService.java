@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
+import org.casa.backend.dto.PostulacionParticipanteDto;
 import org.casa.backend.enums.EstadoPost;
 
 public interface PostulacionService {
@@ -16,6 +17,7 @@ public interface PostulacionService {
     List<PostulacionDto> getPostulacionesByActividad(String idActividad);
     void seleccionarPostulantes(String idActividad, List<String> postulacionesAprobadas);
     List<PostulacionDto> getPostulacionesPendientes(String idActividad);
+    List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad);
     /*PostulacionDto aprobarPostulacion(String idPostulacion);
     PostulacionDto rechazarPostulacion(String idPostulacion);
     List<PostulacionDto> getPostulacionesAprobadas(String idActividad);*/

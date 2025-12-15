@@ -3,6 +3,9 @@ package org.casa.backend.mapper;
 import org.casa.backend.dto.ParticipanteDto;
 import org.casa.backend.entity.Participante;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class ParticipanteMapper {
 
     public static ParticipanteDto mapToParticipanteDto(Participante participante) {
@@ -34,6 +37,10 @@ public class ParticipanteMapper {
         dto.setOcupacion(participante.getOcupacion());
         dto.setLenguaIndigena(participante.getLenguaIndigena());
         dto.setSeudonimo(participante.getSeudonimo());
+        if (participante.getFechaNacimiento() != null) {
+            int edad = Period.between(participante.getFechaNacimiento(), LocalDate.now()).getYears();
+            dto.setEdad(edad);
+        }
 
         return dto;
     }

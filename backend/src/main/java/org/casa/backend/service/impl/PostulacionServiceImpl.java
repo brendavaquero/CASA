@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.AlumnoActividadDto;
+import org.casa.backend.dto.ParticipanteDto;
 import org.casa.backend.dto.PostulacionDto;
+import org.casa.backend.dto.PostulacionParticipanteDto;
 import org.casa.backend.entity.*;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
+import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.repository.AlumnoRepository;
 import org.casa.backend.repository.ParticipanteRepository;
@@ -155,6 +158,34 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .map(PostulacionMapper::mapToPostulacionDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad) {
+
+        List<Postulacion> postulaciones = postulacionRepository.findPendientesByActividad(idActividad);
+
+        return postulaciones.stream().map(p -> {
+            Participante participante = participanteRepository.findById(p.getParticipante().getIdUsuario())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Participante no encontrado: " + p.getParticipante().getIdUsuario()));
+
+            ParticipanteDto participanteDto = ParticipanteMapper.mapToParticipanteDto(participante);
+
+            return new PostulacionParticipanteDto(
+                    p.getIdPostulacion(),
+                    p.getParticipante().getIdUsuario(),
+                    p.getActividad().getIdActividad(),
+                    p.getPostulante(),
+                    p.getMotivo(),
+                    p.getEstadoPos(),
+                    p.getFechaPostulacion(),
+                    participanteDto
+            );
+        }).collect(Collectors.toList());
+    }
+
+
+
 
     /*@Override
     public PostulacionDto aprobarPostulacion(String idPostulacion) {

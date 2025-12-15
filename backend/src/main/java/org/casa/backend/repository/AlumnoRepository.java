@@ -1,8 +1,10 @@
 package org.casa.backend.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.casa.backend.entity.Alumno;
 import org.casa.backend.entity.Postulacion;
+import org.casa.backend.enums.LenguaInd;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +33,36 @@ public interface AlumnoRepository extends JpaRepository<Alumno, String> {
     boolean existsByPostulacion(Postulacion postulacion);
     boolean existsByPostulacion_IdPostulacion(String idPostulacion);
     List<Alumno> findByPostulacion_Actividad_IdActividad(String idActividad);
+
+    @Query("SELECT al FROM Alumno al " +
+            "WHERE al.postulacion.actividad.fechaInicio BETWEEN :inicio AND :fin")
+    List<Alumno> findAlumnosByTrimestre(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin);
+
+    @Query("SELECT p.sexo, COUNT(a) FROM Alumno a " +
+            "JOIN a.postulacion.participante p " +
+            "WHERE a.postulacion.actividad.fechaInicio BETWEEN :inicio AND :fin " +
+            "GROUP BY p.sexo")
+    List<Object[]> countBySexo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin);
+
+    @Query("SELECT DISTINCT p.lenguaIndigena FROM Alumno a " +
+            "JOIN a.postulacion.participante p " +
+            "WHERE a.postulacion.actividad.fechaInicio BETWEEN :inicio AND :fin")
+    List<LenguaInd> findLenguasRepresentadas(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin);
+
+    @Query("SELECT p.estado, COUNT(a) FROM Alumno a " +
+            "JOIN a.postulacion.participante p " +
+            "WHERE a.postulacion.actividad.fechaInicio BETWEEN :inicio AND :fin " +
+            "GROUP BY p.estado " +
+            "ORDER BY COUNT(a) DESC")
+    List<Object[]> topEstados(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin);
+
+
 }
