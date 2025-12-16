@@ -1,17 +1,22 @@
 package org.casa.backend.controllers;
 
 import lombok.AllArgsConstructor;
+
+import org.casa.backend.dto.ActividadDto;
 import org.casa.backend.dto.DocenteDto;
 import org.casa.backend.dto.ProgramaDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
+import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.service.DocenteService;
 import org.casa.backend.service.ProgramaService;
 import org.casa.backend.service.TallerDiplomadoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -54,6 +59,17 @@ public class TallerDiplomadoController {
         TallerDiplomadoDto tallerDipDto = tallerDiplomadoService.updateTallerDiplo(tallerId, updatedTallerDipl);
         return ResponseEntity.ok(tallerDipDto);
     }
+
+    //Editar el estado de la actividad
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<ActividadDto> updateActividadEst(@PathVariable("id") String idActividad, @RequestBody  Map<String, String> body){
+        String estadoString = body.get("estado");
+        EstadoActividad estado = EstadoActividad.valueOf(estadoString.toUpperCase());
+
+        ActividadDto actividadDto = tallerDiplomadoService.updateEstadoAct(idActividad, estado);
+        return ResponseEntity.ok(actividadDto);
+    }
+
     @GetMapping("/docente/{idUsuario}")
     public ResponseEntity<List<TallerDiplomadoDto>> getTalleresDocente(@PathVariable String idUsuario) {
         return ResponseEntity.ok(tallerDiplomadoService.getTalleresByDocente(idUsuario));
@@ -69,7 +85,7 @@ public class TallerDiplomadoController {
             return ResponseEntity.notFound().build();
         }
 
-        String idDocente = tallerDto.getIdUsuario();
+        String idDocente = tallerDto.getIdDocente();
 
         if (idDocente == null) {
             return ResponseEntity.noContent().build();
@@ -104,6 +120,15 @@ public class TallerDiplomadoController {
         }
 
         return ResponseEntity.ok(programaDto);
+    }
+    //Subir la imagen de la actividad
+    @PostMapping("/uploadImagen")
+    public ResponseEntity<String> uploadImagen(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("idActividad") String idActividad
+    ) {
+        String url = tallerDiplomadoService.uploadImagenActividad(file, idActividad);
+        return ResponseEntity.ok(url);
     }
 
 }
