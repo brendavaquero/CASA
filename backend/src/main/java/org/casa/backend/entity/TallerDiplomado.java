@@ -72,6 +72,7 @@ public class TallerDiplomado extends Actividad {
             EstadoActividad estado,
             String imagen,
             boolean requiereMuestraTrabajo,
+            boolean visible,
             Integer cupo,
             String objetivoGeneral,
             String objetivosEspecificos,
@@ -84,7 +85,7 @@ public class TallerDiplomado extends Actividad {
             Docente docente,
             boolean infantil
     ) {
-        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo);
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible);
         this.cupo = cupo;
         this.objetivoGeneral = objetivoGeneral;
         this.objetivosEspecificos = objetivosEspecificos;

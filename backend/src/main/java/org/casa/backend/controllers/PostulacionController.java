@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
+import org.casa.backend.dto.PostulacionParticipanteDto;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
@@ -58,4 +59,32 @@ public class PostulacionController {
         postulacionService.deletePostulacion(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/pendientes/{idActividad}")
+    public ResponseEntity<List<PostulacionDto>> obtenerPendientesPorActividad(
+            @PathVariable String idActividad) {
+
+        List<PostulacionDto> pendientes = postulacionService.getPostulacionesPendientes(idActividad);
+        return ResponseEntity.ok(pendientes);
+    }
+
+    @GetMapping("/pendientes/actividad/{idActividad}")
+    public ResponseEntity<List<PostulacionParticipanteDto>> getPendientesParticipante(
+            @PathVariable String idActividad) {
+
+        return ResponseEntity.ok(
+                postulacionService.getPostulacionesPendientesParticipante(idActividad)
+        );
+    }
+
+    @PostMapping("/seleccionar/{idActividad}")
+    public ResponseEntity<Void> seleccionarPostulantes(
+            @PathVariable String idActividad,
+            @RequestBody List<String> postulacionesAprobadasIds) {
+
+        postulacionService.seleccionarPostulantes(idActividad, postulacionesAprobadasIds);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

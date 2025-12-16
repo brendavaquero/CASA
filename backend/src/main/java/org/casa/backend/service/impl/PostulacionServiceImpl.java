@@ -4,13 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.AlumnoActividadDto;
+import org.casa.backend.dto.ParticipanteDto;
 import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.entity.Actividad;
-import org.casa.backend.entity.Participante;
-import org.casa.backend.entity.Postulacion;
+import org.casa.backend.dto.PostulacionParticipanteDto;
+import org.casa.backend.entity.*;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
+import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.mapper.PostulacionMapper;
+import org.casa.backend.repository.AlumnoRepository;
 import org.casa.backend.repository.ParticipanteRepository;
 import org.casa.backend.repository.PostulacionRepository;
 import org.casa.backend.repository.TallerDiplomadoRepository;
@@ -18,6 +20,7 @@ import org.casa.backend.service.PostulacionService;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +29,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     private PostulacionRepository postulacionRepository;
     private ParticipanteRepository participanteRepository;
     private TallerDiplomadoRepository tallerDiplomadoRepositoryR;
+    private AlumnoRepository alumnoRepository;
 
     @Override
     public PostulacionDto createPostulacion(PostulacionDto dto) {
@@ -94,4 +98,129 @@ public class PostulacionServiceImpl implements PostulacionService {
 
         return PostulacionMapper.mapToPostulacionDto(updated);
     }
+
+    @Override
+    public List<PostulacionDto> getPostulacionesByActividad(String idActividad) {
+        List<Postulacion> postulaciones =
+                postulacionRepository.findByActividad_IdActividad(idActividad);
+
+        return postulaciones
+                .stream()
+                .map(PostulacionMapper::mapToPostulacionDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public void seleccionarPostulantes(String idActividad, List<String> postulacionesAprobadas) {
+
+        // 1. Obtener la actividad
+        TallerDiplomado taller = tallerDiplomadoRepositoryR.findById(idActividad)
+                .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
+
+        int cupo = taller.getCupo();
+        if (postulacionesAprobadas.size() > cupo) {
+            throw new IllegalArgumentException("No puedes seleccionar más participantes del cupo");
+        }
+
+        // 2. Obtener TODAS las postulaciones de esa actividad
+        List<Postulacion> todas = postulacionRepository.findByActividad_IdActividad(idActividad);
+
+        // 3. Procesar
+        for (Postulacion p : todas) {
+
+            boolean aprobada = postulacionesAprobadas.contains(p.getIdPostulacion());
+
+            if (aprobada) {
+                p.setEstadoPos(EstadoPost.APROBADA);
+
+                // Si no existe alumno para esa postulación, crearlo
+                if (!alumnoRepository.existsByPostulacion(p)) {
+                    Alumno alumno = new Alumno();
+                    alumno.setPostulacion(p);
+                    alumno.setConstancia(false);
+                    alumnoRepository.save(alumno);
+                }
+
+            } else {
+                p.setEstadoPos(EstadoPost.RECHAZADA);
+            }
+
+            postulacionRepository.save(p);
+        }
+    }
+
+    @Override
+    public List<PostulacionDto> getPostulacionesPendientes(String idActividad) {
+        List<Postulacion> postulaciones = postulacionRepository.findPendientesByActividad(idActividad);
+
+        return postulaciones.stream()
+                .map(PostulacionMapper::mapToPostulacionDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad) {
+
+        List<Postulacion> postulaciones = postulacionRepository.findPendientesByActividad(idActividad);
+
+        return postulaciones.stream().map(p -> {
+            Participante participante = participanteRepository.findById(p.getParticipante().getIdUsuario())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Participante no encontrado: " + p.getParticipante().getIdUsuario()));
+
+            ParticipanteDto participanteDto = ParticipanteMapper.mapToParticipanteDto(participante);
+
+            return new PostulacionParticipanteDto(
+                    p.getIdPostulacion(),
+                    p.getParticipante().getIdUsuario(),
+                    p.getActividad().getIdActividad(),
+                    p.getPostulante(),
+                    p.getMotivo(),
+                    p.getEstadoPos(),
+                    p.getFechaPostulacion(),
+                    participanteDto
+            );
+        }).collect(Collectors.toList());
+    }
+
+
+
+
+    /*@Override
+    public PostulacionDto aprobarPostulacion(String idPostulacion) {
+
+        Postulacion postulacion = postulacionRepository.findById(idPostulacion)
+                .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
+
+        // Cambiar estado
+        postulacion.setEstadoPos(EstadoPost.APROBADA);
+
+        // Guardar
+        Postulacion updated = postulacionRepository.save(postulacion);
+
+        return PostulacionMapper.mapToPostulacionDto(updated);
+    }
+
+    @Override
+    public PostulacionDto rechazarPostulacion(String idPostulacion) {
+
+        Postulacion postulacion = postulacionRepository.findById(idPostulacion)
+                .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
+
+        postulacion.setEstadoPos(EstadoPost.RECHAZADA);
+
+        Postulacion updated = postulacionRepository.save(postulacion);
+
+        return PostulacionMapper.mapToPostulacionDto(updated);
+    }
+
+    @Override
+    public List<PostulacionDto> getPostulacionesAprobadas(String idActividad) {
+        return postulacionRepository.findAprobadasByActividad(idActividad)
+                .stream()
+                .map(PostulacionMapper::mapToPostulacionDto)
+                .collect(Collectors.toList());
+    }*/
+
 }

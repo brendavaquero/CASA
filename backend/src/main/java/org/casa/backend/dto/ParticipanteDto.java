@@ -43,4 +43,6 @@ public class ParticipanteDto {
     private String ocupacion;
     private LenguaInd lenguaIndigena;
     private String seudonimo;
+    private Integer edad;
+
 }

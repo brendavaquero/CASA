@@ -1,11 +1,11 @@
 package org.casa.backend.service.impl;
 
 import lombok.AllArgsConstructor;
-
 import org.casa.backend.dto.ActividadDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.Actividad;
 import org.casa.backend.entity.Docente;
+import org.casa.backend.entity.Postulacion;
 import org.casa.backend.entity.Programa;
 import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.enums.EstadoActividad;
@@ -14,6 +14,7 @@ import org.casa.backend.mapper.ActividadMapper;
 import org.casa.backend.mapper.TallerDiplomadoMapper;
 import org.casa.backend.repository.ActividadRepository;
 import org.casa.backend.repository.DocenteRepository;
+import org.casa.backend.repository.PostulacionRepository;
 import org.casa.backend.repository.ProgramaRepository;
 import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.service.TallerDiplomadoService;
@@ -109,16 +110,15 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
             .collect(Collectors.toList());
     }
 
-    //Actualizar estado de la actividad
     @Override
     public ActividadDto updateEstadoAct(String idActividad, EstadoActividad estado) {
-       Actividad actividad = actividadRepository.findById(idActividad)
-       .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada con id " + idActividad));
+        Actividad actividad = actividadRepository.findById(idActividad)
+                .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada con id " + idActividad));
 
-       actividad.setEstado(estado);
-       Actividad updated = actividadRepository.save(actividad);
+        actividad.setEstado(estado);
+        Actividad updated = actividadRepository.save(actividad);
 
-       return ActividadMapper.mapToActividadDto(updated);
+        return ActividadMapper.mapToActividadDto(updated);
     }
 
     //Subir imagen a actividad
@@ -171,5 +171,4 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
             throw new RuntimeException("Error al subir imagen: " + e.getMessage());
         }
     }
-
 }

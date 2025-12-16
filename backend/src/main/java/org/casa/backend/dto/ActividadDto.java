@@ -28,4 +28,5 @@ public class ActividadDto {
     private EstadoActividad estado;
     private String imagen;
     private boolean requiereMuestraTrabajo;
+    private boolean visible;
 }
