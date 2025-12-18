@@ -3,7 +3,8 @@ package org.casa.backend.enums;
 public enum EstadoPost {
     PENDIENTE("pendiente"),
     APROBADA ("aprobada"),
-    RECHAZADA("rechazada");
+    RECHAZADA("rechazada"),
+    EVALUADO("evaluado");
 
     private final String estadoP;
 
