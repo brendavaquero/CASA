@@ -46,9 +46,9 @@ public class JuradoServiceImpl implements JuradoService {
     @Override
     public List<JuradoDto> getAllJurados() {
         return repository.findAll()
-            .stream()
-            .map(JuradoMapper::mapToDto)
-            .collect(Collectors.toList());
+                .stream()
+                .map(JuradoMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,5 +57,5 @@ public class JuradoServiceImpl implements JuradoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Jurado no encontrado con id: " + idJurado));
         return JuradoMapper.mapToDto(jurado);
     }
-    
+
 }

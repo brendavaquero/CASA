@@ -11,5 +11,5 @@ public interface ConvocatoriaResidenciaService {
     ConvocatoriaResidenciaDto getConvocatoriaResiById(String idActividad);
     List<ConvocatoriaResidenciaDto> getAllConvocatoriaResi();
     ConvocatoriaResidenciaDto updateConvocatoriaResi(String convocatoriaId, ConvocatoriaResidenciaDto updatedCR);
-    
+
 }

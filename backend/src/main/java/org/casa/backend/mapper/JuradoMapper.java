@@ -9,9 +9,9 @@ public class JuradoMapper {
     public static JuradoDto mapToDto(Jurado jurado){
         if (jurado == null) return null;
         return new JuradoDto(
-            jurado.getIdJurado(),
-            jurado.getUsuario().getIdUsuario(),
-            jurado.getConvocatoria().getIdActividad()
+                jurado.getIdJurado(),
+                jurado.getUsuario().getIdUsuario(),
+                jurado.getConvocatoria().getIdActividad()
         );
     }
 

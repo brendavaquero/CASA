@@ -37,7 +37,7 @@ public class ConvocatoriaResidencia extends Actividad{
     private List<Jurado> jurados;
 
     public ConvocatoriaResidencia(
-       String idActividad,
+            String idActividad,
             String titulo,
             String descripcion,
             TipoActividad tipo,
@@ -50,7 +50,7 @@ public class ConvocatoriaResidencia extends Actividad{
             String imagen,
             boolean requiereMuestraTrabajo,
             boolean visible, String bases, String premio, String convocantes
-        )
+    )
     {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible);
         this.bases = bases;

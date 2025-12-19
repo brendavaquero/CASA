@@ -29,21 +29,21 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
     @Override
     public ConvocatoriaResidenciaDto getConvocatoriaResiById(String idActividad) {
         ConvocatoriaResidencia convocatoriaResi = convocatoriaResidenciaRepository.findById(idActividad)
-            .orElseThrow(() -> new ResourceNotFoundException("Convocatoria/residencia no encontrada con ID: "+idActividad));
+                .orElseThrow(() -> new ResourceNotFoundException("Convocatoria/residencia no encontrada con ID: "+idActividad));
         return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(convocatoriaResi);
     }
 
     @Override
     public List<ConvocatoriaResidenciaDto> getAllConvocatoriaResi() {
         List<ConvocatoriaResidencia> convocatoriasResis = convocatoriaResidenciaRepository.findAll();
-        return convocatoriasResis.stream().map((convocatoriaResi) -> ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(convocatoriaResi))  
-            .collect(Collectors.toList());
+        return convocatoriasResis.stream().map((convocatoriaResi) -> ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(convocatoriaResi))
+                .collect(Collectors.toList());
     }
 
     @Override
     public ConvocatoriaResidenciaDto updateConvocatoriaResi(String convocatoriaId, ConvocatoriaResidenciaDto updatedCR) {
         ConvocatoriaResidencia convoResi = convocatoriaResidenciaRepository.findById(convocatoriaId).orElseThrow(
-            () -> new ResourceNotFoundException("Convocatoria no encontrada ID: "+ convocatoriaId));
+                () -> new ResourceNotFoundException("Convocatoria no encontrada ID: "+ convocatoriaId));
         convoResi.setBases(updatedCR.getBases());
         convoResi.setPremio(updatedCR.getPremio());
         convoResi.setConvocantes(updatedCR.getConvocantes());
@@ -51,5 +51,5 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
         ConvocatoriaResidencia updatedConvoResiObj = convocatoriaResidenciaRepository.save(convoResi);
         return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(updatedConvoResiObj);
     }
-    
+
 }

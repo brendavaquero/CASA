@@ -6,31 +6,31 @@ import org.casa.backend.entity.ConvocatoriaResidencia;
 public class ConvocatoriaResidenciaMapper {
     public static ConvocatoriaResidenciaDto mapToConvocatoriaResidenciaDto(ConvocatoriaResidencia c){
         return new ConvocatoriaResidenciaDto(
-            c.getIdActividad(),
-            c.getTitulo(),
-            c.getDescripcion(),
-            c.getTipo(),
-            c.getFechaInicio(),
-            c.getFechaCierre(),
-            c.getFechaResultados(),
-            c.getFechaCreacion(),
-            c.getRequisitos(),
-            c.getEstado(),
-            c.getImagen(),
-            c.isRequiereMuestraTrabajo(),
-            c.isVisible(),
-            c.getBases(),
-            c.getPremio(),
-            c.getConvocantes()
+                c.getIdActividad(),
+                c.getTitulo(),
+                c.getDescripcion(),
+                c.getTipo(),
+                c.getFechaInicio(),
+                c.getFechaCierre(),
+                c.getFechaResultados(),
+                c.getFechaCreacion(),
+                c.getRequisitos(),
+                c.getEstado(),
+                c.getImagen(),
+                c.isRequiereMuestraTrabajo(),
+                c.isVisible(),
+                c.getBases(),
+                c.getPremio(),
+                c.getConvocantes()
 
         );
     }
 
     public static ConvocatoriaResidencia mapConvocatoriaResidencia(
-        ConvocatoriaResidenciaDto dto
+            ConvocatoriaResidenciaDto dto
     ){
         return new ConvocatoriaResidencia(
-            dto.getIdActividad(),
+                dto.getIdActividad(),
                 dto.getTitulo(),
                 dto.getDescripcion(),
                 dto.getTipo(),

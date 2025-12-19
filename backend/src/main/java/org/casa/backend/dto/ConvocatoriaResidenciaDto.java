@@ -19,7 +19,7 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
     private String convocantes;
 
     public ConvocatoriaResidenciaDto(
-        String idActividad,
+            String idActividad,
             String titulo,
             String descripcion,
             TipoActividad tipo,
