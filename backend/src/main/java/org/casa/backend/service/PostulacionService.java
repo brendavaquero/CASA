@@ -9,6 +9,7 @@ import org.casa.backend.enums.EstadoPost;
 
 public interface PostulacionService {
     PostulacionDto createPostulacion(PostulacionDto dto);
+    PostulacionDto createPostulacionConvocatoria(PostulacionDto dto);
     List<PostulacionDto> getAllPostulaciones();
     PostulacionDto getPostulacionById(String id);
     void deletePostulacion(String id);

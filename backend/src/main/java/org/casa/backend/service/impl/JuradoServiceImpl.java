@@ -22,7 +22,6 @@ public class JuradoServiceImpl implements JuradoService {
     private  UsuarioRepository usuarioRepo;
     private  ConvocatoriaResidenciaRepository convocatoriaRepo;
 
-    /*
     @Override
     public JuradoDto crear(JuradoDto dto) {
         Jurado jurado = new Jurado();
@@ -41,7 +40,7 @@ public class JuradoServiceImpl implements JuradoService {
                 .stream()
                 .map(JuradoMapper::mapToDto)
                 .toList();
-    }*/
+    }
 
     @Override
     public List<JuradoDto> getAllJurados() {

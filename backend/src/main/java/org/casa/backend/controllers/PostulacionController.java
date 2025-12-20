@@ -23,9 +23,13 @@ public class PostulacionController {
 
     private PostulacionService postulacionService;
 
-    @PostMapping
+    @PostMapping("/taller")
     public ResponseEntity<PostulacionDto> create(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacion(dto), HttpStatus.CREATED);
+    }
+    @PostMapping("/convocatoria")
+    public ResponseEntity<PostulacionDto> createConvocatoria(@RequestBody PostulacionDto dto) {
+        return new ResponseEntity<>(postulacionService.createPostulacionConvocatoria(dto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

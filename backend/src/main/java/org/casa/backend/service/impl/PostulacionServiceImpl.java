@@ -13,6 +13,7 @@ import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.repository.AlumnoRepository;
+import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
 import org.casa.backend.repository.ParticipanteRepository;
 import org.casa.backend.repository.PostulacionRepository;
 import org.casa.backend.repository.TallerDiplomadoRepository;
@@ -29,6 +30,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     private PostulacionRepository postulacionRepository;
     private ParticipanteRepository participanteRepository;
     private TallerDiplomadoRepository tallerDiplomadoRepositoryR;
+    private ConvocatoriaResidenciaRepository convocatoriaResidenciaRepository;
     private AlumnoRepository alumnoRepository;
 
     @Override
@@ -38,6 +40,25 @@ public class PostulacionServiceImpl implements PostulacionService {
 
         Actividad actividad = tallerDiplomadoRepositoryR.findById(dto.getIdActividad())
             .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
+
+        Postulacion postulacion = new Postulacion();
+        postulacion.setParticipante(participante);
+        postulacion.setActividad(actividad);
+        postulacion.setPostulante(dto.getPostulante());
+        postulacion.setMotivo(dto.getMotivo());
+        postulacion.setEstadoPos(dto.getEstadoPos());
+        postulacion.setFechaPostulacion(dto.getFechaPostulacion());
+
+        Postulacion saved = postulacionRepository.save(postulacion);
+        return PostulacionMapper.mapToPostulacionDto(saved);
+    }
+    @Override
+    public PostulacionDto createPostulacionConvocatoria(PostulacionDto dto) {
+        Participante participante = participanteRepository.findById(dto.getIdUsuario())
+            .orElseThrow(() -> new ResourceNotFoundException("Participante no encontrado"));
+
+        Actividad actividad = convocatoriaResidenciaRepository.findById(dto.getIdActividad())
+            .orElseThrow(() -> new ResourceNotFoundException("Convocatoria no encontrada"));
 
         Postulacion postulacion = new Postulacion();
         postulacion.setParticipante(participante);

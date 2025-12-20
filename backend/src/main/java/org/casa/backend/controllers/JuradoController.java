@@ -33,7 +33,7 @@ public class JuradoController {
     public ResponseEntity<List<JuradoDto>> getAll(){
         return ResponseEntity.ok(juradoService.getAllJurados());
     }
-/*
+
     @PostMapping
     public ResponseEntity<JuradoDto> crear(@RequestBody JuradoDto dto) {
         return new ResponseEntity<>(juradoService.crear(dto), HttpStatus.CREATED);
@@ -42,5 +42,5 @@ public class JuradoController {
     @GetMapping("/convocatoria/{id}")
     public List<JuradoDto> listar(@PathVariable String id) {
         return juradoService.listarPorConvocatoria(id);
-    }*/
+    }
 }

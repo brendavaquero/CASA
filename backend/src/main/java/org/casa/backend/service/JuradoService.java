@@ -7,7 +7,6 @@ import org.casa.backend.dto.JuradoDto;
 public interface JuradoService {
     List<JuradoDto> getAllJurados();
     JuradoDto getJuradoById(String idJurado);
-    /*
     JuradoDto crear(JuradoDto dto);
-    List<JuradoDto> listarPorConvocatoria(String idConvocatoria);*/
+    List<JuradoDto> listarPorConvocatoria(String idConvocatoria);
 }

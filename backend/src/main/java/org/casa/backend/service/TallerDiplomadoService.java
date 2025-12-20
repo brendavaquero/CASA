@@ -1,6 +1,5 @@
 package org.casa.backend.service;
 
-import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.dto.ActividadDto;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.enums.EstadoActividad;
