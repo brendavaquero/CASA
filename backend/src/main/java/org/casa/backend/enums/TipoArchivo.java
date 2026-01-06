@@ -2,7 +2,8 @@ package org.casa.backend.enums;
 
 public enum TipoArchivo {
     IMAGEN("Imagen"),
-    AUDIO_VIDEO("Audio o Video"),
+    AUDIO("Audio"),
+    VIDEO("Video"),
     DOCUMENTO("Documento"),
     OTRO("Otro");
 

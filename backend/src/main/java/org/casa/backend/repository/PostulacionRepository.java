@@ -44,4 +44,27 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estado = 'aprobada'")
     List<Postulacion> findAprobadasByActividad(@Param("idActividad") String idActividad);*/
 
+    
+    // listar postulaciones que no han sido evaluadas por un usuario (jurado)
+    @Query("""
+    SELECT p
+    FROM Postulacion p
+    WHERE p.actividad.idActividad =
+          (SELECT j.convocatoria.idActividad
+           FROM Jurado j
+           WHERE j.idJurado = :idJurado)
+    AND p.estadoPos = :estado
+    AND NOT EXISTS (
+        SELECT e
+        FROM Evaluacion e
+        WHERE e.postulacion.idPostulacion = p.idPostulacion
+          AND e.jurado.idJurado = :idJurado
+          AND e.ronda = :ronda
+    )
+    """)
+    List<Postulacion> findPendientesParaJurado(
+            @Param("estado") EstadoPost estado,
+            @Param("idJurado") String idJurado,
+            @Param("ronda") Integer ronda
+    );
 }

@@ -205,43 +205,22 @@ public class PostulacionServiceImpl implements PostulacionService {
         }).collect(Collectors.toList());
     }
 
-
-
-
-    /*@Override
-    public PostulacionDto aprobarPostulacion(String idPostulacion) {
-
-        Postulacion postulacion = postulacionRepository.findById(idPostulacion)
-                .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
-
-        // Cambiar estado
-        postulacion.setEstadoPos(EstadoPost.APROBADA);
-
-        // Guardar
-        Postulacion updated = postulacionRepository.save(postulacion);
-
-        return PostulacionMapper.mapToPostulacionDto(updated);
-    }
-
     @Override
-    public PostulacionDto rechazarPostulacion(String idPostulacion) {
+    public List<PostulacionDto> getPendientesParaJurado(
+            //String idActividad,
+            String idJurado,
+            Integer ronda
+    ) {
 
-        Postulacion postulacion = postulacionRepository.findById(idPostulacion)
-                .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
-
-        postulacion.setEstadoPos(EstadoPost.RECHAZADA);
-
-        Postulacion updated = postulacionRepository.save(postulacion);
-
-        return PostulacionMapper.mapToPostulacionDto(updated);
-    }
-
-    @Override
-    public List<PostulacionDto> getPostulacionesAprobadas(String idActividad) {
-        return postulacionRepository.findAprobadasByActividad(idActividad)
+        return postulacionRepository
+                .findPendientesParaJurado(
+                        EstadoPost.PENDIENTE,
+                        idJurado,
+                        ronda
+                )
                 .stream()
                 .map(PostulacionMapper::mapToPostulacionDto)
-                .collect(Collectors.toList());
-    }*/
+                .toList();
+    }
 
 }

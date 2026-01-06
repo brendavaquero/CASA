@@ -9,4 +9,5 @@ public interface EvaluacionService {
     EvaluacionDto getEvaluacionById(String idEvaluacion);
     EvaluacionDto createEvaluacion(EvaluacionDto evaluacionDto);
     EvaluacionDto updateEvaluacion(String idEvaluacion, EvaluacionDto evaluacionDto);
+    EvaluacionDto evaluarRondaUno(EvaluacionDto dto);
 }

@@ -75,5 +75,43 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 
         return EvaluacionMapper.mapToEvalucionDto(updated);
     }
+
+    @Override
+    public EvaluacionDto evaluarRondaUno(EvaluacionDto dto) {
+
+        // 1. Validar que no exista ya una evaluación del mismo jurado
+        boolean yaEvaluado = evaluacionRepository
+                .existsByJurado_IdJuradoAndPostulacion_IdPostulacionAndRonda(
+                        dto.getIdJurado(),
+                        dto.getIdPostulacion(),
+                        1
+                );
+
+        if (yaEvaluado) {
+            throw new IllegalStateException(
+                    "El jurado ya evaluó esta postulación en la ronda 1"
+            );
+        }
+
+        // 2. Obtener entidades relacionadas
+        Jurado jurado = juradoRepository.findById(dto.getIdJurado())
+                .orElseThrow(() -> new IllegalArgumentException("Jurado no encontrado"));
+
+        Postulacion postulacion = postulacionRepository.findById(dto.getIdPostulacion())
+                .orElseThrow(() -> new IllegalArgumentException("Postulación no encontrada"));
+
+        // 3. Forzar ronda 1 (no confiar en frontend)
+        dto.setRonda(1);
+
+        // 4. Mapear DTO → Entity
+        Evaluacion evaluacion = EvaluacionMapper
+                .mapToEvaluacion(dto, jurado, postulacion);
+
+        // 5. Guardar
+        Evaluacion evaluacionGuardada = evaluacionRepository.save(evaluacion);
+
+        // 6. Retornar DTO
+        return EvaluacionMapper.mapToEvalucionDto(evaluacionGuardada);
+    }
     
 }

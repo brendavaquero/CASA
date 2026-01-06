@@ -6,5 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EvaluacionRepository extends JpaRepository<Evaluacion, String>{
-    
+    boolean existsByJurado_IdJuradoAndPostulacion_IdPostulacionAndRonda(
+            String idJurado,
+            String idPostulacion,
+            Integer ronda
+    );
 }

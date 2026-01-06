@@ -124,8 +124,12 @@ public class ArchivoServiceImpl implements ArchivoService {
                     break;
 
                 case "mp4":
+                    tipo = TipoArchivo.VIDEO;
+                    break;
+
                 case "mp3":
-                    tipo = TipoArchivo.AUDIO_VIDEO;
+                case "wav":
+                    tipo = TipoArchivo.AUDIO;
                     break;
 
                 default:
@@ -141,8 +145,11 @@ public class ArchivoServiceImpl implements ArchivoService {
                 case DOCUMENTO:
                     folder = "documents/";
                     break;
-                case AUDIO_VIDEO:
+                case VIDEO:
                     folder = "videos/";
+                    break;
+                case AUDIO:
+                    folder = "audios/";
                     break;
                 default:
                     folder = "others/";

@@ -19,8 +19,6 @@ public interface PostulacionService {
     void seleccionarPostulantes(String idActividad, List<String> postulacionesAprobadas);
     List<PostulacionDto> getPostulacionesPendientes(String idActividad);
     List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad);
-    /*PostulacionDto aprobarPostulacion(String idPostulacion);
-    PostulacionDto rechazarPostulacion(String idPostulacion);
-    List<PostulacionDto> getPostulacionesAprobadas(String idActividad);*/
+    List<PostulacionDto> getPendientesParaJurado(String idJurado,Integer ronda);
 
 }

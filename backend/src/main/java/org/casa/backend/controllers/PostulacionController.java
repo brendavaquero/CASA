@@ -94,6 +94,17 @@ public class PostulacionController {
         postulacionService.seleccionarPostulantes(idActividad, postulacionesAprobadasIds);
         return ResponseEntity.ok().build();
     }
-
+    @GetMapping("/pendientes/jurado")
+    public ResponseEntity<List<PostulacionDto>> getPendientesParaJurado(
+            @RequestParam String idJurado,
+            @RequestParam Integer ronda
+    ) {
+        return ResponseEntity.ok(
+                postulacionService.getPendientesParaJurado(
+                        idJurado,
+                        ronda
+                )
+        );
+    }
 
 }
