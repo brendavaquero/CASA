@@ -1,15 +1,23 @@
 package org.casa.backend.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
 import org.casa.backend.entity.ConvocatoriaResidencia;
+import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ConvocatoriaResidenciaMapper;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
 import org.casa.backend.service.ConvocatoriaResidenciaService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 
@@ -20,10 +28,76 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
     private ConvocatoriaResidenciaRepository convocatoriaResidenciaRepository;
 
     @Override
-    public ConvocatoriaResidenciaDto createConvocatoriaResi(ConvocatoriaResidenciaDto convocatoriaResiDto) {
-        ConvocatoriaResidencia convocatoriaResidencia = ConvocatoriaResidenciaMapper.mapConvocatoriaResidencia(convocatoriaResiDto);
+    public ConvocatoriaResidenciaDto createConvocatoriaResi(ConvocatoriaResidenciaDto convocatoriaResiDto, MultipartFile imagen, MultipartFile bases) {
+        /*ConvocatoriaResidencia convocatoriaResidencia = ConvocatoriaResidenciaMapper.mapConvocatoriaResidencia(convocatoriaResiDto);
         ConvocatoriaResidencia savedConvocatoriaResi = convocatoriaResidenciaRepository.save(convocatoriaResidencia);
-        return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(savedConvocatoriaResi);
+        return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(savedConvocatoriaResi);*/
+        try {
+            String urlImagen = null;
+            String urlBases = null;
+
+            //para la imagen
+            if (imagen != null && !imagen.isEmpty()) {
+
+                String originalName = imagen.getOriginalFilename();
+                String extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
+
+                if (!(extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png"))) {
+                    throw new RuntimeException("Solo se permiten imágenes JPG, JPEG o PNG");
+                }
+
+                String folder = "uploads/convocatorias/imagenes/";
+                File directory = new File(folder);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                String fileName = System.currentTimeMillis() + "_" + originalName;
+                Path path = Paths.get(folder + fileName);
+                Files.copy(imagen.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                urlImagen = "/uploads/convocatorias/imagenes/" + fileName;
+            }
+
+            //para el pdf
+            if (bases != null && !bases.isEmpty()) {
+
+                String originalName = bases.getOriginalFilename();
+                String extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
+
+                if (!extension.equals("pdf")) {
+                    throw new RuntimeException("El archivo de bases debe ser PDF");
+                }
+
+                String folder = "uploads/convocatorias/bases/";
+                File directory = new File(folder);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                String fileName = System.currentTimeMillis() + "_" + originalName;
+                Path path = Paths.get(folder + fileName);
+                Files.copy(bases.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                urlBases = "/uploads/convocatorias/bases/" + fileName;
+            }
+
+            //Guardar la convocatoria
+            ConvocatoriaResidencia convocatoria =
+                    ConvocatoriaResidenciaMapper.mapConvocatoriaResidencia(convocatoriaResiDto);
+
+            convocatoria.setEstado(EstadoActividad.PENDIENTE);
+            convocatoria.setImagen(urlImagen);
+            convocatoria.setBases(urlBases);
+
+            ConvocatoriaResidencia saved =
+                    convocatoriaResidenciaRepository.save(convocatoria);
+
+            return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(saved);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al crear convocatoria: " + e.getMessage());
+        }
     }
 
     @Override

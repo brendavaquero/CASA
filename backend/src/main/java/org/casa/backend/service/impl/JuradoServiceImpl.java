@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.casa.backend.dto.JuradoDto;
 import org.casa.backend.entity.Jurado;
+import org.casa.backend.dto.UsuarioJurado;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.JuradoMapper;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
@@ -55,6 +56,23 @@ public class JuradoServiceImpl implements JuradoService {
         Jurado jurado = repository.findById(idJurado)
                 .orElseThrow(() -> new ResourceNotFoundException("Jurado no encontrado con id: " + idJurado));
         return JuradoMapper.mapToDto(jurado);
+    }
+
+    @Override
+    public List<UsuarioJurado> obtenerJuradosPorConvocatoria(String idActividad) {
+        return repository.findByConvocatoriaIdActividad(idActividad)
+            .stream()
+            .map(j -> new UsuarioJurado(
+                    j.getIdJurado(),
+                    j.getUsuario().getIdUsuario(),
+                    j.getConvocatoria().getIdActividad(),
+                    j.getUsuario().getNombre(),
+                    j.getUsuario().getApellidos(),
+                    j.getUsuario().getCorreo(),
+                    j.getUsuario().getContrasenia(),
+                    j.getUsuario().getRol()
+            ))
+            .toList();
     }
 
 }

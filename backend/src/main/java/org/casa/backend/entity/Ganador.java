@@ -35,4 +35,8 @@ public class Ganador {
 
     @Column(name = "foto")
     private String foto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_archivo", nullable = false)
+    private Archivo archivo;
 }

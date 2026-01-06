@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.GanadorDto;
+import org.casa.backend.entity.Archivo;
 import org.casa.backend.entity.Evaluacion;
 import org.casa.backend.entity.Ganador;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.GanadorMapper;
+import org.casa.backend.repository.ArchivoRepository;
 import org.casa.backend.repository.EvaluacionRepository;
 import org.casa.backend.repository.GanadorRepository;
 import org.casa.backend.service.GanadorService;
@@ -21,6 +23,7 @@ public class GanadorServiceImpl implements GanadorService {
 
     private GanadorRepository ganadorRepository;
     private EvaluacionRepository evaluacionRepository;
+    private ArchivoRepository archivoRepository;
 
     @Override
     public List<GanadorDto> getAllGanadores() {
@@ -35,10 +38,14 @@ public class GanadorServiceImpl implements GanadorService {
         Evaluacion evaluacion = evaluacionRepository.findById(ganadorDto.getIdEvaluacion())
             .orElseThrow(() -> new ResourceNotFoundException("evaluacion no encontrada"));
 
+        Archivo archivo = archivoRepository.findById(ganadorDto.getIdArchivo())
+            .orElseThrow(() -> new ResourceNotFoundException("archivo no encontrado"));
+
         Ganador ganador = new Ganador();
         ganador.setEvaluacion(evaluacion);
         ganador.setSemblanza(ganadorDto.getSemblanza());
         ganador.setFoto(ganadorDto.getFoto());
+        ganador.setArchivo(archivo);
 
         Ganador saved = ganadorRepository.save(ganador);
         return GanadorMapper.mapToGanadorDto(saved);

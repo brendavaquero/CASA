@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import org.casa.backend.dto.JuradoDto;
+import org.casa.backend.dto.UsuarioJurado;
 import org.casa.backend.service.JuradoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,14 @@ public class JuradoController {
     @GetMapping("/convocatoria/{id}")
     public List<JuradoDto> listar(@PathVariable String id) {
         return juradoService.listarPorConvocatoria(id);
+    }
+
+    @GetMapping("/convocatoriasyresi/{id}")
+    public ResponseEntity<List<UsuarioJurado>> obtenerJurados(
+            @PathVariable("id") String idActividad) {
+
+        return ResponseEntity.ok(
+                juradoService.obtenerJuradosPorConvocatoria(idActividad)
+        );
     }
 }

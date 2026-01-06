@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 
 import lombok.AllArgsConstructor;
 
@@ -24,10 +27,30 @@ import lombok.AllArgsConstructor;
 public class ConvocatoriaResidenciaController {
     private ConvocatoriaResidenciaService convocatoriaResidenciaService;
 
+    /*
     @PostMapping
-    public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(@RequestBody ConvocatoriaResidenciaDto convocatoriaResiDto){
+    public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(@RequestBody ConvocatoriaResidenciaDto convocatoriaResiDto,
+        @RequestPart(value = "imagen", required = false) MultipartFile imagen,
+        @RequestPart(value = "bases", required = false) MultipartFile bases){
+        /*
         ConvocatoriaResidenciaDto savedConvocatoriaResi = convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto);
         return new ResponseEntity<>(savedConvocatoriaResi,HttpStatus.CREATED);
+        return ResponseEntity.ok(
+            convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto, imagen,bases)
+        );
+    }*/
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(
+
+            @RequestPart("convocatoria") ConvocatoriaResidenciaDto convocatoriaResiDto,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen,
+            @RequestPart(value = "bases", required = false) MultipartFile bases
+    ) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convocatoriaResidenciaService
+                        .createConvocatoriaResi(convocatoriaResiDto, imagen, bases));
     }
 
     @GetMapping("/{id}")

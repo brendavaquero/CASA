@@ -14,4 +14,5 @@ public class GanadorDto {
     private String idEvaluacion;
     private String semblanza;
     private String foto;
+    private String idArchivo;
 }

@@ -37,6 +37,11 @@ public class PostulacionController {
         PostulacionDto postulacionDto = postulacionService.getPostulacionById(idPostulacion);
         return ResponseEntity.ok(postulacionDto);
     }
+    @GetMapping("/actividad/{id}")
+    public ResponseEntity<List<PostulacionDto>> obtenerPostulacionesByActividad(
+        @PathVariable("id") String idActividad){
+            return ResponseEntity.ok(postulacionService.getPostulacionesByActividad(idActividad));
+    }
 
     @GetMapping
     public ResponseEntity<List<PostulacionDto>> getAll() {
