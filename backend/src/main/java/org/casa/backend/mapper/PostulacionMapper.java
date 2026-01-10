@@ -16,7 +16,8 @@ public class PostulacionMapper {
             postulacion.getPostulante(),
             postulacion.getMotivo(),
             postulacion.getEstadoPos(),
-            postulacion.getFechaPostulacion()
+            postulacion.getFechaPostulacion(),
+            postulacion.getNombreObra()
         );
     }
 
@@ -30,6 +31,7 @@ public class PostulacionMapper {
         postulacion.setEstadoPos(dto.getEstadoPos());
         postulacion.setFechaPostulacion(dto.getFechaPostulacion());
         postulacion.setParticipante(participante);
+        postulacion.setNombreObra(dto.getNombreObra());
 
         return postulacion;
     }

@@ -19,4 +19,5 @@ public class PostulacionDto {
     private String motivo;
     private EstadoPost estadoPos;
     private LocalDateTime fechaPostulacion;
+    private String nombreObra;
 }

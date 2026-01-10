@@ -3,14 +3,12 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.casa.backend.dto.AlumnoActividadDto;
-import org.casa.backend.dto.ParticipanteDto;
-import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.dto.PostulacionParticipanteDto;
+import org.casa.backend.dto.*;
 import org.casa.backend.entity.*;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ParticipanteMapper;
+//import org.casa.backend.mapper.PostulacionJuradoMapper;
 import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.repository.AlumnoRepository;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
@@ -206,21 +204,15 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
 
     @Override
-    public List<PostulacionDto> getPendientesParaJurado(
-            //String idActividad,
+    public List<PostulacionPendienteJuradoDto> getPendientesParaJurado(
             String idJurado,
             Integer ronda
     ) {
-
-        return postulacionRepository
-                .findPendientesParaJurado(
-                        EstadoPost.PENDIENTE,
-                        idJurado,
-                        ronda
-                )
-                .stream()
-                .map(PostulacionMapper::mapToPostulacionDto)
-                .toList();
+        return postulacionRepository.findPendientesParaJurado(
+                //EstadoPost.PENDIENTE,
+                idJurado,
+                ronda
+        );
     }
 
 }

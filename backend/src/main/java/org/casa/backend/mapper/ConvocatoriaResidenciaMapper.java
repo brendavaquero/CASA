@@ -19,6 +19,7 @@ public class ConvocatoriaResidenciaMapper {
                 c.getImagen(),
                 c.isRequiereMuestraTrabajo(),
                 c.isVisible(),
+                c.isInfantil(),
                 c.getBases(),
                 c.getPremio(),
                 c.getConvocantes()
@@ -43,6 +44,7 @@ public class ConvocatoriaResidenciaMapper {
                 dto.getImagen(),
                 dto.isRequiereMuestraTrabajo(),
                 dto.isVisible(),
+                dto.isInfantil(),
                 dto.getBases(),
                 dto.getPremio(),
                 dto.getConvocantes()

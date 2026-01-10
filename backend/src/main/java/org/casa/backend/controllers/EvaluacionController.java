@@ -2,7 +2,9 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.casa.backend.dto.EvaluacionDto;
+import org.casa.backend.dto.EvaluacionPostulacionDto;
 import org.casa.backend.service.EvaluacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +46,24 @@ public class EvaluacionController {
     public ResponseEntity<EvaluacionDto> actualizarEvaluacion(@PathVariable("id") String idEvaluacion, @RequestBody EvaluacionDto updatedEvaluacion){
         EvaluacionDto evaluacionDto = evaluacionService.updateEvaluacion(idEvaluacion,updatedEvaluacion);
         return ResponseEntity.ok(evaluacionDto);
+    }
+
+    //evaluacion individual
+    @GetMapping("/ronda/1/{idPostulacion}")
+    public ResponseEntity<EvaluacionPostulacionDto> obtenerPostulacionParaEvaluar(
+            @PathVariable String idPostulacion
+    ) {
+        EvaluacionPostulacionDto dto =
+                evaluacionService.obtenerPostulacionParaEvaluacionRonda1(idPostulacion);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/ronda-uno")
+    public ResponseEntity<EvaluacionDto> evaluarRondaUno(
+            @Valid @RequestBody EvaluacionDto dto
+    ) {
+        EvaluacionDto evaluacion = evaluacionService.evaluarRondaUno(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(evaluacion);
     }
 }

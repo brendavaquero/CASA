@@ -29,4 +29,6 @@ public class ActividadDto {
     private String imagen;
     private boolean requiereMuestraTrabajo;
     private boolean visible;
+    private boolean infantil;
+
 }

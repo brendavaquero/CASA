@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -51,6 +52,16 @@ public class Evaluacion {
     @Column(name = "finalista")
     private boolean finalista = false;
 
-    @Column(name = "fecha_hora")
-    private LocalDateTime  fechaHora = LocalDateTime.now(); 
+    /*@Column(name = "fecha_hora")
+    private LocalDateTime  fechaHora = LocalDateTime.now();*/
+
+    @Column(
+            name = "fecha_hora",
+            insertable = false,
+            updatable = false
+    )
+    private LocalDateTime fechaHora;
+
+
+
 }

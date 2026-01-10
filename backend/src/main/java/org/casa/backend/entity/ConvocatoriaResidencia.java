@@ -49,10 +49,12 @@ public class ConvocatoriaResidencia extends Actividad{
             EstadoActividad estado,
             String imagen,
             boolean requiereMuestraTrabajo,
-            boolean visible, String bases, String premio, String convocantes
+            boolean visible,
+            boolean infantil,
+            String bases, String premio, String convocantes
     )
     {
-        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible);
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
         this.bases = bases;
         this.premio = premio;
         this.convocantes= convocantes;

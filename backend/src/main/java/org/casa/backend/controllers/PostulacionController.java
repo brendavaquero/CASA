@@ -6,6 +6,7 @@ import java.util.Map;
 import org.casa.backend.dto.AlumnoActividadDto;
 import org.casa.backend.dto.PostulacionDto;
 import org.casa.backend.dto.PostulacionParticipanteDto;
+import org.casa.backend.dto.PostulacionPendienteJuradoDto;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
@@ -94,17 +95,26 @@ public class PostulacionController {
         postulacionService.seleccionarPostulantes(idActividad, postulacionesAprobadasIds);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/pendientes/jurado")
+    /* @GetMapping("/pendientes/jurado")
     public ResponseEntity<List<PostulacionDto>> getPendientesParaJurado(
             @RequestParam String idJurado,
             @RequestParam Integer ronda
     ) {
         return ResponseEntity.ok(
-                postulacionService.getPendientesParaJurado(
+                postulacionService.getPendientesParaJuradoIds(
                         idJurado,
                         ronda
                 )
         );
-    }
+    }*/
 
+    @GetMapping("/pendientes/jurado")
+    public ResponseEntity<List<PostulacionPendienteJuradoDto>> getPendientesParaJurado(
+            @RequestParam String idJurado,
+            @RequestParam Integer ronda
+    ) {
+        return ResponseEntity.ok(
+                postulacionService.getPendientesParaJurado(idJurado, ronda)
+        );
+    }
 }

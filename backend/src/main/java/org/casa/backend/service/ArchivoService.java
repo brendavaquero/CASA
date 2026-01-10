@@ -1,6 +1,7 @@
 package org.casa.backend.service;
 
 import org.casa.backend.dto.ArchivoDto;
+import org.casa.backend.entity.Archivo;
 import org.casa.backend.enums.CategoriaArchivo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,4 +18,5 @@ public interface ArchivoService {
     List<ArchivoDto> getEvidenciasByActividad(String idActividad);
     byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException;
     void deleteArchivoFisicoYRegistro(String idArchivo);
+    Archivo obtenerPorPostulacion(String idPostulacion);
 }

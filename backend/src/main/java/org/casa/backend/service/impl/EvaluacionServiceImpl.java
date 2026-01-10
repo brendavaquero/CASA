@@ -3,7 +3,9 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.casa.backend.dto.EvaluacionDto;
+import org.casa.backend.dto.EvaluacionPostulacionDto;
 import org.casa.backend.entity.Evaluacion;
 import org.casa.backend.entity.Jurado;
 import org.casa.backend.entity.Postulacion;
@@ -43,7 +45,7 @@ public class EvaluacionServiceImpl implements EvaluacionService{
     public EvaluacionDto createEvaluacion(EvaluacionDto evaluacionDto) {
         Postulacion postulacion = postulacionRepository.findById(evaluacionDto.getIdPostulacion())
             .orElseThrow(() -> new ResourceNotFoundException("Postulacion no encontrada"));
-        
+
         Jurado jurado = juradoRepository.findById(evaluacionDto.getIdJurado())
             .orElseThrow(() -> new ResourceNotFoundException("Jurado no encontrado"));
 
@@ -79,6 +81,15 @@ public class EvaluacionServiceImpl implements EvaluacionService{
     @Override
     public EvaluacionDto evaluarRondaUno(EvaluacionDto dto) {
 
+        if (dto.getIdJurado() == null) {
+            throw new IllegalArgumentException("El idJurado es obligatorio");
+        }
+
+        if (dto.getIdPostulacion() == null) {
+            throw new IllegalArgumentException("El idPostulacion es obligatorio");
+        }
+
+
         // 1. Validar que no exista ya una evaluación del mismo jurado
         boolean yaEvaluado = evaluacionRepository
                 .existsByJurado_IdJuradoAndPostulacion_IdPostulacionAndRonda(
@@ -102,6 +113,8 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 
         // 3. Forzar ronda 1 (no confiar en frontend)
         dto.setRonda(1);
+        dto.setSemifinalista(false);
+        dto.setFinalista(false);
 
         // 4. Mapear DTO → Entity
         Evaluacion evaluacion = EvaluacionMapper
@@ -113,5 +126,20 @@ public class EvaluacionServiceImpl implements EvaluacionService{
         // 6. Retornar DTO
         return EvaluacionMapper.mapToEvalucionDto(evaluacionGuardada);
     }
-    
+
+    @Override
+    public EvaluacionPostulacionDto obtenerPostulacionParaEvaluacionRonda1(String idPostulacion) {
+
+        EvaluacionPostulacionDto dto =
+                postulacionRepository.obtenerParaEvaluacion(idPostulacion);
+
+        if (dto == null) {
+            throw new EntityNotFoundException(
+                    "No se encontró la postulación con id " + idPostulacion
+            );
+        }
+
+        return dto;
+    }
+
 }

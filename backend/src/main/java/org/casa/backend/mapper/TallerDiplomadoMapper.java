@@ -31,6 +31,7 @@ public class TallerDiplomadoMapper {
                 t.getImagen(),
                 t.isRequiereMuestraTrabajo(),
                 t.isVisible(),
+                t.isInfantil(),
                 t.getCupo(),
                 t.getObjetivoGeneral(),
                 t.getObjetivosEspecificos(),
@@ -40,8 +41,7 @@ public class TallerDiplomadoMapper {
                 t.getNotas(),
                 t.getNumSesiones(),
                 programaId,
-                docenteId,
-                t.isInfantil()
+                docenteId
         );
     }
 
@@ -64,6 +64,7 @@ public class TallerDiplomadoMapper {
                 dto.getImagen(),
                 dto.isRequiereMuestraTrabajo(),
                 dto.isVisible(),
+                dto.isInfantil(),
                 dto.getCupo(),
                 dto.getObjetivoGeneral(),
                 dto.getObjetivosEspecificos(),
@@ -73,8 +74,8 @@ public class TallerDiplomadoMapper {
                 dto.getNotas(),
                 dto.getNumSesiones(),
                 programa,
-                docente,
-                dto.isInfantil()
+                docente
+
         );
     }
 }
