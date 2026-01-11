@@ -3,6 +3,7 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.casa.backend.dto.EvaluacionConvoDto;
 import org.casa.backend.dto.EvaluacionDto;
 import org.casa.backend.entity.Evaluacion;
 import org.casa.backend.entity.Jurado;
@@ -112,6 +113,30 @@ public class EvaluacionServiceImpl implements EvaluacionService{
 
         // 6. Retornar DTO
         return EvaluacionMapper.mapToEvalucionDto(evaluacionGuardada);
+    }
+
+    @Override
+    public List<EvaluacionConvoDto> obtenerEvaluacionesByConvo(String idActividad) {
+        return evaluacionRepository.obtenerEvaluacionesPorConvocatoria(idActividad)
+            .stream()
+            .map(e -> new EvaluacionConvoDto(
+                e.getIdEvaluacion(),
+                e.getJurado().getIdJurado(),
+                e.getPostulacion().getIdPostulacion(),
+                e.getRonda(),
+                e.isSemifinalista(),
+                e.getCalificacion(),
+                e.getJustificacion(),
+                e.isFinalista(),
+                e.getFechaHora(),
+                e.getPostulacion().getParticipante().getIdUsuario(),
+                e.getPostulacion().getPostulante(),
+                e.getPostulacion().getParticipante().getNombre(),
+                e.getPostulacion().getParticipante().getApellidos(),
+                e.getJurado().getUsuario().getNombre(),
+                e.getJurado().getUsuario().getNombre()
+            ))
+            .toList();
     }
     
 }

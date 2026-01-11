@@ -107,4 +107,14 @@ public class PostulacionController {
         );
     }
 
+    //para la convocatoria
+    @GetMapping("/participantes/{idActividad}")
+    public ResponseEntity<List<PostulacionParticipanteDto>> getParticipantesByConvocatoria(
+            @PathVariable String idActividad) {
+
+        return ResponseEntity.ok(
+                postulacionService.getParticipantesByActividad(idActividad)
+        );
+    }
+
 }

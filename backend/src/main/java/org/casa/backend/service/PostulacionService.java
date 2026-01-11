@@ -20,5 +20,6 @@ public interface PostulacionService {
     List<PostulacionDto> getPostulacionesPendientes(String idActividad);
     List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad);
     List<PostulacionDto> getPendientesParaJurado(String idJurado,Integer ronda);
+    List<PostulacionParticipanteDto> getParticipantesByActividad(String idActividad);
 
 }

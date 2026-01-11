@@ -223,4 +223,30 @@ public class PostulacionServiceImpl implements PostulacionService {
                 .toList();
     }
 
+    //obtener las postulacion pero con todo lo de participante
+    @Override
+    public List<PostulacionParticipanteDto> getParticipantesByActividad(String idActividad) {
+        List<Postulacion> participantes =
+                postulacionRepository.findByActividad_IdActividad(idActividad);
+
+        return participantes.stream().map(p -> {
+            Participante participante = participanteRepository.findById(p.getParticipante().getIdUsuario())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Participante no encontrado: " + p.getParticipante().getIdUsuario()));
+
+            ParticipanteDto participanteDto = ParticipanteMapper.mapToParticipanteDto(participante);
+
+            return new PostulacionParticipanteDto(
+                    p.getIdPostulacion(),
+                    p.getParticipante().getIdUsuario(),
+                    p.getActividad().getIdActividad(),
+                    p.getPostulante(),
+                    p.getMotivo(),
+                    p.getEstadoPos(),
+                    p.getFechaPostulacion(),
+                    participanteDto
+            );
+        }).collect(Collectors.toList());
+    }
+
 }
