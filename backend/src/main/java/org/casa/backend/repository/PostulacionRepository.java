@@ -33,10 +33,10 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     
     List<Object[]> alumnosByActividad(@Param("idActividad") String idActividad);
     List<Postulacion> findByActividad_IdActividad(String idActividad);
-    List<Postulacion> findByActividad_IdActividadAndEstadoPos(
+    /*List<Postulacion> findByActividad_IdActividadAndEstadoPos(
             String idActividad,
             EstadoPost estadoPos
-    );
+    );*/
 
     //postulaciones estado: PENDIENTE
     @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estadoPos = 'PENDIENTE'")
@@ -99,6 +99,4 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     WHERE p.idPostulacion = :id
     """)
         EvaluacionPostulacionDto obtenerParaEvaluacion(String id);
-
-
 }

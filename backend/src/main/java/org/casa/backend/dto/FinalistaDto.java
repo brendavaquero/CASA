@@ -4,19 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.casa.backend.entity.Archivo;
-import org.casa.backend.enums.TipoArchivo;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class PostulacionPendienteJuradoDto {
+@AllArgsConstructor
+public class FinalistaDto {
+    private String idConvocatoria;
+    private boolean infantil;
+    private String idResultado;
     private String idPostulacion;
     private String nombre;
     private String apellidos;
     private String postulante;
-    private boolean infantil;
     private String nombreObra;
-    private TipoArchivo tipo;
+    private String ruta;
+    private BigDecimal promedio;
+    private Integer posicion;
 }
+

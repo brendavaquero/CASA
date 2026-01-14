@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GanadorDto {
     private String idGanador;
-    private String idEvaluacion;
     private String semblanza;
     private String foto;
     private String idArchivo;
+    private String idResultado;
 }

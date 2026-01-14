@@ -22,8 +22,11 @@ public class ConvocatoriaResidenciaMapper {
                 c.isInfantil(),
                 c.getBases(),
                 c.getPremio(),
-                c.getConvocantes()
-
+                c.getConvocantes(),
+                c.getFechaInicioR1(),
+                c.getFechaLimiteR1(),
+                c.getFechaInicioR2(),
+                c.getFechaLimiteR2()
         );
     }
 
@@ -47,7 +50,11 @@ public class ConvocatoriaResidenciaMapper {
                 dto.isInfantil(),
                 dto.getBases(),
                 dto.getPremio(),
-                dto.getConvocantes()
+                dto.getConvocantes(),
+                dto.getFechaInicioR1(),
+                dto.getFechaLimiteR1(),
+                dto.getFechaInicioR2(),
+                dto.getFechaLimiteR2()
         );
     }
 }
