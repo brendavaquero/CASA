@@ -8,13 +8,8 @@ import org.casa.backend.entity.*;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ParticipanteMapper;
-//import org.casa.backend.mapper.PostulacionJuradoMapper;
 import org.casa.backend.mapper.PostulacionMapper;
-import org.casa.backend.repository.AlumnoRepository;
-import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
-import org.casa.backend.repository.ParticipanteRepository;
-import org.casa.backend.repository.PostulacionRepository;
-import org.casa.backend.repository.TallerDiplomadoRepository;
+import org.casa.backend.repository.*;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +25,11 @@ public class PostulacionServiceImpl implements PostulacionService {
     private TallerDiplomadoRepository tallerDiplomadoRepositoryR;
     private ConvocatoriaResidenciaRepository convocatoriaResidenciaRepository;
     private AlumnoRepository alumnoRepository;
+    private ArchivoRepository archivoRepository;
 
     @Override
     public PostulacionDto createPostulacion(PostulacionDto dto) {
+        System.out.println("Ejectuando postulación de taller");
         Participante participante = participanteRepository.findById(dto.getIdUsuario())
             .orElseThrow(() -> new ResourceNotFoundException("Participante no encontrado"));
 
@@ -52,6 +49,7 @@ public class PostulacionServiceImpl implements PostulacionService {
     }
     @Override
     public PostulacionDto createPostulacionConvocatoria(PostulacionDto dto) {
+        System.out.println("Ejectuando postulación de conv");
         Participante participante = participanteRepository.findById(dto.getIdUsuario())
             .orElseThrow(() -> new ResourceNotFoundException("Participante no encontrado"));
 
@@ -62,9 +60,10 @@ public class PostulacionServiceImpl implements PostulacionService {
         postulacion.setParticipante(participante);
         postulacion.setActividad(actividad);
         postulacion.setPostulante(dto.getPostulante());
-        postulacion.setMotivo(dto.getMotivo());
+        //postulacion.setMotivo(dto.getMotivo());
         postulacion.setEstadoPos(dto.getEstadoPos());
         postulacion.setFechaPostulacion(dto.getFechaPostulacion());
+        postulacion.setNombreObra(dto.getNombreObra());
 
         Postulacion saved = postulacionRepository.save(postulacion);
         return PostulacionMapper.mapToPostulacionDto(saved);
@@ -213,6 +212,40 @@ public class PostulacionServiceImpl implements PostulacionService {
                 idJurado,
                 ronda
         );
+    }
+    @Override
+    @Transactional
+    public Postulacion registrarPostulacionPostal(RegistroPostalPostulacionDto dto) {
+
+        Participante participante = participanteRepository.findById(dto.getIdUsuario())
+                .orElseThrow(() -> new IllegalArgumentException("Participante no encontrado"));
+
+        Actividad actividad = convocatoriaResidenciaRepository.findById(dto.getIdActividad())
+                .orElseThrow(() -> new IllegalArgumentException("Actividad no encontrada"));
+
+        // 1. Crear Postulación
+        Postulacion postulacion = new Postulacion();
+        postulacion.setParticipante(participante);
+        postulacion.setActividad(actividad);
+        postulacion.setNombreObra(dto.getNombreObra());
+        postulacion.setEstadoPos(EstadoPost.PENDIENTE);
+
+        Postulacion postulacionGuardada = postulacionRepository.save(postulacion);
+
+        // 2. Crear Archivos
+        for (ArchivoDto archivoDto : dto.getArchivos()) {
+
+            Archivo archivo = new Archivo();
+            archivo.setNombre(archivoDto.getNombre());
+            archivo.setRuta(archivoDto.getRuta());
+            archivo.setTipo(archivoDto.getTipo());
+            archivo.setActividad(actividad);
+            archivo.setPostulacion(postulacionGuardada);
+
+            archivoRepository.save(archivo);
+        }
+
+        return postulacionGuardada;
     }
 
 }

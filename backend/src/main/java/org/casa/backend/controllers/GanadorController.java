@@ -9,16 +9,10 @@ import org.casa.backend.entity.Ganador;
 import org.casa.backend.service.GanadorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/ganador")
@@ -31,17 +25,6 @@ public class GanadorController {
     public ResponseEntity<GanadorDto> create(@RequestBody GanadorDto dto){
         return new ResponseEntity<>(ganadorService.createGanador(dto),HttpStatus.CREATED);
     }
-
-//    @PostMapping("/confirmar")
-//    public ResponseEntity<Void> confirmarGanador(
-//            @RequestBody FinalistaDto finalistaDto
-//    ) {
-//        System.out.println(">>> CONTROLLER confirmarGanador");
-//        System.out.println("Resultado: " + finalistaDto.getIdResultado());
-//        System.out.println("Postulación: " + finalistaDto.getIdPostulacion());
-//        ganadorService.crearGanadorDesdeFinalista(finalistaDto);
-//        return ResponseEntity.ok().build();
-//    }
 
     @PostMapping("/confirmar")
     public ResponseEntity<Void> seleccionarGanador(
@@ -66,5 +49,14 @@ public class GanadorController {
     public ResponseEntity<GanadorDto> actualizarGanador(@PathVariable("id") String idGanador, @RequestBody GanadorDto updatedGanador){
         GanadorDto ganadorDto = ganadorService.updateGanador(idGanador, updatedGanador);
         return ResponseEntity.ok(ganadorDto);
+    }
+
+    @PostMapping("/uploadImagen")
+    public ResponseEntity<String> uploadImagen(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("idGanador") String idGanador
+    ) {
+        String url = ganadorService.uploadImagen(file, idGanador);
+        return ResponseEntity.ok(url);
     }
 }

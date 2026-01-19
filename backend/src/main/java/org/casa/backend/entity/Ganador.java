@@ -26,9 +26,6 @@ public class Ganador {
     @Column(name = "id_ganador", length = 20,insertable = false,updatable = false)
     private String idGanador;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_evaluacion", nullable = false)
-//    private Evaluacion evaluacion;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_resultado", nullable = false)
     private ResultadoRondaUno resultado;

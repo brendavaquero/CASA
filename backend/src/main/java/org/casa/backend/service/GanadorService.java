@@ -5,6 +5,7 @@ import java.util.List;
 import org.casa.backend.dto.FinalistaDto;
 import org.casa.backend.dto.GanadorDto;
 import org.casa.backend.entity.Ganador;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface GanadorService {
     List<GanadorDto> getAllGanadores();
@@ -14,4 +15,5 @@ public interface GanadorService {
     //Ganador crearGanadorDesdeFinalista(FinalistaDto dto);
     //Ganador confirmarGanador(FinalistaDto dto);
     void seleccionarGanador(String idResultado);
+    String uploadImagen(MultipartFile file, String idGanador);
 }

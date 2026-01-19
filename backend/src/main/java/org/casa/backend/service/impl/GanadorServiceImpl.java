@@ -1,25 +1,26 @@
 package org.casa.backend.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.FinalistaDto;
 import org.casa.backend.dto.GanadorDto;
-import org.casa.backend.entity.Archivo;
-import org.casa.backend.entity.Evaluacion;
-import org.casa.backend.entity.Ganador;
-import org.casa.backend.entity.ResultadoRondaUno;
+import org.casa.backend.entity.*;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.GanadorMapper;
-import org.casa.backend.repository.ArchivoRepository;
-import org.casa.backend.repository.EvaluacionRepository;
-import org.casa.backend.repository.GanadorRepository;
-import org.casa.backend.repository.ResultadoRondaUnoRepository;
+import org.casa.backend.repository.*;
 import org.casa.backend.service.GanadorService;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -29,6 +30,7 @@ public class GanadorServiceImpl implements GanadorService {
     private EvaluacionRepository evaluacionRepository;
     private ArchivoRepository archivoRepository;
     private ResultadoRondaUnoRepository resultadoRepository;
+    private ActividadRepository actividadRepository;
 
     @Override
     public List<GanadorDto> getAllGanadores() {
@@ -76,29 +78,6 @@ public class GanadorServiceImpl implements GanadorService {
         return GanadorMapper.mapToGanadorDto(updated);
     }
 
-    /*@Override
-    public Ganador crearGanadorDesdeFinalista(FinalistaDto dto) {
-
-        Ganador ganador = new Ganador();
-        Evaluacion evaluacion = evaluacionRepository
-                .getReferenceById(dto.getIdResultado());
-        // Archivo a partir de la postulación
-        Archivo archivo = archivoRepository
-                .findByPostulacion_IdPostulacion(dto.getIdPostulacion())
-                .orElseThrow(() ->
-                        new IllegalStateException(
-                                "No existe archivo para la postulación "
-                                        + dto.getIdPostulacion()
-                        )
-                );
-        ganador.setEvaluacion(evaluacion);
-        ganador.setArchivo(archivo);
-        ganador.setSemblanza(null);
-        ganador.setFoto(null);
-
-        return ganadorRepository.save(ganador);
-    }*/
-
     @Override
     public void seleccionarGanador(String idResultado) {
         ResultadoRondaUno resultado = resultadoRepository.findById(idResultado)
@@ -114,33 +93,53 @@ public class GanadorServiceImpl implements GanadorService {
         ganador.setFoto(null);
         ganadorRepository.save(ganador);
     }
-    //@Override
-    //@Transactional
-    //public Ganador confirmarGanador(FinalistaDto dto) {
 
-//        ResultadoRondaUno resultado = resultadoRondaUnoRepository
-//                .findById(dto.getIdResultado())
-//                .orElseThrow(() -> new RuntimeException("Resultado no encontrado"));
-//
-//        Evaluacion evaluacion = resultado.getEvaluacion();
-//
-//        Archivo archivo = archivoRepository
-//                .findByPostulacion_IdPostulacion(dto.getIdPostulacion())
-//                .orElseThrow(() -> new RuntimeException("Archivo no encontrado"));
-//
-//        // (opcional pero recomendado)
-//        if (ganadorRepository.existsByEvaluacion_IdEvaluacion(
-//                evaluacion.getIdEvaluacion())) {
-//            throw new IllegalStateException("Esta evaluación ya tiene un ganador");
-//        }
-//
-//        Ganador ganador = new Ganador();
-//        ganador.setEvaluacion(evaluacion);
-//        ganador.setArchivo(archivo);
-//        ganador.setFoto(null);
-//        ganador.setSemblanza(null);
-//
-//        return ganadorRepository.save(ganador);
-    //}
+    @Override
+    public String uploadImagen(MultipartFile file, String idGanador) {
 
+        try {
+            if (file.isEmpty()) {
+                throw new RuntimeException("La imagen está vacía");
+            }
+
+            // Validar extensión
+            String originalName = file.getOriginalFilename();
+            String extension = originalName.substring(originalName.lastIndexOf(".") + 1).toLowerCase();
+
+            if (!(extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png"))) {
+                throw new RuntimeException("Solo se permiten imágenes JPG, JPEG o PNG");
+            }
+
+            // Carpeta donde guardar imágenes
+            String folder = "uploads/actividades/";
+
+            File directory = new File(folder);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // Crear nombre único
+            String fileName = System.currentTimeMillis() + "_" + originalName;
+            String filePath = folder + fileName;
+
+            // Guardar
+            Path path = Paths.get(filePath);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            // URL accesible desde el front
+            String url = "/uploads/ganadores/" + fileName;
+
+            // Actualizar entidad Actividad
+            Ganador ganador = ganadorRepository.findById(idGanador)
+                    .orElseThrow(() -> new RuntimeException("Ganador no encontrado"));
+
+            ganador.setFoto(url);
+            ganadorRepository.save(ganador);
+
+            return url;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al subir imagen: " + e.getMessage());
+        }
+    }
 }

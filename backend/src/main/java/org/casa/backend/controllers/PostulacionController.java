@@ -3,10 +3,8 @@ package org.casa.backend.controllers;
 import java.util.List;
 import java.util.Map;
 
-import org.casa.backend.dto.AlumnoActividadDto;
-import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.dto.PostulacionParticipanteDto;
-import org.casa.backend.dto.PostulacionPendienteJuradoDto;
+import org.casa.backend.dto.*;
+import org.casa.backend.entity.Postulacion;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +27,7 @@ public class PostulacionController {
         return new ResponseEntity<>(postulacionService.createPostulacion(dto), HttpStatus.CREATED);
     }
     @PostMapping("/convocatoria")
-    public ResponseEntity<PostulacionDto> createConvocatoria(@RequestBody PostulacionDto dto) {
+    public ResponseEntity<PostulacionDto> createPostulacionConvocatoria(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacionConvocatoria(dto), HttpStatus.CREATED);
     }
 
@@ -117,4 +115,14 @@ public class PostulacionController {
                 postulacionService.getPendientesParaJurado(idJurado, ronda)
         );
     }
+
+    @PostMapping("/convocatoria/registro-postal")
+    public ResponseEntity<Postulacion> registrarPostulacionPostal(
+            @ModelAttribute RegistroPostalPostulacionDto dto
+    ) {
+        Postulacion postulacion = postulacionService.registrarPostulacionPostal(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(postulacion);
+    }
+
+
 }
