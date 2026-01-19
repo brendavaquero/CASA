@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SesionRepository extends JpaRepository<Sesion, String> {
     List<Sesion> findByTallerDiplomado(TallerDiplomado taller);
+    List<Sesion> findByTallerDiplomadoOrderByFechaInicioAsc(TallerDiplomado tallerDiplomado);
 }

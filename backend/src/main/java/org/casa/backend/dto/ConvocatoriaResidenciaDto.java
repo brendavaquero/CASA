@@ -20,8 +20,6 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
     private String convocantes;
     private Date fechaInicioR1;
     private Date fechaLimiteR1;
-    private Date fechaInicioR2;
-    private Date fechaLimiteR2;
 
     public ConvocatoriaResidenciaDto(
             String idActividad,
@@ -42,9 +40,7 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
             String premio,
             String convocantes,
             Date fechaInicioR1,
-            Date fechaLimiteR1,
-            Date fechaInicioR2,
-            Date fechaLimiteR2
+            Date fechaLimiteR1
     ){
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
         this.bases = bases;
@@ -52,7 +48,5 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
         this.convocantes = convocantes;
         this.fechaInicioR1=fechaInicioR1;
         this.fechaLimiteR1=fechaLimiteR1;
-        this.fechaInicioR2=fechaInicioR2;
-        this.fechaLimiteR2=fechaLimiteR2;
     }
 }

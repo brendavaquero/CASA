@@ -5,10 +5,7 @@ import java.util.List;
 import org.casa.backend.dto.AlumnoDto;
 import org.casa.backend.dto.AlumnoTallerDto;
 import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.entity.Postulacion;
-import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.service.AlumnoService;
-import org.casa.backend.service.TallerDiplomadoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
-    private final TallerDiplomadoService tallerDiplomadoService;
 
     @GetMapping
     public ResponseEntity<List<AlumnoDto>> listarAlumnos() {

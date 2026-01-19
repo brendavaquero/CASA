@@ -3,8 +3,11 @@ package org.casa.backend.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.casa.backend.dto.JuradoConvocatoriaDto;
 import org.casa.backend.dto.JuradoDto;
 import org.casa.backend.entity.Jurado;
+import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.enums.TipoActividad;
 import org.casa.backend.dto.UsuarioJurado;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.JuradoMapper;
@@ -73,6 +76,10 @@ public class JuradoServiceImpl implements JuradoService {
                     j.getUsuario().getRol()
             ))
             .toList();
+    }
+    @Override
+    public List<JuradoConvocatoriaDto> obtenerConvocatoriasPorUsuario(String idUsuario) {
+       return repository.findConvocatoriasByUsuario(idUsuario);
     }
 
 }

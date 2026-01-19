@@ -11,17 +11,23 @@ import org.casa.backend.mapper.UsuarioMapper;
 import org.casa.backend.repository.UsuarioRepository;
 import org.casa.backend.service.UsuarioService;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService{
     private UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UsuarioDto createUsuario(UsuarioDto usuarioDto) {
         Usuario usuario = UsuarioMapper.mapToUsuario(usuarioDto);
+        //cifrar la contraseña
+        usuario.setContrasenia(
+            passwordEncoder.encode(usuario.getContrasenia())
+        );
+
         Usuario savedUsuario = usuarioRepository.save(usuario);
         return UsuarioMapper.mapToUsuarioDto(savedUsuario);
     }
@@ -47,7 +53,6 @@ public class UsuarioServiceImpl implements UsuarioService{
        );
         usuario.setNombre(updatedUsuario.getNombre());
         usuario.setApellidos(updatedUsuario.getApellidos());
-        usuario.setContrasenia(updatedUsuario.getContrasenia());
         usuario.setActivo(updatedUsuario.isActivo());
         usuario.setRol(updatedUsuario.getRol());
         Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
@@ -63,16 +68,34 @@ public class UsuarioServiceImpl implements UsuarioService{
        usuarioRepository.deleteById(usuarioId);
     }
 
-    //Editar exclusivamente el ultimo acceso
     @Override
-    public UsuarioDto updateAcceso(String usuarioId) {
-        Usuario usuario =  usuarioRepository.findById(usuarioId).orElseThrow(
-        () -> new ResourceNotFoundException("Usuario no encontrado con ese id "+ usuarioId)
-       );
-        usuario.setUltimo_acceso(LocalDateTime.now());
-        Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
+    public UsuarioDto updateContrasenia(String idUsuario, UsuarioDto updatedUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+        .orElseThrow(() ->
+            new ResourceNotFoundException("Usuario no encontrado con ese id " + idUsuario)
+        );
 
-        return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);   
+        if (updatedUsuario.getContrasenia() != null && !updatedUsuario.getContrasenia().isBlank()) {
+
+            usuario.setContrasenia(
+                passwordEncoder.encode(updatedUsuario.getContrasenia())
+            );
+        }
+
+        Usuario updatedUsuarioObj = usuarioRepository.save(usuario);
+        return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);
+    }
+
+    @Override
+    public void actualizarUltimoAcceso(String correo) {
+         Usuario usuario = usuarioRepository
+                .findByCorreo(correo)
+                .orElseThrow(() ->
+                        new RuntimeException("Usuario no encontrado")
+                );
+
+        usuario.setUltimo_acceso(LocalDateTime.now());
+        usuarioRepository.save(usuario);
     }
 
 

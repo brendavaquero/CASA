@@ -53,7 +53,7 @@ public class Usuario {
     private Instant  fecha_registro;
 
     @Column(name = "ultimo_acceso", insertable = false)
-    private LocalDateTime  ultimo_acceso = LocalDateTime.now();
+    private LocalDateTime  ultimo_acceso;
 
     @Column(name = "contrasenia", nullable = false)
     private String contrasenia;

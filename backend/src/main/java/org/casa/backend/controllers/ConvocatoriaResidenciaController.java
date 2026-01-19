@@ -27,19 +27,6 @@ import lombok.AllArgsConstructor;
 public class ConvocatoriaResidenciaController {
     private ConvocatoriaResidenciaService convocatoriaResidenciaService;
 
-    /*
-    @PostMapping
-    public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(@RequestBody ConvocatoriaResidenciaDto convocatoriaResiDto,
-        @RequestPart(value = "imagen", required = false) MultipartFile imagen,
-        @RequestPart(value = "bases", required = false) MultipartFile bases){
-        /*
-        ConvocatoriaResidenciaDto savedConvocatoriaResi = convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto);
-        return new ResponseEntity<>(savedConvocatoriaResi,HttpStatus.CREATED);
-        return ResponseEntity.ok(
-            convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto, imagen,bases)
-        );
-    }*/
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(
 
@@ -68,6 +55,18 @@ public class ConvocatoriaResidenciaController {
     @PutMapping("/{id}")
     public ResponseEntity<ConvocatoriaResidenciaDto> updateConvocatoriaResi(@PathVariable("id") String convoResiId,@RequestBody ConvocatoriaResidenciaDto updatedConvoResi){
         ConvocatoriaResidenciaDto convoResiDto = convocatoriaResidenciaService.updateConvocatoriaResi(convoResiId, updatedConvoResi);
+        return ResponseEntity.ok(convoResiDto);
+    }
+    //editar con la imagen y el pdf
+    @PutMapping(value = "/updated/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ConvocatoriaResidenciaDto> updateConvocatoriai(@PathVariable("id") String idConvocatoria,@RequestPart("convocatoria") ConvocatoriaResidenciaDto dto,@RequestPart(value = "imagen", required = false) MultipartFile imagen,@RequestPart(value = "bases", required = false) MultipartFile bases){
+        ConvocatoriaResidenciaDto updated = convocatoriaResidenciaService.updateConvocatoriaResi(idConvocatoria, dto, imagen, bases);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/fechaRondas/{id}")
+    public ResponseEntity<ConvocatoriaResidenciaDto> updateConvocatoriaRonda(@PathVariable("id") String convoResiId,@RequestBody ConvocatoriaResidenciaDto updatedConvoResi){
+        ConvocatoriaResidenciaDto convoResiDto = convocatoriaResidenciaService.updateFechaRonda(convoResiId, updatedConvoResi);
         return ResponseEntity.ok(convoResiDto);
     }
 }

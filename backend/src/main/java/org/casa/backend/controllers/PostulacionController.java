@@ -26,6 +26,8 @@ public class PostulacionController {
     public ResponseEntity<PostulacionDto> create(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacion(dto), HttpStatus.CREATED);
     }
+
+    //antes se llamaba crearConvocatoria
     @PostMapping("/convocatoria")
     public ResponseEntity<PostulacionDto> createPostulacionConvocatoria(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacionConvocatoria(dto), HttpStatus.CREATED);
@@ -124,5 +126,15 @@ public class PostulacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postulacion);
     }
 
+
+    //para la convocatoria
+    @GetMapping("/participantes/{idActividad}")
+    public ResponseEntity<List<PostulacionParticipanteDto>> getParticipantesByConvocatoria(
+            @PathVariable String idActividad) {
+
+        return ResponseEntity.ok(
+                postulacionService.getParticipantesByActividad(idActividad)
+        );
+    }
 
 }

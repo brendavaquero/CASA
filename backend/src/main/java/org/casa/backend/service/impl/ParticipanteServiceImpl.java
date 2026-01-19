@@ -8,10 +8,12 @@ import org.casa.backend.dto.ParticipanteDto;
 import org.casa.backend.dto.RegistroPostalDto;
 import org.casa.backend.entity.Participante;
 import org.casa.backend.enums.Rol;
+import org.casa.backend.entity.Usuario;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.repository.ParticipanteRepository;
 import org.casa.backend.service.ParticipanteService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 public class ParticipanteServiceImpl implements ParticipanteService {
 
     private final ParticipanteRepository participanteRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ParticipanteDto createParticipante(ParticipanteDto participanteDto) {
@@ -72,6 +75,18 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         Participante participante = participanteRepository.findById(idParticipante)
                 .orElseThrow(() -> new ResourceNotFoundException("Participante no encontrado con id: " + idParticipante));
         participanteRepository.delete(participante);
+    }
+
+    @Override
+    public ParticipanteDto createParticipantePublico(ParticipanteDto dto) {
+        dto.setRol(Rol.PARTICIPANTE);
+        dto.setActivo(true);
+
+        Usuario usuario = ParticipanteMapper.mapToParticipante(dto);
+        usuario.setContrasenia(passwordEncoder.encode(dto.getContrasenia()));
+
+        Participante saved = participanteRepository.save((Participante) usuario);
+        return ParticipanteMapper.mapToParticipanteDto(saved);
     }
 
     @Override

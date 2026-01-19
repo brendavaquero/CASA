@@ -2,6 +2,7 @@ package org.casa.backend.controllers;
 
 import org.casa.backend.dto.UsuarioDto;
 import org.casa.backend.service.UsuarioService;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,12 +52,16 @@ public class UsuarioController {
         UsuarioDto usuarioDto = usuarioService.updateUsuario(usuarioId, updatedUsuario);
         return ResponseEntity.ok(usuarioDto);
     }
-    //Actualizar su ultimo acceso de un usuario
-    @PutMapping("/acceso/{id}")
-    public ResponseEntity<UsuarioDto> updateUltimoAcceso(@PathVariable("id") String usuarioId) {
-        UsuarioDto updated = usuarioService.updateAcceso(usuarioId);
-        return ResponseEntity.ok(updated);
-    }
+
+    /*
+    @PutMapping("/me/ultimo-acceso")
+    public ResponseEntity<Void> actualizarUltimoAcceso(
+            Authentication authentication
+    ) {
+        String correo = authentication.getName();
+        usuarioService.actualizarUltimoAcceso(correo);
+        return ResponseEntity.ok().build();
+    }*/
 
     //Eliminar el usuario
     @DeleteMapping("/{id}")

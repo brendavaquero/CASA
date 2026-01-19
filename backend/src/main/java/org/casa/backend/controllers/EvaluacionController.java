@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import org.casa.backend.dto.EvaluacionConvoDto;
 import org.casa.backend.dto.EvaluacionDto;
 import org.casa.backend.dto.EvaluacionPostulacionDto;
 import org.casa.backend.service.EvaluacionService;
@@ -46,6 +47,11 @@ public class EvaluacionController {
     public ResponseEntity<EvaluacionDto> actualizarEvaluacion(@PathVariable("id") String idEvaluacion, @RequestBody EvaluacionDto updatedEvaluacion){
         EvaluacionDto evaluacionDto = evaluacionService.updateEvaluacion(idEvaluacion,updatedEvaluacion);
         return ResponseEntity.ok(evaluacionDto);
+    }
+
+    @GetMapping("/convocatoria/{id}")
+    public ResponseEntity<List<EvaluacionConvoDto>> obtenerEvaluacionesPorConvocatoria(@PathVariable("id") String idActividad){
+        return ResponseEntity.ok(evaluacionService.obtenerEvaluacionesByConvo(idActividad));
     }
 
     //evaluacion individual
