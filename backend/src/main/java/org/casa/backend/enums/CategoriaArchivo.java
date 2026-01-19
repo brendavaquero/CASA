@@ -1,6 +1,6 @@
 package org.casa.backend.enums;
 
-public enum CategoriaArchivo {
+public enum  CategoriaArchivo {
     RECURSO("Recurso"),
     EVIDENCIA("Audio o Video");
 

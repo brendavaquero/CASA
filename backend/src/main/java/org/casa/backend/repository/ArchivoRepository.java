@@ -1,6 +1,7 @@
 package org.casa.backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.casa.backend.entity.Archivo;
 import org.casa.backend.enums.CategoriaArchivo;
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface ArchivoRepository extends JpaRepository<Archivo, String> {
     List<Archivo> findByActividad_IdActividad(String idActividad);
     List<Archivo> findByActividad_IdActividadAndCategoria(String idActividad, CategoriaArchivo categoria);
-
+    Optional<Archivo> findByPostulacion_IdPostulacion(String idPostulacion);
 }

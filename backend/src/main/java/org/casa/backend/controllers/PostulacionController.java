@@ -3,9 +3,8 @@ package org.casa.backend.controllers;
 import java.util.List;
 import java.util.Map;
 
-import org.casa.backend.dto.AlumnoActividadDto;
-import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.dto.PostulacionParticipanteDto;
+import org.casa.backend.dto.*;
+import org.casa.backend.entity.Postulacion;
 import org.casa.backend.enums.EstadoPost;
 import org.casa.backend.service.PostulacionService;
 import org.springframework.http.HttpStatus;
@@ -27,8 +26,10 @@ public class PostulacionController {
     public ResponseEntity<PostulacionDto> create(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacion(dto), HttpStatus.CREATED);
     }
+
+    //antes se llamaba crearConvocatoria
     @PostMapping("/convocatoria")
-    public ResponseEntity<PostulacionDto> createConvocatoria(@RequestBody PostulacionDto dto) {
+    public ResponseEntity<PostulacionDto> createPostulacionConvocatoria(@RequestBody PostulacionDto dto) {
         return new ResponseEntity<>(postulacionService.createPostulacionConvocatoria(dto), HttpStatus.CREATED);
     }
 
@@ -94,18 +95,37 @@ public class PostulacionController {
         postulacionService.seleccionarPostulantes(idActividad, postulacionesAprobadasIds);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/pendientes/jurado")
+    /* @GetMapping("/pendientes/jurado")
     public ResponseEntity<List<PostulacionDto>> getPendientesParaJurado(
             @RequestParam String idJurado,
             @RequestParam Integer ronda
     ) {
         return ResponseEntity.ok(
-                postulacionService.getPendientesParaJurado(
+                postulacionService.getPendientesParaJuradoIds(
                         idJurado,
                         ronda
                 )
         );
+    }*/
+
+    @GetMapping("/pendientes/jurado")
+    public ResponseEntity<List<PostulacionPendienteJuradoDto>> getPendientesParaJurado(
+            @RequestParam String idJurado,
+            @RequestParam Integer ronda
+    ) {
+        return ResponseEntity.ok(
+                postulacionService.getPendientesParaJurado(idJurado, ronda)
+        );
     }
+
+    @PostMapping("/convocatoria/registro-postal")
+    public ResponseEntity<Postulacion> registrarPostulacionPostal(
+            @ModelAttribute RegistroPostalPostulacionDto dto
+    ) {
+        Postulacion postulacion = postulacionService.registrarPostulacionPostal(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(postulacion);
+    }
+
 
     //para la convocatoria
     @GetMapping("/participantes/{idActividad}")

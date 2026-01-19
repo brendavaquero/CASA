@@ -2,11 +2,15 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.casa.backend.dto.ParticipanteDto;
 //import org.casa.backend.entity.Participante;
+import org.casa.backend.dto.RegistroPostalDto;
+import org.casa.backend.entity.Participante;
 import org.casa.backend.service.ParticipanteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,5 +61,15 @@ public class ParticipanteController {
     public ResponseEntity<String> deleteParticipante(@PathVariable("id") String idParticipante) {
         participanteService.deleteParticipante(idParticipante);
         return ResponseEntity.ok("Participante eliminado correctamente con id: " + idParticipante);
+    }
+
+    @PostMapping("/registro-postal")
+    public ResponseEntity<Participante> registrarParticipantePostal(
+            @Valid @RequestBody RegistroPostalDto dto
+    ) {
+        Participante participante = participanteService
+                .registrarParticipantePostal(dto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(participante);
     }
 }

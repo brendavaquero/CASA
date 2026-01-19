@@ -27,8 +27,8 @@ public class Ganador {
     private String idGanador;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_evaluacion", nullable = false)
-    private Evaluacion evaluacion;
+    @JoinColumn(name = "id_resultado", nullable = false)
+    private ResultadoRondaUno resultado;
 
     @Column(name = "semblanza", columnDefinition = "TEXT")
     private String semblanza;

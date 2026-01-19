@@ -4,6 +4,7 @@ import org.casa.backend.dto.GanadorDto;
 import org.casa.backend.entity.Archivo;
 import org.casa.backend.entity.Evaluacion;
 import org.casa.backend.entity.Ganador;
+import org.casa.backend.entity.ResultadoRondaUno;
 
 public class GanadorMapper {
     public static GanadorDto mapToGanadorDto(Ganador ganador){
@@ -11,18 +12,18 @@ public class GanadorMapper {
 
         return new GanadorDto(
             ganador.getIdGanador(),
-            ganador.getEvaluacion().getIdEvaluacion(),
             ganador.getSemblanza(),
             ganador.getFoto(),
-            ganador.getArchivo().getIdArchivo()
+            ganador.getArchivo().getIdArchivo(),
+            ganador.getResultado().getIdResultado()
         );
     }
 
-    public static Ganador mapToGanador(GanadorDto dto, Evaluacion evaluacion, Archivo archivo){
+    public static Ganador mapToGanador(GanadorDto dto, ResultadoRondaUno resultado, Archivo archivo){
         if(dto == null) return null;
 
         Ganador ganador = new Ganador();
-        ganador.setEvaluacion(evaluacion);
+        ganador.setResultado(resultado);
         ganador.setSemblanza(dto.getSemblanza());
         ganador.setFoto(dto.getFoto());
         ganador.setArchivo(archivo);

@@ -3,6 +3,8 @@ package org.casa.backend.repository;
 
 import java.util.List;
 
+import org.casa.backend.dto.EvaluacionPostulacionDto;
+import org.casa.backend.dto.PostulacionPendienteJuradoDto;
 import org.casa.backend.entity.Postulacion;
 import org.casa.backend.enums.EstadoPost;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,10 +33,10 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     
     List<Object[]> alumnosByActividad(@Param("idActividad") String idActividad);
     List<Postulacion> findByActividad_IdActividad(String idActividad);
-    List<Postulacion> findByActividad_IdActividadAndEstadoPos(
+    /*List<Postulacion> findByActividad_IdActividadAndEstadoPos(
             String idActividad,
             EstadoPost estadoPos
-    );
+    );*/
 
     //postulaciones estado: PENDIENTE
     @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estadoPos = 'PENDIENTE'")
@@ -47,24 +49,54 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     
     // listar postulaciones que no han sido evaluadas por un usuario (jurado)
     @Query("""
-    SELECT p
+    SELECT new org.casa.backend.dto.PostulacionPendienteJuradoDto(
+        p.idPostulacion,
+        part.nombre,
+        part.apellidos,
+        p.postulante,
+        p.actividad.infantil,
+        p.nombreObra,
+        a.tipo
+    )
     FROM Postulacion p
+    JOIN p.participante part
+    JOIN Archivo a ON a.postulacion.idPostulacion = p.idPostulacion
     WHERE p.actividad.idActividad =
           (SELECT j.convocatoria.idActividad
            FROM Jurado j
            WHERE j.idJurado = :idJurado)
-    AND p.estadoPos = :estado
     AND NOT EXISTS (
-        SELECT e
+        SELECT 1
         FROM Evaluacion e
         WHERE e.postulacion.idPostulacion = p.idPostulacion
           AND e.jurado.idJurado = :idJurado
           AND e.ronda = :ronda
     )
-    """)
-    List<Postulacion> findPendientesParaJurado(
-            @Param("estado") EstadoPost estado,
+""")
+    List<PostulacionPendienteJuradoDto> findPendientesParaJurado(
             @Param("idJurado") String idJurado,
             @Param("ronda") Integer ronda
     );
+
+    // datos necesarios para evaluar una postulacion
+    @Query("""
+    SELECT new org.casa.backend.dto.EvaluacionPostulacionDto(
+        p.idPostulacion,
+        p.postulante,
+        p.nombreObra,
+        part.nombre,
+        part.apellidos,
+        part.seudonimo,
+        a.tipo,
+        a.ruta,
+        act.idActividad,
+        act.infantil
+    )
+    FROM Postulacion p
+    JOIN Participante part ON part.idUsuario = p.participante.idUsuario
+    JOIN Archivo a ON a.postulacion.idPostulacion = p.idPostulacion
+    JOIN ConvocatoriaResidencia act ON act.idActividad = p.actividad.idActividad
+    WHERE p.idPostulacion = :id
+    """)
+        EvaluacionPostulacionDto obtenerParaEvaluacion(String id);
 }

@@ -2,31 +2,36 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import org.casa.backend.dto.FinalistaDto;
 import org.casa.backend.dto.GanadorDto;
+import org.casa.backend.dto.request.SeleccionarGanadorRequest;
+import org.casa.backend.entity.Ganador;
 import org.casa.backend.service.GanadorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/ganador")
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class GanadorController {
     private GanadorService ganadorService;
 
     @PostMapping
     public ResponseEntity<GanadorDto> create(@RequestBody GanadorDto dto){
         return new ResponseEntity<>(ganadorService.createGanador(dto),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/confirmar")
+    public ResponseEntity<Void> seleccionarGanador(
+            @RequestBody SeleccionarGanadorRequest request
+    ) {
+        ganadorService.seleccionarGanador(request.getIdResultado());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -46,4 +51,12 @@ public class GanadorController {
         return ResponseEntity.ok(ganadorDto);
     }
 
+    @PostMapping("/uploadImagen")
+    public ResponseEntity<String> uploadImagen(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("idGanador") String idGanador
+    ) {
+        String url = ganadorService.uploadImagen(file, idGanador);
+        return ResponseEntity.ok(url);
+    }
 }

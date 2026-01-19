@@ -36,10 +36,10 @@ public class ConvocatoriaResidencia extends Actividad{
 
     @OneToMany(mappedBy = "convocatoria")
     private List<Jurado> jurados;
-    
+
     @Column(name = "fecha_inicior1")
     private Date fechaInicioR1;
-    
+
     @Column(name = "fecha_limiter1")
     private Date fechaLimiteR1;
 
@@ -56,10 +56,12 @@ public class ConvocatoriaResidencia extends Actividad{
             EstadoActividad estado,
             String imagen,
             boolean requiereMuestraTrabajo,
-            boolean visible, String bases, String premio, String convocantes, Date fechaInicioR1, Date fechaLimiteR1
+            boolean visible,
+            boolean infantil,
+            String bases, String premio, String convocantes, Date fechaInicioR1, Date fechaLimiteR1
     )
     {
-        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible);
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
         this.bases = bases;
         this.premio = premio;
         this.convocantes= convocantes;

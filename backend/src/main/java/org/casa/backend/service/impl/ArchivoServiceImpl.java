@@ -1,5 +1,6 @@
 package org.casa.backend.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.casa.backend.dto.ArchivoDto;
 import org.casa.backend.entity.*;
@@ -223,50 +224,6 @@ public class ArchivoServiceImpl implements ArchivoService {
                 .toList();
     }
 
-    /*@Override
-    public byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException {
-
-        Programa programa = programaRepository.findById(idPrograma)
-                .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado: " + idPrograma));
-
-        // obtener actividades del programa
-        List<TallerDiplomado> talleres = programa.getTalleres();
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ZipOutputStream zos = new ZipOutputStream(baos);
-
-        for (TallerDiplomado taller : talleres) {
-
-            // Archivos de tipo EVIDENCIA
-            List<Archivo> evidencias = archivoRepository
-                    .findByActividad_IdActividadAndCategoria(taller.getIdActividad(), CategoriaArchivo.EVIDENCIA);
-
-            for (Archivo archivo : evidencias) {
-
-                // ruta física del archivo
-                //Path filePath = Paths.get(archivo.getRuta());
-                String rutaPublica = archivo.getRuta();   // "/uploads/documents/archivo.pdf"
-
-                // Convertir a ruta física real
-                Path filePath = Paths.get("." + rutaPublica);  // "./uploads/documents/archivo.pdf"
-
-
-                if (!Files.exists(filePath))
-                    continue;
-
-                // Nombre dentro del ZIP: Carpeta-por-actividad/archivo
-                String zipEntryName = taller.getTitulo() + "/" + archivo.getNombre();
-                zos.putNextEntry(new ZipEntry(zipEntryName));
-
-                Files.copy(filePath, zos);
-                zos.closeEntry();
-            }
-        }
-
-        zos.close();
-        return baos.toByteArray();
-    }*/
-
     @Override
     public byte[] getZipEvidenciasPrograma(String idPrograma) throws IOException {
 
@@ -291,21 +248,6 @@ public class ArchivoServiceImpl implements ArchivoService {
                 String physicalPath = rutaPublica.replaceFirst("^/uploads/", "uploads/");
 
                 Path filePath = Paths.get(physicalPath);
-
-                /*Path filePath = Paths.get(physicalPath);
-
-                if (!Files.exists(filePath)) {
-                    // Intento alternativo sin subcarpetas (uploadDir plano)
-                    Path alt = Paths.get("uploads/" + archivo.getNombre());
-                    System.out.println("Alternativo: " + alt.toAbsolutePath());
-                    if (Files.exists(alt)) {
-                        filePath = alt;
-                    } else {
-                        System.out.println("NO ENCONTRADO: " + filePath.toAbsolutePath());
-                        continue;
-                    }
-                }*/
-
 
                 if (!Files.exists(filePath)) {
                     System.out.println("NO ENCONTRADO: " + filePath.toAbsolutePath());
@@ -353,4 +295,11 @@ public class ArchivoServiceImpl implements ArchivoService {
         archivoRepository.delete(archivo);
     }
 
+    @Override
+    public Archivo obtenerPorPostulacion(String idPostulacion) {
+        return archivoRepository.findByPostulacion_IdPostulacion(idPostulacion)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No se encontró archivo para la postulación " + idPostulacion
+                ));
+    }
 }

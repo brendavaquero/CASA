@@ -53,6 +53,9 @@ public class Postulacion {
     @Column(name = "fecha_post", nullable = false)
     private LocalDateTime fechaPostulacion;
 
+    @Column(name = "nombre_obra", length = 255)
+    private String nombreObra;
+
     @PrePersist
     protected void onCreate() {
         if (fechaPostulacion == null) {

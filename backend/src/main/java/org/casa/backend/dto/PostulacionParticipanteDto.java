@@ -18,6 +18,5 @@ public class PostulacionParticipanteDto {
     private String motivo;
     private EstadoPost estadoPos;
     private LocalDateTime fechaPostulacion;
-
     private ParticipanteDto participante;
 }

@@ -2,9 +2,8 @@ package org.casa.backend.service;
 
 import java.util.List;
 
-import org.casa.backend.dto.AlumnoActividadDto;
-import org.casa.backend.dto.PostulacionDto;
-import org.casa.backend.dto.PostulacionParticipanteDto;
+import org.casa.backend.dto.*;
+import org.casa.backend.entity.Postulacion;
 import org.casa.backend.enums.EstadoPost;
 
 public interface PostulacionService {
@@ -19,7 +18,11 @@ public interface PostulacionService {
     void seleccionarPostulantes(String idActividad, List<String> postulacionesAprobadas);
     List<PostulacionDto> getPostulacionesPendientes(String idActividad);
     List<PostulacionParticipanteDto> getPostulacionesPendientesParticipante(String idActividad);
-    List<PostulacionDto> getPendientesParaJurado(String idJurado,Integer ronda);
+    // detalle
+    List<PostulacionPendienteJuradoDto> getPendientesParaJurado(String idJurado,Integer ronda);
+    //List<PostulacionDto> getPendientesParaJurado(String idJurado,Integer ronda);
+
+    Postulacion registrarPostulacionPostal(RegistroPostalPostulacionDto dto);
     List<PostulacionParticipanteDto> getParticipantesByActividad(String idActividad);
 
 }

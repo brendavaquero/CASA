@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GanadorRepository extends JpaRepository<Ganador, String>{
-    
+//    boolean existsByResultado_idPostulacion_Convocatoria_IdConvocatoria(
+//            String idConvocatoria
+//    );
 }

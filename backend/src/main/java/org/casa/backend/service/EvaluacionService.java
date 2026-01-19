@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.casa.backend.dto.EvaluacionConvoDto;
 import org.casa.backend.dto.EvaluacionDto;
+import org.casa.backend.dto.EvaluacionPostulacionDto;
 
 public interface EvaluacionService {
     List<EvaluacionDto> getAllEvaluaciones();
@@ -11,5 +12,6 @@ public interface EvaluacionService {
     EvaluacionDto createEvaluacion(EvaluacionDto evaluacionDto);
     EvaluacionDto updateEvaluacion(String idEvaluacion, EvaluacionDto evaluacionDto);
     EvaluacionDto evaluarRondaUno(EvaluacionDto dto);
+    EvaluacionPostulacionDto obtenerPostulacionParaEvaluacionRonda1(String idPostulacion);
     List<EvaluacionConvoDto> obtenerEvaluacionesByConvo(String idActividad);
 }
