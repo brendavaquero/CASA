@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +17,11 @@ import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ConvocatoriaResidenciaMapper;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
 import org.casa.backend.service.ConvocatoriaResidenciaService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -135,8 +138,6 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
         convoResi.setConvocantes(updatedCR.getConvocantes());
         convoResi.setFechaInicioR1(updatedCR.getFechaInicioR1());
         convoResi.setFechaLimiteR1(updatedCR.getFechaLimiteR1());
-        convoResi.setFechaInicioR2(updatedCR.getFechaInicioR2());
-        convoResi.setFechaLimiteR2(updatedCR.getFechaLimiteR2());
 
         ConvocatoriaResidencia updatedConvoResiObj = convocatoriaResidenciaRepository.save(convoResi);
         return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(updatedConvoResiObj);
@@ -197,8 +198,6 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
             convocatoria.setConvocantes(dto.getConvocantes());
             convocatoria.setFechaInicioR1(dto.getFechaInicioR1());
             convocatoria.setFechaLimiteR1(dto.getFechaLimiteR1());
-            convocatoria.setFechaInicioR2(dto.getFechaInicioR2());
-            convocatoria.setFechaLimiteR2(dto.getFechaLimiteR2());
 
             ConvocatoriaResidencia updated = convocatoriaResidenciaRepository.save(convocatoria);
 
@@ -216,11 +215,33 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
                 () -> new ResourceNotFoundException("Convocatoria no encontrada ID: "+ idConvocatoria));
         convoResi.setFechaInicioR1(updatedCR.getFechaInicioR1());
         convoResi.setFechaLimiteR1(updatedCR.getFechaLimiteR1());
-        convoResi.setFechaInicioR2(updatedCR.getFechaInicioR2());
-        convoResi.setFechaLimiteR2(updatedCR.getFechaLimiteR2());
 
         ConvocatoriaResidencia updatedConvoResiObj = convocatoriaResidenciaRepository.save(convoResi);
         return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(updatedConvoResiObj);
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(cron = "0 0 0/12 * * *")
+    public void actualizarEstadosConvocatorias() {
+        LocalDate hoy = LocalDate.now();
+
+        List<ConvocatoriaResidencia> convocatorias = convocatoriaResidenciaRepository.findAll();
+
+        for (ConvocatoriaResidencia c : convocatorias) {
+
+           if (!hoy.isBefore(c.getFechaInicio()) 
+                    && hoy.isBefore(c.getFechaCierre())) {
+                c.setEstado(EstadoActividad.CONVOCATORIA_ABIERTA);
+
+            } else if (!hoy.isBefore(c.getFechaCierre()) 
+                    && hoy.isBefore(c.getFechaResultados())) {
+                c.setEstado(EstadoActividad.CONVOCATORIA_CERRADA);
+
+            } else if (!hoy.isBefore(c.getFechaResultados())) {
+                c.setEstado(EstadoActividad.FINALIZADA);
+            }
+        }
     }
 
 }

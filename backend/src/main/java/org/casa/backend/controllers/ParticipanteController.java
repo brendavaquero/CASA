@@ -7,6 +7,7 @@ import org.casa.backend.dto.ParticipanteDto;
 import org.casa.backend.service.ParticipanteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/participantes")
+@PreAuthorize("hasRole('ADMINISTRADOR')")
 public class ParticipanteController {
     
     private ParticipanteService participanteService;

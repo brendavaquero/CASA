@@ -27,19 +27,6 @@ import lombok.AllArgsConstructor;
 public class ConvocatoriaResidenciaController {
     private ConvocatoriaResidenciaService convocatoriaResidenciaService;
 
-    /*
-    @PostMapping
-    public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(@RequestBody ConvocatoriaResidenciaDto convocatoriaResiDto,
-        @RequestPart(value = "imagen", required = false) MultipartFile imagen,
-        @RequestPart(value = "bases", required = false) MultipartFile bases){
-        /*
-        ConvocatoriaResidenciaDto savedConvocatoriaResi = convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto);
-        return new ResponseEntity<>(savedConvocatoriaResi,HttpStatus.CREATED);
-        return ResponseEntity.ok(
-            convocatoriaResidenciaService.createConvocatoriaResi(convocatoriaResiDto, imagen,bases)
-        );
-    }*/
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(
 

@@ -23,9 +23,7 @@ public class ConvocatoriaResidenciaMapper {
                 c.getPremio(),
                 c.getConvocantes(),
                 c.getFechaInicioR1(),
-                c.getFechaLimiteR1(),
-                c.getFechaInicioR2(),
-                c.getFechaLimiteR2()
+                c.getFechaLimiteR1()
         );
     }
 
@@ -50,9 +48,7 @@ public class ConvocatoriaResidenciaMapper {
                 dto.getPremio(),
                 dto.getConvocantes(),
                 dto.getFechaInicioR1(),
-                dto.getFechaLimiteR1(),
-                dto.getFechaInicioR2(),
-                dto.getFechaLimiteR2()
+                dto.getFechaLimiteR1()
         );
     }
 }

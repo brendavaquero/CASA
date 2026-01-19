@@ -2,6 +2,7 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import org.casa.backend.dto.JuradoConvocatoriaDto;
 import org.casa.backend.dto.JuradoDto;
 import org.casa.backend.dto.UsuarioJurado;
 import org.casa.backend.service.JuradoService;
@@ -52,5 +53,10 @@ public class JuradoController {
         return ResponseEntity.ok(
                 juradoService.obtenerJuradosPorConvocatoria(idActividad)
         );
+    }
+    @GetMapping("/usuarioJurado/convocatorias/{id}")
+    public List<JuradoConvocatoriaDto> obtenerConvocatoriasPorUsuario(
+            @PathVariable("id") String idUsuario) {
+        return juradoService.obtenerConvocatoriasPorUsuario(idUsuario);
     }
 }

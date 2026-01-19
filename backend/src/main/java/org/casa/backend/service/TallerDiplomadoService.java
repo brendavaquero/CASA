@@ -19,5 +19,5 @@ public interface TallerDiplomadoService {
 
     ActividadDto updateEstadoAct(String idActividad, EstadoActividad estado);
     String uploadImagenActividad(MultipartFile file, String idActividad);
-
+    void actualizarEstadosTalleres();
 }

@@ -12,8 +12,8 @@ public interface UsuarioService {
     UsuarioDto getUsuarioById(String usuario_id);
     List<UsuarioDto> getAllUsuarios();
     UsuarioDto updateUsuario(String usuarioId, UsuarioDto updatedUsuario);
+    UsuarioDto updateContrasenia(String idUsuario, UsuarioDto updatedUsuario);
     void deleteUsuario(String usuarioId);
     //Exclusivo para editar el ultimo acceso
-    UsuarioDto updateAcceso(String usuarioId);
-
+    void actualizarUltimoAcceso(String correo);
 }

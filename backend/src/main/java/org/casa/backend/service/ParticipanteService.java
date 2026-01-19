@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ParticipanteService {
     ParticipanteDto createParticipante(ParticipanteDto participanteDto);
+    ParticipanteDto createParticipantePublico(ParticipanteDto dto);
     ParticipanteDto getParticipanteById(String idParticipante);
     List<ParticipanteDto> getAllParticipantes();
     ParticipanteDto updateParticipante(String idParticipante, ParticipanteDto participanteDto);

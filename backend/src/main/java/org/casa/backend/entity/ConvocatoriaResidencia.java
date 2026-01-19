@@ -43,12 +43,6 @@ public class ConvocatoriaResidencia extends Actividad{
     @Column(name = "fecha_limiter1")
     private Date fechaLimiteR1;
 
-    @Column(name = "fecha_inicior2")
-    private Date fechaInicioR2;
-    
-    @Column(name = "fecha_limiter2")
-    private Date fechaLimiteR2;
-
     public ConvocatoriaResidencia(
             String idActividad,
             String titulo,
@@ -62,7 +56,7 @@ public class ConvocatoriaResidencia extends Actividad{
             EstadoActividad estado,
             String imagen,
             boolean requiereMuestraTrabajo,
-            boolean visible, String bases, String premio, String convocantes, Date fechaInicioR1, Date fechaLimiteR1, Date fechaInicioR2, Date fechaLimiteR2
+            boolean visible, String bases, String premio, String convocantes, Date fechaInicioR1, Date fechaLimiteR1
     )
     {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible);
@@ -71,7 +65,5 @@ public class ConvocatoriaResidencia extends Actividad{
         this.convocantes= convocantes;
         this.fechaInicioR1=fechaInicioR1;
         this.fechaLimiteR1=fechaLimiteR1;
-        this.fechaInicioR2=fechaInicioR2;
-        this.fechaLimiteR2=fechaLimiteR2;
     }
 }
