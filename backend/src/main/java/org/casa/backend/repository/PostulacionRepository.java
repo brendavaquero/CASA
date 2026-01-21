@@ -1,6 +1,7 @@
 package org.casa.backend.repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.casa.backend.dto.EvaluacionPostulacionDto;
@@ -99,4 +100,123 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     WHERE p.idPostulacion = :id
     """)
         EvaluacionPostulacionDto obtenerParaEvaluacion(String id);
+
+    @Query("""
+        SELECT p
+        FROM Postulacion p
+        WHERE p.actividad.fechaInicio BETWEEN :inicio AND :fin
+          AND TYPE(p.actividad) = ConvocatoriaResidencia
+    """)
+    List<Postulacion> findPostulacionesConvocatoriasEnPeriodo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // TOTALES
+    // ======================
+
+    @Query("""
+        SELECT COUNT(p)
+        FROM Postulacion p
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+    """)
+    long contarParticipantesEnConvocatorias(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT COUNT(p)
+        FROM Postulacion p
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+        AND act.infantil = true
+    """)
+    long contarParticipantesEnConvocatoriasInfantiles(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // SEXO
+    // ======================
+
+    @Query("""
+        SELECT part.sexo, COUNT(p)
+        FROM Postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+        GROUP BY part.sexo
+    """)
+    List<Object[]> contarParticipantesPorSexo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // GEOGRAFÍA
+    // ======================
+
+    @Query("""
+        SELECT part.pais, COUNT(p)
+        FROM Postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+        GROUP BY part.pais
+    """)
+    List<Object[]> contarParticipantesPorPais(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT part.estado, COUNT(p)
+        FROM Postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+        GROUP BY part.estado
+    """)
+    List<Object[]> contarParticipantesPorEstado(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // EDAD
+    // ======================
+
+    @Query("""
+        SELECT part.fechaNacimiento
+        FROM Postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = ConvocatoriaResidencia
+    """)
+    List<LocalDate> obtenerFechasNacimientoParticipantes(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT p
+        FROM Postulacion p
+        WHERE p.actividad.fechaInicio
+        BETWEEN :inicio AND :fin
+        AND TYPE(p.actividad) = ConvocatoriaResidencia
+    """)
+    List<Postulacion> postulacionesConvocatoriaEnPeriodo(
+            LocalDate inicio,
+            LocalDate fin
+    );
 }

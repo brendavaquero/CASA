@@ -4,25 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.casa.backend.enums.LenguaInd;
-
-import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ReporteTrimestralDTO {
 
-    private int totalTalleres;
-    private int totalParticipantes;
+    private int anio;
+    private int trimestre;
 
-    private double porcentajeMujeres;
-    private double porcentajeHombres;
-
-    //private Long totalHombres;
-    //private Long totalMujeres;
-    private List<LenguaInd> lenguasRepresentadas;
-    private List<EstadoParticipacionDTO> estadosConMayorParticipacion;
-
+    private ResumenActividadDTO talleres;
+    private ResumenActividadDTO convocatorias;
 }
+

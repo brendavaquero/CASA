@@ -2,7 +2,9 @@ package org.casa.backend.controllers;
 
 import java.util.List;
 
+import org.casa.backend.dto.ActaGanadorDto;
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
+import org.casa.backend.service.ActaService;
 import org.casa.backend.service.ConvocatoriaResidenciaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin(origins = "*")
 public class ConvocatoriaResidenciaController {
     private ConvocatoriaResidenciaService convocatoriaResidenciaService;
+    private final ActaService actaService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(
@@ -68,5 +71,10 @@ public class ConvocatoriaResidenciaController {
     public ResponseEntity<ConvocatoriaResidenciaDto> updateConvocatoriaRonda(@PathVariable("id") String convoResiId,@RequestBody ConvocatoriaResidenciaDto updatedConvoResi){
         ConvocatoriaResidenciaDto convoResiDto = convocatoriaResidenciaService.updateFechaRonda(convoResiId, updatedConvoResi);
         return ResponseEntity.ok(convoResiDto);
+    }
+
+    @GetMapping("/acta/{idConvocatoria}")
+    public ActaGanadorDto obtenerActa(@PathVariable String idConvocatoria) {
+        return actaService.generarActaPorConvocatoria(idConvocatoria);
     }
 }

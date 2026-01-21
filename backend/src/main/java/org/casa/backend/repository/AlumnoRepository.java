@@ -64,5 +64,142 @@ public interface AlumnoRepository extends JpaRepository<Alumno, String> {
             @Param("inicio") LocalDate inicio,
             @Param("fin") LocalDate fin);
 
+    // alumnos admitidos
+    @Query("""
+        SELECT a
+        FROM Alumno a
+        WHERE a.postulacion.actividad.fechaInicio BETWEEN :inicio AND :fin
+          AND TYPE(a.postulacion.actividad) = TallerDiplomado
+    """)
+    List<Alumno> findAlumnosTalleresEnPeriodo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // TOTALES
+    // ======================
+
+    @Query("""
+        SELECT COUNT(a)
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+    """)
+    long contarAlumnosEnTalleres(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT COUNT(a)
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+        AND act.infantil = true
+    """)
+    long contarAlumnosEnTalleresInfantiles(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // SEXO
+    // ======================
+
+    @Query("""
+        SELECT part.sexo, COUNT(a)
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+        GROUP BY part.sexo
+    """)
+    List<Object[]> contarAlumnosPorSexo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // GEOGRAFÍA
+    // ======================
+
+    @Query("""
+        SELECT part.pais, COUNT(a)
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+        GROUP BY part.pais
+    """)
+    List<Object[]> contarAlumnosPorPais(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT part.estado, COUNT(a)
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+        GROUP BY part.estado
+    """)
+    List<Object[]> contarAlumnosPorEstado(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    // ======================
+    // EDAD (fecha nac)
+    // ======================
+
+    @Query("""
+        SELECT part.fechaNacimiento
+        FROM Alumno a
+        JOIN a.postulacion p
+        JOIN p.participante part
+        JOIN p.actividad act
+        WHERE act.fechaInicio BETWEEN :inicio AND :fin
+        AND TYPE(act) = TallerDiplomado
+    """)
+    List<LocalDate> obtenerFechasNacimientoAlumnos(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+    SELECT part.sexo, COUNT(a)
+    FROM Alumno a
+    JOIN a.postulacion p
+    JOIN p.participante part
+    JOIN p.actividad act
+    WHERE act.fechaInicio BETWEEN :inicio AND :fin
+    AND TYPE(act) = TallerDiplomado
+    GROUP BY part.sexo
+""")
+    List<Object[]> contarPorSexo(
+            @Param("inicio") LocalDate inicio,
+            @Param("fin") LocalDate fin
+    );
+
+    @Query("""
+        SELECT a
+        FROM Alumno a
+        WHERE a.postulacion.actividad.fechaInicio
+        BETWEEN :inicio AND :fin
+    """)
+    List<Alumno> alumnosEnPeriodo(LocalDate inicio, LocalDate fin);
+
 
 }

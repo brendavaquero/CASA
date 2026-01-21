@@ -44,6 +44,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/talleresydiplomados/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/sesiones/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/archivos/**").permitAll()
+                    //test brenda
+                //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/api/programas/**").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/api/reportes/**").permitAll()
                 //PARA PROBAR: DEBO CAMBIARLO DESPUES*
                 .requestMatchers("/api/email/**").hasRole("ADMINISTRADOR")
 

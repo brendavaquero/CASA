@@ -20,4 +20,10 @@ public interface TallerDiplomadoRepository extends JpaRepository<TallerDiplomado
             @Param("inicio") LocalDate inicio,
             @Param("fin") LocalDate fin);
 
+    @Query("""
+        SELECT COUNT(t)
+        FROM TallerDiplomado t
+        WHERE t.fechaInicio BETWEEN :inicio AND :fin
+    """)
+    Long contarTalleresEnPeriodo(LocalDate inicio, LocalDate fin);
 }
