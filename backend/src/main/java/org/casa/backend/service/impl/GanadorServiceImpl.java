@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.FinalistaDto;
+import org.casa.backend.dto.GanadorConvocatoriaDto;
 import org.casa.backend.dto.GanadorDto;
 import org.casa.backend.entity.*;
 import org.casa.backend.exception.ResourceNotFoundException;
@@ -141,5 +142,14 @@ public class GanadorServiceImpl implements GanadorService {
         } catch (IOException e) {
             throw new RuntimeException("Error al subir imagen: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<GanadorConvocatoriaDto> obtenerGanadoresPorConvocatoria(String idConvocatoria) {
+        return ganadorRepository
+                .findByResultado_IdConvocatoria(idConvocatoria)
+                .stream()
+                .map(GanadorConvocatoriaDto::new)
+                .toList();
     }
 }
