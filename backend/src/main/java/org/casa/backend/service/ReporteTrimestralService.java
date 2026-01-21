@@ -1,14 +1,8 @@
 package org.casa.backend.service;
 
 import org.casa.backend.dto.ReporteTrimestralDTO;
-
-import java.time.LocalDate;
+import org.springframework.stereotype.Service;
 
 public interface ReporteTrimestralService {
-
-    /*ReporteTrimestralDTO generarReporteTrimestral(
-            LocalDate inicio,
-            LocalDate fin
-    );*/
-    ReporteTrimestralDTO generarReporte(int year, int trimestre);
+    ReporteTrimestralDTO generarReporteTrimestral(int anio, int trimestre);
 }

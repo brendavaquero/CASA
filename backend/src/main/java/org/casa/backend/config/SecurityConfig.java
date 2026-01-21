@@ -49,7 +49,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/catalagos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
-                
+
+                    //test brenda
+                //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/api/programas/**").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/api/reportes/**").permitAll()
                 //PARA PROBAR: DEBO CAMBIARLO DESPUES*
                 .requestMatchers("/api/email/**").hasRole("ADMINISTRADOR")
 
