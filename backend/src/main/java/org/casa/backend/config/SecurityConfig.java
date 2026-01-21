@@ -34,6 +34,8 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.POST, "/api/authPs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/authPs/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/usuarios/me/**").authenticated()//Actualizar ultimo acceso
                 
@@ -47,6 +49,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/catalagos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
+                
                 //PARA PROBAR: DEBO CAMBIARLO DESPUES*
                 .requestMatchers("/api/email/**").hasRole("ADMINISTRADOR")
 
