@@ -25,7 +25,7 @@ public class ActaServiceImpl implements ActaService {
     public ActaGanadorDto generarActaPorConvocatoria(String idConvocatoria) {
 
         Ganador ganador = ganadorRepository
-                .findByResultado_IdConvocatoria(idConvocatoria)
+                .findFirstByResultado_IdConvocatoria(idConvocatoria)
                 .orElseThrow(() -> new RuntimeException("No existe ganador para la convocatoria"));
 
         ResultadoRondaUno resultado = ganador.getResultado();

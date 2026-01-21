@@ -13,6 +13,6 @@ public interface GanadorRepository extends JpaRepository<Ganador, String>{
 //    boolean existsByResultado_idPostulacion_Convocatoria_IdConvocatoria(
 //            String idConvocatoria
 //    );
-    //Optional<Ganador> findByResultado_IdConvocatoria(String idConvocatoria);
+    Optional<Ganador> findFirstByResultado_IdConvocatoria(String idConvocatoria);
     List<Ganador> findByResultado_IdConvocatoria(String idConvocatoria);
 }
