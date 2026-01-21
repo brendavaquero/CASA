@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import org.casa.backend.dto.FinalistaDto;
+import org.casa.backend.dto.GanadorConvocatoriaDto;
 import org.casa.backend.dto.GanadorDto;
 import org.casa.backend.dto.request.SeleccionarGanadorRequest;
 import org.casa.backend.entity.Ganador;
@@ -58,5 +59,13 @@ public class GanadorController {
     ) {
         String url = ganadorService.uploadImagen(file, idGanador);
         return ResponseEntity.ok(url);
+    }
+    @GetMapping("/convocatoria/{idConvocatoria}")
+    public ResponseEntity<List<GanadorConvocatoriaDto>> obtenerGanadoresPorConvocatoria(
+            @PathVariable String idConvocatoria) {
+
+        return ResponseEntity.ok(
+                ganadorService.obtenerGanadoresPorConvocatoria(idConvocatoria)
+        );
     }
 }
