@@ -15,4 +15,10 @@ public interface ConvocatoriaResidenciaRepository extends JpaRepository<Convocat
         WHERE c.fechaInicio BETWEEN :inicio AND :fin
     """)
     Long contarConvocatoriasEnPeriodo(LocalDate inicio, LocalDate fin);
+    boolean existsByTituloIgnoreCaseAndFechaInicioAndFechaCierreAndFechaResultados(
+        String titulo,
+        LocalDate fechaInicio,
+        LocalDate fechaCierre,
+        LocalDate fechaResultados
+    );
 }

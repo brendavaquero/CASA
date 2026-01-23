@@ -1,6 +1,5 @@
 package org.casa.backend.dto;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import org.casa.backend.enums.TipoActividad;
 
@@ -28,6 +27,6 @@ public class JuradoConvocatoriaDto {
     private String bases;
     private String premio;
     private String convocantes;
-    private Date fechaInicioR1; 
-    private Date fechaLimiteR1;
+    private LocalDate fechaInicioR1; 
+    private LocalDate fechaLimiteR1;
 }

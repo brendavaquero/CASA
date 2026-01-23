@@ -6,13 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
 import org.casa.backend.entity.ConvocatoriaResidencia;
 import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.exception.ConvocatoriaDuplicadaException;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ConvocatoriaResidenciaMapper;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
@@ -29,6 +32,98 @@ import lombok.AllArgsConstructor;
 public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidenciaService {
 
     private ConvocatoriaResidenciaRepository convocatoriaResidenciaRepository;
+    private void validarFechasConvocatoria(ConvocatoriaResidencia c) {
+        LocalDate hoy = LocalDate.now();
+
+        // Fecha inicio >= hoy
+        if (c.getFechaInicio().isBefore(hoy)) {
+            throw new IllegalArgumentException(
+                "La fecha de inicio no puede ser anterior a hoy"
+            );
+        }
+
+        // Fecha cierre >= fecha inicio
+        if (c.getFechaCierre().isBefore(c.getFechaInicio())) {
+            throw new IllegalArgumentException(
+                "La fecha de cierre no puede ser menor a la fecha de inicio"
+            );
+        }
+
+        // Fecha resultados >= fecha cierre
+        if (c.getFechaResultados().isBefore(c.getFechaCierre())) {
+            throw new IllegalArgumentException(
+                "La fecha de resultados no puede ser menor a la fecha de cierre"
+            );
+        }
+    }
+
+    private void validarFechasEvaluacion(ConvocatoriaResidencia c) {
+        LocalDate hoy = LocalDate.now();
+
+        //Fecha inicio >= hoy
+        if (c.getFechaInicio().isBefore(hoy)) {
+            throw new IllegalArgumentException(
+                "La fecha de inicio no puede ser anterior a hoy"
+            );
+        }
+
+        //Fecha cierre >= fecha inicio
+        if (c.getFechaCierre().isBefore(c.getFechaInicio())) {
+            throw new IllegalArgumentException(
+                "La fecha de cierre no puede ser menor a la fecha de inicio"
+            );
+        }
+
+        //Fecha resultados >= fecha cierre
+        if (c.getFechaResultados().isBefore(c.getFechaCierre())) {
+            throw new IllegalArgumentException(
+                "La fecha de resultados no puede ser menor a la fecha de cierre"
+            );
+        }
+
+        //INICIO EVALUACIÓN >= FECHA CIERRE
+        if (c.getFechaInicioR1().isBefore(c.getFechaCierre())) {
+            throw new IllegalArgumentException(
+                "La fecha de inicio de evaluación debe ser mayor o igual a la fecha de cierre"
+            );
+        }
+
+        //FIN EVALUACIÓN >= INICIO EVALUACIÓN
+        if (c.getFechaLimiteR1().isBefore(c.getFechaInicioR1())) {
+            throw new IllegalArgumentException(
+                "La fecha límite de evaluación debe ser mayor o igual a la fecha de inicio"
+            );
+        }
+
+        //FIN EVALUACIÓN <= FECHA RESULTADOS
+        if (c.getFechaLimiteR1().isAfter(c.getFechaResultados())) {
+            throw new IllegalArgumentException(
+                "La fecha límite de evaluación no puede ser mayor a la fecha de resultados"
+            );
+        }
+    }
+
+    private void validarFechasRonda(ConvocatoriaResidencia c) {
+
+        if (c.getFechaInicioR1().isBefore(c.getFechaCierre())) {
+            throw new IllegalArgumentException(
+                "La fecha de inicio de evaluación debe ser mayor o igual a la fecha de cierre"
+            );
+        }
+
+        if (c.getFechaLimiteR1().isBefore(c.getFechaInicioR1())) {
+            throw new IllegalArgumentException(
+                "La fecha límite de evaluación debe ser mayor o igual a la fecha de inicio"
+            );
+        }
+
+        if (c.getFechaLimiteR1().isAfter(c.getFechaResultados())) {
+            throw new IllegalArgumentException(
+                "La fecha límite de evaluación no puede ser mayor a la fecha de resultados"
+            );
+        }
+    }
+
 
     @Override
     public ConvocatoriaResidenciaDto createConvocatoriaResi(ConvocatoriaResidenciaDto convocatoriaResiDto, MultipartFile imagen, MultipartFile bases) {
@@ -89,6 +184,9 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
             convocatoria.setEstado(EstadoActividad.AUTORIZADA);
             convocatoria.setImagen(urlImagen);
             convocatoria.setBases(urlBases);
+            validarConvocatoriaDuplicada(convocatoria);
+
+            validarFechasConvocatoria(convocatoria);
 
             ConvocatoriaResidencia saved =
                     convocatoriaResidenciaRepository.save(convocatoria);
@@ -196,8 +294,13 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
             convocatoria.setDescripcion(dto.getDescripcion());
             convocatoria.setPremio(dto.getPremio());
             convocatoria.setConvocantes(dto.getConvocantes());
+            convocatoria.setFechaInicio(dto.getFechaInicio());
+            convocatoria.setFechaCierre(dto.getFechaCierre());
+            convocatoria.setFechaResultados(dto.getFechaResultados());
             convocatoria.setFechaInicioR1(dto.getFechaInicioR1());
             convocatoria.setFechaLimiteR1(dto.getFechaLimiteR1());
+            validarFechasConvocatoria(convocatoria);
+            validarFechasEvaluacion(convocatoria);
 
             ConvocatoriaResidencia updated = convocatoriaResidenciaRepository.save(convocatoria);
 
@@ -215,6 +318,7 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
                 () -> new ResourceNotFoundException("Convocatoria no encontrada ID: "+ idConvocatoria));
         convoResi.setFechaInicioR1(updatedCR.getFechaInicioR1());
         convoResi.setFechaLimiteR1(updatedCR.getFechaLimiteR1());
+        validarFechasRonda(convoResi);
 
         ConvocatoriaResidencia updatedConvoResiObj = convocatoriaResidenciaRepository.save(convoResi);
         return ConvocatoriaResidenciaMapper.mapToConvocatoriaResidenciaDto(updatedConvoResiObj);
@@ -222,6 +326,7 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
 
     @Override
     @Transactional
+    //2min @Scheduled(cron = "0 */2 * * * *")
     @Scheduled(cron = "0 0 0/12 * * *")
     public void actualizarEstadosConvocatorias() {
         LocalDate hoy = LocalDate.now();
@@ -241,6 +346,24 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
             } else if (!hoy.isBefore(c.getFechaResultados())) {
                 c.setEstado(EstadoActividad.FINALIZADA);
             }
+        }
+    }
+
+
+    @Override
+    public void validarConvocatoriaDuplicada(ConvocatoriaResidencia c) {
+         boolean existe = convocatoriaResidenciaRepository
+            .existsByTituloIgnoreCaseAndFechaInicioAndFechaCierreAndFechaResultados(
+                c.getTitulo(),
+                c.getFechaInicio(),
+                c.getFechaCierre(),
+                c.getFechaResultados()
+            );
+
+        if (existe) {
+            throw new ConvocatoriaDuplicadaException(
+                "Esta convocatoria ya existe con las mismas fechas"
+            );
         }
     }
 

@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class TallerDiplomadoController {
 
     //Rest API ADD
     @PostMapping
-    public ResponseEntity<TallerDiplomadoDto> createTallerDiplomado(@RequestBody TallerDiplomadoDto tallerDiplomadoDto) {
+    public ResponseEntity<TallerDiplomadoDto> createTallerDiplomado(@Valid @RequestBody TallerDiplomadoDto tallerDiplomadoDto) {
         TallerDiplomadoDto savedTallerDiplomado = tallerDiplomadoService.createTallerDiplomado(tallerDiplomadoDto);
         return new ResponseEntity<>(savedTallerDiplomado, HttpStatus.CREATED);
     }
@@ -55,7 +57,7 @@ public class TallerDiplomadoController {
     }
     //editar el taller o el diplomado
     @PutMapping("/{id}")
-    public ResponseEntity<TallerDiplomadoDto> updateTallerDiplomado(@PathVariable("id") String tallerId, @RequestBody TallerDiplomadoDto updatedTallerDipl){
+    public ResponseEntity<TallerDiplomadoDto> updateTallerDiplomado(@PathVariable("id") String tallerId, @Valid @RequestBody TallerDiplomadoDto updatedTallerDipl){
         TallerDiplomadoDto tallerDipDto = tallerDiplomadoService.updateTallerDiplo(tallerId, updatedTallerDipl);
         return ResponseEntity.ok(tallerDipDto);
     }

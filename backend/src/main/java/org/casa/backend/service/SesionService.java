@@ -11,4 +11,5 @@ public interface SesionService {
     SesionDto geSesionById(String idSesion);
     List<SesionDto> getSesionesByTaller(String idTallerDiplomado);
     SesionDto updateSesion(String sesionId, SesionDto updatedSesion);
+    void deleteSesion(String idSesion);
 }

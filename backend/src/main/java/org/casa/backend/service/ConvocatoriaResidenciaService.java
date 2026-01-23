@@ -3,6 +3,7 @@ package org.casa.backend.service;
 import java.util.List;
 
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
+import org.casa.backend.entity.ConvocatoriaResidencia;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,4 +16,5 @@ public interface ConvocatoriaResidenciaService {
     ConvocatoriaResidenciaDto updateConvocatoriaResi(String idConvocatoria, ConvocatoriaResidenciaDto dto, MultipartFile imagen, MultipartFile bases);
     ConvocatoriaResidenciaDto updateFechaRonda(String idConvocatoria, ConvocatoriaResidenciaDto updatedCR);
     void actualizarEstadosConvocatorias();
+    void validarConvocatoriaDuplicada(ConvocatoriaResidencia c);
 }

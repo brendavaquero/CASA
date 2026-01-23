@@ -1,6 +1,5 @@
 package org.casa.backend.entity;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,10 +37,10 @@ public class ConvocatoriaResidencia extends Actividad{
     private List<Jurado> jurados;
 
     @Column(name = "fecha_inicior1")
-    private Date fechaInicioR1;
+    private LocalDate fechaInicioR1;
 
     @Column(name = "fecha_limiter1")
-    private Date fechaLimiteR1;
+    private LocalDate fechaLimiteR1;
 
     public ConvocatoriaResidencia(
             String idActividad,
@@ -58,7 +57,7 @@ public class ConvocatoriaResidencia extends Actividad{
             boolean requiereMuestraTrabajo,
             boolean visible,
             boolean infantil,
-            String bases, String premio, String convocantes, Date fechaInicioR1, Date fechaLimiteR1
+            String bases, String premio, String convocantes, LocalDate fechaInicioR1, LocalDate fechaLimiteR1
     )
     {
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);

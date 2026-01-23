@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/catalagos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
-
+                .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").permitAll()
                     //test brenda
                 //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
                 //.requestMatchers(HttpMethod.GET, "/api/programas/**").permitAll()
@@ -79,7 +79,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/talleresydiplomados/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
                 
                 //Permisos participante y admin
-                .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").hasAnyRole("PARTICIPANTE","DOCENTE","ADMINISTRADOR","AUXILIAR")
+                //.requestMatchers(HttpMethod.POST, "/api/postulaciones/**").hasAnyRole("PARTICIPANTE","DOCENTE","ADMINISTRADOR","AUXILIAR")
                 .requestMatchers(HttpMethod.GET,"/api/alumnos/**").hasAnyRole("PARTICIPANTE","DOCENTE")
                 .requestMatchers(HttpMethod.GET, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO", "DOCENTE")
                 .requestMatchers(HttpMethod.PUT, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO","DOCENTE")

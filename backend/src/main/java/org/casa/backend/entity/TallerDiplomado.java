@@ -1,6 +1,9 @@
 package org.casa.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +26,9 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "id_actividad")
 public class TallerDiplomado extends Actividad {
 
+    @NotNull(message = "El cupo es obligatorio")
+    @Min(value = 1, message = "El cupo debe ser mayor a 0")
+    @Max(value = 30, message = "El cupo no puede ser mayor a 30")
     @Column(name = "cupo")
     private Integer cupo;
 
