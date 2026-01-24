@@ -24,5 +24,5 @@ public interface PostulacionService {
 
     Postulacion registrarPostulacionPostal(RegistroPostalPostulacionDto dto);
     List<PostulacionParticipanteDto> getParticipantesByActividad(String idActividad);
-
+    boolean existePostulacion(String idUsuario, String idActividad);
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ParticipanteRepository extends JpaRepository<Participante, String> {
     Optional<Participante> findByIdUsuario(String idUsuario);
+    boolean existsByCurp(String curp);
 }

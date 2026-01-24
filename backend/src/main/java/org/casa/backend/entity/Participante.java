@@ -49,11 +49,11 @@ public class Participante extends Usuario{
     private Pais pais;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado", length = 100)
+    @Column(name = "estado", length = 100, nullable = true)
     private Estado estado;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "municipio", length = 100)
+    @Column(name = "municipio", length = 100, nullable = true)
     private Municipio municipio;
 
     @Enumerated(EnumType.STRING)

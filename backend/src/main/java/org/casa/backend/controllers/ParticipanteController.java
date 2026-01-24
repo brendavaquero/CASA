@@ -26,13 +26,20 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/participantes")
-@PreAuthorize("hasRole('ADMINISTRADOR')")
+//@PreAuthorize("hasRole('ADMINISTRADOR')")
+@CrossOrigin(origins = "*")
 public class ParticipanteController {
     
     private ParticipanteService participanteService;
 
     @PostMapping
     public ResponseEntity<ParticipanteDto> createParticipante(@RequestBody ParticipanteDto participanteDto) {
+        ParticipanteDto savedParticipante = participanteService.createParticipante(participanteDto);
+        return new ResponseEntity<>(savedParticipante, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/publico")
+    public ResponseEntity<ParticipanteDto> createParticipantePublico(@RequestBody ParticipanteDto participanteDto) {
         ParticipanteDto savedParticipante = participanteService.createParticipante(participanteDto);
         return new ResponseEntity<>(savedParticipante, HttpStatus.CREATED);
     }

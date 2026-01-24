@@ -1,6 +1,7 @@
 package org.casa.backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.casa.backend.dto.JuradoConvocatoriaDto;
 import org.casa.backend.entity.Jurado;
@@ -40,4 +41,6 @@ public interface JuradoRepository extends JpaRepository<Jurado, String>{
         WHERE u.idUsuario = :idUsuario
     """)
     List<JuradoConvocatoriaDto> findConvocatoriasByUsuario(@Param("idUsuario") String idUsuario);
+
+    Optional<Jurado> findByIdJurado(String idJurado);
 }

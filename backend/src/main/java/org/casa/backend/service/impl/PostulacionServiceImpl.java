@@ -11,6 +11,7 @@ import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.mapper.PostulacionMapper;
 import org.casa.backend.repository.*;
 import org.casa.backend.service.PostulacionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -36,6 +37,20 @@ public class PostulacionServiceImpl implements PostulacionService {
         Actividad actividad = tallerDiplomadoRepositoryR.findById(dto.getIdActividad())
             .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
 
+        if (actividad.isInfantil()) {
+
+            validarPostulacionInfantil(
+                    actividad.getIdActividad(),
+                    dto.getPostulante()
+            );
+
+        } else {
+
+            validarPostulacionAdulto(
+                    participante.getIdUsuario(),
+                    actividad.getIdActividad()
+            );
+        }
         Postulacion postulacion = new Postulacion();
         postulacion.setParticipante(participante);
         postulacion.setActividad(actividad);
@@ -56,17 +71,49 @@ public class PostulacionServiceImpl implements PostulacionService {
         Actividad actividad = convocatoriaResidenciaRepository.findById(dto.getIdActividad())
             .orElseThrow(() -> new ResourceNotFoundException("Convocatoria no encontrada"));
 
+        if (actividad.isInfantil()) {
+
+            validarPostulacionInfantil(
+                    actividad.getIdActividad(),
+                    dto.getPostulante()
+            );
+
+        } else {
+
+            validarPostulacionAdulto(
+                    participante.getIdUsuario(),
+                    actividad.getIdActividad()
+            );
+        }
+
         Postulacion postulacion = new Postulacion();
         postulacion.setParticipante(participante);
         postulacion.setActividad(actividad);
-        postulacion.setPostulante(dto.getPostulante());
+        // normalizar nombre para no diferenciar mayúsculas y minúsculas
+        String postulante = dto.getPostulante().trim().toLowerCase();
+        postulacion.setPostulante(postulante);
         //postulacion.setMotivo(dto.getMotivo());
         postulacion.setEstadoPos(dto.getEstadoPos());
         postulacion.setFechaPostulacion(dto.getFechaPostulacion());
         postulacion.setNombreObra(dto.getNombreObra());
 
-        Postulacion saved = postulacionRepository.save(postulacion);
-        return PostulacionMapper.mapToPostulacionDto(saved);
+//        Postulacion saved = postulacionRepository.save(postulacion);
+//        return PostulacionMapper.mapToPostulacionDto(saved);
+        try {
+            Postulacion saved = postulacionRepository.save(postulacion);
+            return PostulacionMapper.mapToPostulacionDto(saved);
+
+        } catch (DataIntegrityViolationException e) {
+
+            if (actividad.isInfantil()) {
+                throw new IllegalStateException(
+                        "Este postulante ya está registrado en esta actividad"
+                );
+            }
+
+            throw e; // otros errores reales
+        }
+
     }
 
     @Override
@@ -207,6 +254,7 @@ public class PostulacionServiceImpl implements PostulacionService {
             String idJurado,
             Integer ronda
     ) {
+
         return postulacionRepository.findPendientesParaJurado(
                 //EstadoPost.PENDIENTE,
                 idJurado,
@@ -273,5 +321,42 @@ public class PostulacionServiceImpl implements PostulacionService {
             );
         }).collect(Collectors.toList());
     }
+
+    private void validarPostulacionAdulto(
+            String idUsuario,
+            String idActividad
+    ) {
+        if (postulacionRepository
+                .existsByParticipante_IdUsuarioAndActividad_IdActividad(
+                        idUsuario, idActividad
+                )) {
+
+            throw new IllegalStateException(
+                    "Ya estás registrado en esta actividad"
+            );
+        }
+    }
+
+    private void validarPostulacionInfantil(
+            String actividadId,
+            String postulanteNombre
+    ) {
+        if (postulacionRepository
+                .existsByActividad_IdActividadAndPostulante(
+                        actividadId, postulanteNombre
+                )) {
+
+            throw new IllegalStateException(
+                    "Este postulante ya está registrado"
+            );
+        }
+    }
+
+    @Override
+    public boolean existePostulacion(String idUsuario, String idActividad) {
+        return postulacionRepository
+                .existsByParticipante_IdUsuarioAndActividad_IdActividad(idUsuario, idActividad);
+    }
+
 
 }

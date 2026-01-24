@@ -109,13 +109,7 @@ public class PostulacionController {
     }*/
 
     @GetMapping("/pendientes/jurado")
-    public ResponseEntity<List<PostulacionPendienteJuradoDto>> getPendientesParaJurado(
-            @RequestParam String idJurado,
-            @RequestParam Integer ronda
-    ) {
-        return ResponseEntity.ok(
-                postulacionService.getPendientesParaJurado(idJurado, ronda)
-        );
+    public ResponseEntity<List<PostulacionPendienteJuradoDto>> getPendientesParaJurado( @RequestParam String idJurado, @RequestParam Integer ronda ) { return ResponseEntity.ok( postulacionService.getPendientesParaJurado(idJurado, ronda) );
     }
 
     @PostMapping("/convocatoria/registro-postal")
@@ -136,5 +130,25 @@ public class PostulacionController {
                 postulacionService.getParticipantesByActividad(idActividad)
         );
     }
+
+    @GetMapping("/existe")
+    public ResponseEntity<Boolean> existePostulacion(
+            @RequestParam String idUsuario,
+            @RequestParam String idActividad
+    ) {
+        return ResponseEntity.ok(
+                postulacionService.existePostulacion(idUsuario, idActividad)
+        );
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleBusinessException(
+            IllegalStateException ex
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
 
 }

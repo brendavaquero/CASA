@@ -13,6 +13,7 @@ import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ParticipanteMapper;
 import org.casa.backend.repository.ParticipanteRepository;
 import org.casa.backend.service.ParticipanteService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,46 @@ public class ParticipanteServiceImpl implements ParticipanteService {
 
     @Override
     public ParticipanteDto createParticipante(ParticipanteDto participanteDto) {
+        if (participanteRepository.existsByCurp(participanteDto.getCurp())) {
+            // Lanzamos una excepción controlada o retornamos un error
+            throw new IllegalArgumentException("La CURP ya está registrada");
+        }
         Participante participante = ParticipanteMapper.mapToParticipante(participanteDto);
+        participante.setRol(Rol.PARTICIPANTE);
         Participante savedParticipante = participanteRepository.save(participante);
         return ParticipanteMapper.mapToParticipanteDto(savedParticipante);
     }
+
+    @Override
+    public ParticipanteDto createParticipantePublico(ParticipanteDto dto) {
+        if (participanteRepository.existsByCurp(dto.getCurp())) {
+            // Lanzamos una excepción controlada o retornamos un error
+            throw new IllegalArgumentException("La CURP ya está registrada");
+        }
+        Participante participante = ParticipanteMapper.mapToParticipante(dto);
+        participante.setRol(Rol.PARTICIPANTE);
+        participante.setActivo(true);
+        //Usuario usuario = ParticipanteMapper.mapToParticipante(dto);
+        participante.setContrasenia(passwordEncoder.encode(dto.getContrasenia()));
+
+        try {
+            // Intentamos guardar
+            Participante saved = participanteRepository.save(participante);
+            return ParticipanteMapper.mapToParticipanteDto(saved);
+        } catch (DataIntegrityViolationException e) {
+            // Captura cualquier violación de la restricción UNIQUE en la BD
+            throw new IllegalArgumentException("La CURP ya está asociada a un usuario");
+        }
+    }
+
+    public void registrarParticipante(Participante participante) {
+        boolean existe = participanteRepository.existsByCurp(participante.getCurp());
+        if (existe) {
+            throw new IllegalArgumentException("El CURP ya está registrado");
+        }
+        participanteRepository.save(participante);
+    }
+
 
     @Override
     public List<ParticipanteDto> getAllParticipantes() {
@@ -72,18 +109,6 @@ public class ParticipanteServiceImpl implements ParticipanteService {
     }
 
     @Override
-    public ParticipanteDto createParticipantePublico(ParticipanteDto dto) {
-        dto.setRol(Rol.PARTICIPANTE);
-        dto.setActivo(true);
-
-        Usuario usuario = ParticipanteMapper.mapToParticipante(dto);
-        usuario.setContrasenia(passwordEncoder.encode(dto.getContrasenia()));
-
-        Participante saved = participanteRepository.save((Participante) usuario);
-        return ParticipanteMapper.mapToParticipanteDto(saved);
-    }
-
-    @Override
     public Participante registrarParticipantePostal(RegistroPostalDto dto) {
 
         String contraseniaTemporal = generarContraseniaTemporal();
@@ -95,8 +120,8 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         participante.setCorreo(dto.getCorreo());
         participante.setRol(Rol.PARTICIPANTE);
         // encriptar
-        participante.setContrasenia(contraseniaTemporal);
-
+        //participante.setContrasenia(contraseniaTemporal);
+        participante.setContrasenia(passwordEncoder.encode(contraseniaTemporal));
         // participante
         participante.setSexo(dto.getSexo());
         participante.setFechaNacimiento(dto.getFechaNacimiento());
