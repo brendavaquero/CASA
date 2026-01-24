@@ -36,9 +36,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/authPs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/authPs/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/auth/login/**").permitAll()
                 .requestMatchers("/api/usuarios/me/**").authenticated()//Actualizar ultimo acceso
-                
+
                 //Público
                 .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers("/auth/register/participante").permitAll()
@@ -46,9 +46,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/talleresydiplomados/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/sesiones/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/archivos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/catalagos/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/catalogos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/docentes/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/participantes/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/postulaciones/existe").permitAll()
 
                     //test brenda
                 //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
@@ -58,7 +61,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/email/**").hasRole("ADMINISTRADOR")
 
                 //Jurado
-                .requestMatchers(HttpMethod.GET, "/api/jurado/**").hasAnyRole("ADMINISTRADOR", "JURADO")
+                    .requestMatchers(HttpMethod.GET, "/api/postulaciones/pendientes/jurado").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/jurado/**").hasAnyRole("ADMINISTRADOR", "JURADO")
                 .requestMatchers(HttpMethod.GET, "/api/evaluacion/**").hasAnyRole("ADMINISTRADOR","JURADO")
                 .requestMatchers(HttpMethod.POST,"/api/evaluacion/**").hasAnyRole("ADMINISTRADOR","JURADO")
 
@@ -75,29 +79,34 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/sesiones/**").hasRole("ADMINISTRADOR")
 
                 //Permisos para admin y docente
-                .requestMatchers("/api/asistencias/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
+                .requestMatchers("/api/asistencias/**").hasRole("ADMINISTRADOR")
                 .requestMatchers(HttpMethod.POST, "/api/talleresydiplomados/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
-                
+
                 //Permisos participante y admin
                 .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").hasAnyRole("PARTICIPANTE","DOCENTE","ADMINISTRADOR","AUXILIAR")
                 .requestMatchers(HttpMethod.GET,"/api/alumnos/**").hasAnyRole("PARTICIPANTE","DOCENTE")
                 .requestMatchers(HttpMethod.GET, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO", "DOCENTE")
                 .requestMatchers(HttpMethod.PUT, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO","DOCENTE")
 
-                //Auxiliar
+                //Invitado
                 .requestMatchers(HttpMethod.GET, "/api/programas/**").hasRole("INVITADO")
+
+                    //Auxiliar
+                    .requestMatchers(HttpMethod.POST, "/api/participantes/registro-postal/**").hasRole("AUXILIAR")
+                    .requestMatchers(HttpMethod.POST, "/api/convocatoria/registro-postal/**").hasRole("AUXILIAR")
+                    .requestMatchers(HttpMethod.POST, "/api/postulaciones/convocatoria/**").hasRole("AUXILIAR")
 
                 //Mas de 2 Roles
                 .requestMatchers("/api/archivos/**").hasAnyRole("ADMINISTRADOR","DOCENTE","INVITADO","PARTICIPANTE","AUXILIAR")
                 .requestMatchers("/api/programas/**").hasAnyRole("ADMINISTRADOR","AUXILIAR")
                 .requestMatchers("/api/reportes/**").hasAnyRole("ADMINISTRADOR","AUXILIAR")
-                
+
                 //Permisos para admin y jurado
                 .requestMatchers("/api/evaluacion/**").hasAnyRole("ADMINISTRADOR","JURADO")
 
                 //ADMIN
                 .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
-                .requestMatchers("/api/participantes/**").hasRole("ADMINISTRADOR")
+                //.requestMatchers("/api/participantes/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/docentes/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
                 .requestMatchers("/api/ganador/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/jurado/**").hasRole("ADMINISTRADOR")
