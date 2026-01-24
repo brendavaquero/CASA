@@ -50,20 +50,20 @@ public class ArchivoServiceImpl implements ArchivoService {
 
         // Validar exclusividad
         if (archivoDto.getIdActividad() != null && archivoDto.getIdPostulacion() != null) {
-            throw new RuntimeException("Un archivo solo puede estar asociado a Actividad o Postulación, no a ambas");
+            throw new ResourceNotFoundException("Un archivo solo puede estar asociado a Actividad o Postulación, no a ambas");
         }
 
         // Asociar Actividad si existe
         if (archivoDto.getIdActividad() != null) {
             Actividad actividad = actividadRepository.findById(archivoDto.getIdActividad())
-                    .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
             archivo.setActividad(actividad);
         }
 
         // Asociar Postulación si existe
         if (archivoDto.getIdPostulacion() != null) {
             Postulacion postulacion = postulacionRepository.findById(archivoDto.getIdPostulacion())
-                    .orElseThrow(() -> new RuntimeException("Postulación no encontrada"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
             archivo.setPostulacion(postulacion);
         }
 
@@ -185,14 +185,14 @@ public class ArchivoServiceImpl implements ArchivoService {
             // Asociar actividad
             if (idActividad != null) {
                 Actividad actividad = actividadRepository.findById(idActividad)
-                        .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
                 archivo.setActividad(actividad);
             }
 
             // Asociar postulación
             if (idPostulacion != null) {
                 Postulacion postulacion = postulacionRepository.findById(idPostulacion)
-                        .orElseThrow(() -> new RuntimeException("Postulación no encontrada"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Postulación no encontrada"));
                 archivo.setPostulacion(postulacion);
             }
 
@@ -203,7 +203,7 @@ public class ArchivoServiceImpl implements ArchivoService {
             return ArchivoMapper.mapToArchivoDto(saved);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error al subir archivo: " + e.getMessage());
+            throw new ResourceNotFoundException("Error al subir archivo: " + e.getMessage());
         }
     }
 

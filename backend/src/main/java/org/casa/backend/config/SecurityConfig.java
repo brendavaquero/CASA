@@ -52,6 +52,12 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/docentes/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/participantes/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/postulaciones/existe").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/codigo-postal/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/usuarios/general/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/participantes/**").permitAll()
+
+
 
                     //test brenda
                 //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
@@ -83,13 +89,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/talleresydiplomados/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
 
                 //Permisos participante y admin
-                .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").hasAnyRole("PARTICIPANTE","DOCENTE","ADMINISTRADOR","AUXILIAR")
+                //.requestMatchers(HttpMethod.POST, "/api/postulaciones/**").hasAnyRole("PARTICIPANTE","DOCENTE","ADMINISTRADOR","AUXILIAR")
                 .requestMatchers(HttpMethod.GET,"/api/alumnos/**").hasAnyRole("PARTICIPANTE","DOCENTE")
                 .requestMatchers(HttpMethod.GET, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO", "DOCENTE")
                 .requestMatchers(HttpMethod.PUT, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO","DOCENTE")
 
                 //Invitado
-                .requestMatchers(HttpMethod.GET, "/api/programas/**").hasRole("INVITADO")
+                .requestMatchers(HttpMethod.GET, "/api/programas/**").hasAnyRole("INVITADO","ADMINISTRADOR")
 
                     //Auxiliar
                     .requestMatchers(HttpMethod.POST, "/api/participantes/registro-postal/**").hasRole("AUXILIAR")
@@ -106,7 +112,8 @@ public class SecurityConfig {
 
                 //ADMIN
                 .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
-                //.requestMatchers("/api/participantes/**").hasRole("ADMINISTRADOR")
+                                   // brenda lo tenía comentado:
+                .requestMatchers("/api/participantes/**").hasAnyRole("ADMINISTRADOR","PARTICIPANTE")
                 .requestMatchers("/api/docentes/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
                 .requestMatchers("/api/ganador/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/jurado/**").hasRole("ADMINISTRADOR")

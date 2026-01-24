@@ -185,7 +185,7 @@ public class PostulacionServiceImpl implements PostulacionService {
 
         int cupo = taller.getCupo();
         if (postulacionesAprobadas.size() > cupo) {
-            throw new IllegalArgumentException("No puedes seleccionar más participantes del cupo");
+            throw new ResourceNotFoundException("No puedes seleccionar más participantes del cupo");
         }
 
         // 2. Obtener TODAS las postulaciones de esa actividad

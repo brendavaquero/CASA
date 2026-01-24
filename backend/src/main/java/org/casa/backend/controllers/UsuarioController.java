@@ -52,6 +52,12 @@ public class UsuarioController {
         UsuarioDto usuarioDto = usuarioService.updateUsuario(usuarioId, updatedUsuario);
         return ResponseEntity.ok(usuarioDto);
     }
+    //Actualizar un usuario general
+    @PutMapping("/general/{id}")
+    public ResponseEntity<UsuarioDto> updateUsuarioGen(@PathVariable("id") String usuarioId, @RequestBody UsuarioDto updatedUsuario){
+        UsuarioDto usuarioDto = usuarioService.updateUsuarioGeneral(usuarioId, updatedUsuario);
+        return ResponseEntity.ok(usuarioDto);
+    }
 
     /*
     @PutMapping("/me/ultimo-acceso")

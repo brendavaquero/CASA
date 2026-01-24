@@ -1,6 +1,5 @@
 package org.casa.backend.dto;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -18,8 +17,8 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
     private String bases;
     private String premio;
     private String convocantes;
-    private Date fechaInicioR1;
-    private Date fechaLimiteR1;
+    private LocalDate fechaInicioR1;
+    private LocalDate fechaLimiteR1;
 
     public ConvocatoriaResidenciaDto(
             String idActividad,
@@ -39,8 +38,8 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
             String bases,
             String premio,
             String convocantes,
-            Date fechaInicioR1,
-            Date fechaLimiteR1
+            LocalDate fechaInicioR1,
+            LocalDate fechaLimiteR1
     ){
         super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
         this.bases = bases;

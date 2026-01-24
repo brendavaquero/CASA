@@ -40,4 +40,9 @@ public class SesionController {
         SesionDto sesion = sesionService.updateSesion(idSesion, updateSesion);
         return ResponseEntity.ok(sesion);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSesion(@PathVariable("id") String idSesion){
+        sesionService.deleteSesion(idSesion);
+        return ResponseEntity.ok("Sesion eliminada correctamente");
+    }
 }

@@ -68,4 +68,12 @@ public class SesionServiceImpl implements SesionService {
        return SesionMapper.mapToSesionDto(sesionObj);
     }
 
+    @Override
+    public void deleteSesion(String idSesion) {
+        Sesion sesion = sesionRepository.findById(idSesion).orElseThrow(
+            () -> new ResourceNotFoundException("Sesion no encontrada con id: "+ idSesion)
+        );
+        sesionRepository.deleteById(idSesion);
+    }
+
 }

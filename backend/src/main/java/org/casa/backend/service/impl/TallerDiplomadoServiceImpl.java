@@ -47,14 +47,47 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
     private ProgramaRepository programaRepository;
     private ActividadRepository actividadRepository;
     private SesionRepository sesionRepository;
+
+    private void validarFechas(TallerDiplomado t) {
+        LocalDate hoy = LocalDate.now();
+
+        // Fecha inicio >= hoy
+        if (t.getFechaInicio().isBefore(hoy)) {
+            throw new IllegalArgumentException(
+                "La fecha de inicio no puede ser anterior a hoy"
+            );
+        }
+
+        // Fecha cierre >= fecha inicio
+        if (t.getFechaCierre().isBefore(t.getFechaInicio())) {
+            throw new IllegalArgumentException(
+                "La fecha de cierre no puede ser menor a la fecha de inicio"
+            );
+        }
+
+        // Fecha resultados >= fecha cierre
+        if (t.getFechaResultados().isBefore(t.getFechaCierre())) {
+            throw new IllegalArgumentException(
+                "La fecha de resultados no puede ser menor a la fecha de cierre"
+            );
+        }
+    }
+
     @Override
     public TallerDiplomadoDto createTallerDiplomado(TallerDiplomadoDto tallerDiplomadoDto) {
         Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdDocente())
             .orElseThrow(() -> new ResourceNotFoundException("Docente no encontrado"));
 
-        Programa programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())
-            .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado"));
+        Programa programa = null;
 
+        if (tallerDiplomadoDto.getIdPrograma() != null) {
+            programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Programa no encontrado con id: " + tallerDiplomadoDto.getIdPrograma()
+                    )
+                );
+        }
 
         TallerDiplomado tallerDiplomado = TallerDiplomadoMapper.mapToTallerDiplomado(tallerDiplomadoDto,programa,docente);
         TallerDiplomado savedTallerDiplomado = tallerDiplomadoRepository.save(tallerDiplomado);
@@ -85,8 +118,18 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
         actividad.setFechaCierre(updatedActividad.getFechaCierre());
         actividad.setFechaResultados(updatedActividad.getFechaResultados());
         actividad.setNumSesiones(updatedActividad.getNumSesiones());
-        /*actividad.setRequisitos(updatedActividad.getRequisitos());
-        actividad.setEstado(updatedActividad.getEstado());*/
+
+        if (updatedActividad.getIdPrograma() != null) {
+        Programa programa = programaRepository.findById(updatedActividad.getIdPrograma())
+            .orElseThrow(() ->
+                new ResourceNotFoundException(
+                    "Programa no encontrado con id: " + updatedActividad.getIdPrograma()
+                )
+            );
+        actividad.setPrograma(programa);
+        actividad.setVisible(true);
+    }
+        validarFechas(actividad);
         TallerDiplomado updatedActividadObj = tallerDiplomadoRepository.save(actividad);
 
         return TallerDiplomadoMapper.mapToTallerDiplomadoDto(updatedActividadObj);
@@ -183,6 +226,7 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
 
     @Override
     @Transactional
+    //2min @Scheduled(cron = "0 */2 * * * *")
     @Scheduled(cron = "0 0 0/12 * * *")
     public void actualizarEstadosTalleres() {
 

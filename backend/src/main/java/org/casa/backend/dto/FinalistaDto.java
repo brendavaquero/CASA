@@ -18,6 +18,7 @@ public class FinalistaDto {
     private String idPostulacion;
     private String nombre;
     private String apellidos;
+    private String correo;
     private String postulante;
     private String nombreObra;
     private String ruta;

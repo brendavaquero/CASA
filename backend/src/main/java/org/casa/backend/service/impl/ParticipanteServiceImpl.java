@@ -91,14 +91,8 @@ public class ParticipanteServiceImpl implements ParticipanteService {
 
         participante.setNombre(participanteDto.getNombre());
         participante.setApellidos(participanteDto.getApellidos());
-        participante.setActivo(participanteDto.getActivo());
-        participante.setUltimo_acceso(participanteDto.getUltimoAcceso());
-        participante.setNombreParticipante(participanteDto.getNombreParticipante());
+        participante.setCorreo(participanteDto.getCorreo());
         participante.setNumeroTelefono(participanteDto.getNumeroTelefono());
-        participante.setCodigoPostal(participanteDto.getCodigoPostal());
-        participante.setPais(participanteDto.getPais());
-        participante.setEstado(participanteDto.getEstado());
-        participante.setMunicipio(participanteDto.getMunicipio());
         participante.setGradoEstudio(participanteDto.getGradoEstudio());
         participante.setOcupacion(participanteDto.getOcupacion());
         participante.setSeudonimo(participanteDto.getSeudonimo());
