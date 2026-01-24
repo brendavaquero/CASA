@@ -11,6 +11,8 @@ import org.casa.backend.mapper.UsuarioMapper;
 import org.casa.backend.repository.UsuarioRepository;
 import org.casa.backend.service.UsuarioService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.AllArgsConstructor;
 
@@ -27,6 +29,12 @@ public class UsuarioServiceImpl implements UsuarioService{
         usuario.setContrasenia(
             passwordEncoder.encode(usuario.getContrasenia())
         );
+        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "El correo ya está registrado"
+            );
+        }
 
         Usuario savedUsuario = usuarioRepository.save(usuario);
         return UsuarioMapper.mapToUsuarioDto(savedUsuario);
@@ -55,6 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         usuario.setApellidos(updatedUsuario.getApellidos());
         usuario.setActivo(updatedUsuario.isActivo());
         usuario.setRol(updatedUsuario.getRol());
+        usuario.setCorreo(updatedUsuario.getCorreo());
         Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
 
         return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);
@@ -98,5 +107,16 @@ public class UsuarioServiceImpl implements UsuarioService{
         usuarioRepository.save(usuario);
     }
 
+ @Override
+    public UsuarioDto updateUsuarioGeneral(String usuarioId, UsuarioDto updatedUsuario) {
+       Usuario usuario =  usuarioRepository.findById(usuarioId).orElseThrow(
+        () -> new ResourceNotFoundException("Usuario no encontrado con ese id "+ usuarioId)
+       );
+        usuario.setNombre(updatedUsuario.getNombre());
+        usuario.setApellidos(updatedUsuario.getApellidos());
+        usuario.setCorreo(updatedUsuario.getCorreo());
+        Usuario updatedUsuarioObj =  usuarioRepository.save(usuario);
 
+        return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);
+    }
 }

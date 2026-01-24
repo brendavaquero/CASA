@@ -78,9 +78,16 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
         Docente docente = docenteRepository.findById(tallerDiplomadoDto.getIdDocente())
             .orElseThrow(() -> new ResourceNotFoundException("Docente no encontrado"));
 
-        Programa programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())
-            .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado"));
+        Programa programa = null;
 
+        if (tallerDiplomadoDto.getIdPrograma() != null) {
+            programa = programaRepository.findById(tallerDiplomadoDto.getIdPrograma())
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Programa no encontrado con id: " + tallerDiplomadoDto.getIdPrograma()
+                    )
+                );
+        }
 
         TallerDiplomado tallerDiplomado = TallerDiplomadoMapper.mapToTallerDiplomado(tallerDiplomadoDto,programa,docente);
         TallerDiplomado savedTallerDiplomado = tallerDiplomadoRepository.save(tallerDiplomado);
@@ -111,8 +118,17 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
         actividad.setFechaCierre(updatedActividad.getFechaCierre());
         actividad.setFechaResultados(updatedActividad.getFechaResultados());
         actividad.setNumSesiones(updatedActividad.getNumSesiones());
-        /*actividad.setRequisitos(updatedActividad.getRequisitos());
-        actividad.setEstado(updatedActividad.getEstado());*/
+
+        if (updatedActividad.getIdPrograma() != null) {
+        Programa programa = programaRepository.findById(updatedActividad.getIdPrograma())
+            .orElseThrow(() ->
+                new ResourceNotFoundException(
+                    "Programa no encontrado con id: " + updatedActividad.getIdPrograma()
+                )
+            );
+        actividad.setPrograma(programa);
+        actividad.setVisible(true);
+    }
         validarFechas(actividad);
         TallerDiplomado updatedActividadObj = tallerDiplomadoRepository.save(actividad);
 

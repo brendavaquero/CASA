@@ -50,6 +50,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/postulaciones/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/codigo-postal/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/usuarios/general/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/participantes/**").permitAll()
+
+
+
                     //test brenda
                 //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
                 //.requestMatchers(HttpMethod.GET, "/api/programas/**").permitAll()
@@ -85,7 +91,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/postulaciones/**").hasAnyRole("ADMINISTRADOR", "JURADO","DOCENTE")
 
                 //Auxiliar
-                .requestMatchers(HttpMethod.GET, "/api/programas/**").hasRole("INVITADO")
+                .requestMatchers(HttpMethod.GET, "/api/programas/**").hasAnyRole("INVITADO","ADMINISTRADOR")
 
                 //Mas de 2 Roles
                 .requestMatchers("/api/archivos/**").hasAnyRole("ADMINISTRADOR","DOCENTE","INVITADO","PARTICIPANTE","AUXILIAR")
@@ -97,7 +103,7 @@ public class SecurityConfig {
 
                 //ADMIN
                 .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
-                .requestMatchers("/api/participantes/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/api/participantes/**").hasAnyRole("ADMINISTRADOR","PARTICIPANTE")
                 .requestMatchers("/api/docentes/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
                 .requestMatchers("/api/ganador/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/jurado/**").hasRole("ADMINISTRADOR")

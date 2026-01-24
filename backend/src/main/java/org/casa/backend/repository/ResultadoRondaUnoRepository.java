@@ -33,6 +33,7 @@ SELECT new org.casa.backend.dto.FinalistaDto(
 
     po.participante.nombre,
     po.participante.apellidos,
+    po.participante.correo,
     po.postulante,
     po.nombreObra,
     ar.ruta,

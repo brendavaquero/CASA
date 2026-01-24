@@ -35,21 +35,18 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
     private void validarFechasConvocatoria(ConvocatoriaResidencia c) {
         LocalDate hoy = LocalDate.now();
 
-        // Fecha inicio >= hoy
         if (c.getFechaInicio().isBefore(hoy)) {
             throw new IllegalArgumentException(
                 "La fecha de inicio no puede ser anterior a hoy"
             );
         }
 
-        // Fecha cierre >= fecha inicio
         if (c.getFechaCierre().isBefore(c.getFechaInicio())) {
             throw new IllegalArgumentException(
                 "La fecha de cierre no puede ser menor a la fecha de inicio"
             );
         }
 
-        // Fecha resultados >= fecha cierre
         if (c.getFechaResultados().isBefore(c.getFechaCierre())) {
             throw new IllegalArgumentException(
                 "La fecha de resultados no puede ser menor a la fecha de cierre"
@@ -124,14 +121,12 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
         }
     }
 
-
     @Override
     public ConvocatoriaResidenciaDto createConvocatoriaResi(ConvocatoriaResidenciaDto convocatoriaResiDto, MultipartFile imagen, MultipartFile bases) {
         try {
             String urlImagen = null;
             String urlBases = null;
 
-            //para la imagen
             if (imagen != null && !imagen.isEmpty()) {
 
                 String originalName = imagen.getOriginalFilename();
@@ -154,7 +149,6 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
                 urlImagen = "/uploads/convocatorias/imagenes/" + fileName;
             }
 
-            //para el pdf
             if (bases != null && !bases.isEmpty()) {
 
                 String originalName = bases.getOriginalFilename();
@@ -184,6 +178,7 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
             convocatoria.setEstado(EstadoActividad.AUTORIZADA);
             convocatoria.setImagen(urlImagen);
             convocatoria.setBases(urlBases);
+            convocatoria.setVisible(true);
             validarConvocatoriaDuplicada(convocatoria);
 
             validarFechasConvocatoria(convocatoria);
