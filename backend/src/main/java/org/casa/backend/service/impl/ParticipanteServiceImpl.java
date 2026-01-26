@@ -34,6 +34,8 @@ public class ParticipanteServiceImpl implements ParticipanteService {
         }
         Participante participante = ParticipanteMapper.mapToParticipante(participanteDto);
         participante.setRol(Rol.PARTICIPANTE);
+        participante.setActivo(true);
+        participante.setContrasenia(passwordEncoder.encode(participanteDto.getContrasenia()));
         Participante savedParticipante = participanteRepository.save(participante);
         return ParticipanteMapper.mapToParticipanteDto(savedParticipante);
     }
