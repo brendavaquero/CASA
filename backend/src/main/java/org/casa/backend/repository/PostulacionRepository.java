@@ -59,7 +59,7 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, String
     @Query("SELECT p FROM Postulacion p WHERE p.actividad.idActividad = :idActividad AND p.estado = 'aprobada'")
     List<Postulacion> findAprobadasByActividad(@Param("idActividad") String idActividad);*/
 
-    
+
     // listar postulaciones que no han sido evaluadas por un usuario (jurado)
     @Query("""
 SELECT new org.casa.backend.dto.PostulacionPendienteJuradoDto(

@@ -51,7 +51,7 @@ public class Participante extends Usuario{
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", length = 100, nullable = true)
     private Estado estado;
-    
+
     @Column(name = "municipio", length = 100, nullable = true)
     private String municipio;
 

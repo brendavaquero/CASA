@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.casa.backend.dto.FinalistaDto;
@@ -80,9 +81,21 @@ public class GanadorServiceImpl implements GanadorService {
     }
 
     @Override
+    @Transactional
     public void seleccionarGanador(String idResultado) {
+
         ResultadoRondaUno resultado = resultadoRepository.findById(idResultado)
                 .orElseThrow(() -> new RuntimeException("Resultado no encontrado"));
+
+        String idConvocatoria = resultado.getIdConvocatoria();
+
+        // 🔒 VALIDACIÓN POR RELACIÓN
+        if (ganadorRepository.existsByResultado_IdConvocatoria(idConvocatoria)) {
+            throw new IllegalStateException(
+                    "Ya existe un ganador para esta convocatoria"
+            );
+        }
+
         Archivo archivo = archivoRepository
                 .findByPostulacion_IdPostulacion(resultado.getIdPostulacion())
                 .orElseThrow(() -> new RuntimeException("Archivo no encontrado"));
@@ -92,8 +105,10 @@ public class GanadorServiceImpl implements GanadorService {
         ganador.setArchivo(archivo);
         ganador.setSemblanza(null);
         ganador.setFoto(null);
+
         ganadorRepository.save(ganador);
     }
+
 
     @Override
     public String uploadImagen(MultipartFile file, String idGanador) {
@@ -152,4 +167,18 @@ public class GanadorServiceImpl implements GanadorService {
                 .map(GanadorConvocatoriaDto::new)
                 .toList();
     }
+
+    @Override
+    public boolean existeGanadorPorConvocatoria(String idConvocatoria) {
+        return ganadorRepository.existsByResultado_IdConvocatoria(idConvocatoria);
+    }
+
+    @Override
+    public GanadorConvocatoriaDto obtenerNombreYApellidos(String idGanador) {
+        Optional<GanadorConvocatoriaDto> resultado = ganadorRepository.findNombreYApellidosByIdGanador(idGanador);
+        return resultado.orElseThrow(() ->
+                new RuntimeException("No se encontró un ganador con id: " + idGanador)
+        );
+    }
+
 }

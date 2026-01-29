@@ -296,7 +296,7 @@ public class PostulacionServiceImpl implements PostulacionService {
         return postulacionGuardada;
     }
 
-    //obtener las postulacion pero con todo lo de participante
+    //obtener las postulacion pero con participante
     @Override
     public List<PostulacionParticipanteDto> getParticipantesByActividad(String idActividad) {
         List<Postulacion> participantes =

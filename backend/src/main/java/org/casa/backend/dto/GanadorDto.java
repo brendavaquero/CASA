@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GanadorDto {
     private String idGanador;
+    //private String nombre;
+    //private String apellidos;
     private String semblanza;
     private String foto;
     private String idArchivo;

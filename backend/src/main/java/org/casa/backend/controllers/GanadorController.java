@@ -46,6 +46,11 @@ public class GanadorController {
         return ResponseEntity.ok(ganadorDto);
     }
 
+    @GetMapping("/nombre/{idGanador}")
+    public GanadorConvocatoriaDto obtenerNombreYApellidos(@PathVariable String idGanador) {
+        return ganadorService.obtenerNombreYApellidos(idGanador);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<GanadorDto> actualizarGanador(@PathVariable("id") String idGanador, @RequestBody GanadorDto updatedGanador){
         GanadorDto ganadorDto = ganadorService.updateGanador(idGanador, updatedGanador);
@@ -67,5 +72,13 @@ public class GanadorController {
         return ResponseEntity.ok(
                 ganadorService.obtenerGanadoresPorConvocatoria(idConvocatoria)
         );
+    }
+
+    @GetMapping("/existe/{idConvocatoria}")
+    public ResponseEntity<Boolean> existeGanador(
+            @PathVariable String idConvocatoria
+    ) {
+        boolean existe = ganadorService.existeGanadorPorConvocatoria(idConvocatoria);
+        return ResponseEntity.ok(existe);
     }
 }

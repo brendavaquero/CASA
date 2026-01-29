@@ -163,7 +163,7 @@ public class EvaluacionServiceImpl implements EvaluacionService{
                 e.getPostulacion().getParticipante().getNombre(),
                 e.getPostulacion().getParticipante().getApellidos(),
                 e.getJurado().getUsuario().getNombre(),
-                e.getJurado().getUsuario().getNombre()
+                e.getJurado().getUsuario().getApellidos()
             ))
             .toList();
     }

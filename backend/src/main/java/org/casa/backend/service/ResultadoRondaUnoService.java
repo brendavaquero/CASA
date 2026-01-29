@@ -11,4 +11,5 @@ public interface ResultadoRondaUnoService {
     List<ResultadoRondaUno> obtenerFinalistas(String idConvocatoria);
     //void asignarGanador(String idConvocatoria, String idPostulacion);
     List<FinalistaDto> obtenerFinalistasDTO(String idConvocatoria);
+    List<FinalistaDto> prepararRondaFinal(String idConvocatoria);
 }
