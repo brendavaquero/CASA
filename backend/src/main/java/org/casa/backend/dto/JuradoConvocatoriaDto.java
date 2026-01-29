@@ -29,7 +29,7 @@ public class JuradoConvocatoriaDto {
     private String bases;
     private String premio;
     private String convocantes;
-    private LocalDate fechaInicioR1;
+    private LocalDate fechaInicioR1; 
     private LocalDate fechaLimiteR1;
     private EstadoActividad estado;
 }

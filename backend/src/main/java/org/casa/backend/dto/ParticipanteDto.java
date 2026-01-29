@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import org.casa.backend.enums.Estado;
 import org.casa.backend.enums.GradoEstudio;
 import org.casa.backend.enums.LenguaInd;
-import org.casa.backend.enums.Municipio;
 import org.casa.backend.enums.Pais;
 import org.casa.backend.enums.Rol;
 

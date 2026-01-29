@@ -226,8 +226,8 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
 
     @Override
     @Transactional
-    //2min @Scheduled(cron = "0 */2 * * * *")
-    @Scheduled(cron = "0 0 0/12 * * *")
+    @Scheduled(cron = "0 */2 * * * *")
+    //@Scheduled(cron = "0 0 0/12 * * *")
     public void actualizarEstadosTalleres() {
 
         LocalDate hoy = LocalDate.now();
