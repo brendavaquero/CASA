@@ -42,7 +42,7 @@ public class ResultadoRondaUnoServiceImpl implements ResultadoRondaUnoService {
         // 2 Calcular promedios
         List<PromedioPostulacionProjection> promedios =
                 evaluacionRepository.calcularPromediosRondaUno(idConvocatoria);
-
+        System.out.println("Promedios encontrados: " + promedios.size());
         if (promedios.isEmpty()) {
             throw new IllegalStateException(
                     "No existen evaluaciones válidas para cerrar la ronda"
@@ -122,4 +122,17 @@ public class ResultadoRondaUnoServiceImpl implements ResultadoRondaUnoService {
     public List<FinalistaDto> obtenerFinalistasDTO(String idConvocatoria) {
         return resultadoRepository.obtenerFinalistasDTO(idConvocatoria);
     }
+
+    @Override
+    @Transactional
+    public List<FinalistaDto> prepararRondaFinal(String idConvocatoria) {
+
+        // Si no existen resultados, la ronda uno no está cerrada
+        if (!resultadoRepository.existsByIdConvocatoria(idConvocatoria)) {
+            cerrarRondaUno(idConvocatoria);
+        }
+
+        return obtenerFinalistasDTO(idConvocatoria);
+    }
+
 }

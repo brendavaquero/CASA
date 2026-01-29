@@ -38,7 +38,7 @@ public class ParticipanteDto {
     private Integer codigoPostal;
     private Pais pais;
     private Estado estado;
-    private Municipio municipio;
+    private String municipio;
     private GradoEstudio gradoEstudio;
     private String ocupacion;
     private LenguaInd lenguaIndigena;

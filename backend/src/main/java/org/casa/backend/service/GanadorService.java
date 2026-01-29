@@ -18,4 +18,6 @@ public interface GanadorService {
     void seleccionarGanador(String idResultado);
     String uploadImagen(MultipartFile file, String idGanador);
     List<GanadorConvocatoriaDto> obtenerGanadoresPorConvocatoria(String idConvocatoria);
+    public boolean existeGanadorPorConvocatoria(String idConvocatoria);
+    GanadorConvocatoriaDto obtenerNombreYApellidos(String idGanador);
 }

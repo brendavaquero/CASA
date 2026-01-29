@@ -33,7 +33,8 @@ public interface JuradoRepository extends JpaRepository<Jurado, String>{
         c.premio,
         c.convocantes,
         c.fechaInicioR1,
-        c.fechaLimiteR1
+        c.fechaLimiteR1,
+        c.estado
         )
         FROM Jurado j
         JOIN j.convocatoria c

@@ -45,7 +45,7 @@ public class RegistroPostalDto {
 
     private Estado estado;
 
-    private Municipio municipio;
+    private String municipio;
 
     private GradoEstudio gradoEstudio;
 

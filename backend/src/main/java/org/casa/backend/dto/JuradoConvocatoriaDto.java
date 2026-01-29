@@ -1,6 +1,8 @@
 package org.casa.backend.dto;
 
 import java.time.LocalDate;
+
+import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 
 import lombok.*;
@@ -27,6 +29,7 @@ public class JuradoConvocatoriaDto {
     private String bases;
     private String premio;
     private String convocantes;
-    private LocalDate fechaInicioR1; 
+    private LocalDate fechaInicioR1;
     private LocalDate fechaLimiteR1;
+    private EstadoActividad estado;
 }

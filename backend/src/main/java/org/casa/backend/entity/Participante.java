@@ -52,9 +52,9 @@ public class Participante extends Usuario{
     @Column(name = "estado", length = 100, nullable = true)
     private Estado estado;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "municipio", length = 100, nullable = true)
-    private Municipio municipio;
+    private String municipio;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "grado_estudio", length = 50)

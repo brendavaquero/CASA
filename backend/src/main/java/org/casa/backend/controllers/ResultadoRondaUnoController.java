@@ -11,13 +11,13 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/ronda-uno")
+@RequestMapping("/api/ronda")
 @RequiredArgsConstructor
 public class ResultadoRondaUnoController {
 
     private final ResultadoRondaUnoService resultadoService;
 
-    @PostMapping("/cerrar/{idConvocatoria}")
+    @PostMapping("/uno/cerrar/{idConvocatoria}")
     public ResponseEntity<Void> cerrarRondaUno(
             @PathVariable String idConvocatoria
     ) {
@@ -25,7 +25,7 @@ public class ResultadoRondaUnoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/resultados/{idConvocatoria}")
+    @GetMapping("/uno/resultados/{idConvocatoria}")
     public ResponseEntity<List<ResultadoRondaUno>> obtenerResultados(
             @PathVariable String idConvocatoria
     ) {
@@ -43,7 +43,7 @@ public class ResultadoRondaUnoController {
         );
     }*/
 
-    @GetMapping("/finalistas/{idConvocatoria}")
+    @GetMapping("/uno/finalistas/{idConvocatoria}")
     public ResponseEntity<List<FinalistaDto>> obtenerFinalistas(
             @PathVariable String idConvocatoria
     ) {
@@ -52,4 +52,12 @@ public class ResultadoRondaUnoController {
         );
     }
 
+    @GetMapping("/final/{id}")
+    public ResponseEntity<List<FinalistaDto>> entrarRondaFinal(
+            @PathVariable String id) {
+
+        return ResponseEntity.ok(
+                resultadoService.prepararRondaFinal(id)
+        );
+    }
 }

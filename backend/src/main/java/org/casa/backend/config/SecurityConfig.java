@@ -38,9 +38,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/authPs/**").permitAll()
                 .requestMatchers("/api/auth/login/**").permitAll()
                 .requestMatchers("/api/usuarios/me/**").authenticated()//Actualizar ultimo acceso
+                    //.requestMatchers("/api/ronda/uno/cerrar**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/ronda/uno/cerrar/**").hasRole("ADMINISTRADOR")
 
                 //Público
                 .requestMatchers("/uploads/**").permitAll()
+                    //.requestMatchers("/api/ronda/**").permitAll()
                 .requestMatchers("/auth/register/participante").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/convocatoriasyresidencias/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/talleresydiplomados/**").permitAll()
@@ -48,7 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/archivos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/catalogos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/evaluar/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/api/ronda-uno/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/docentes/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/participantes/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/postulaciones/existe").permitAll()
@@ -83,8 +86,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/sesiones/**").hasRole("ADMINISTRADOR")
                 .requestMatchers(HttpMethod.PUT, "/api/sesiones/**").hasRole("ADMINISTRADOR")
                 .requestMatchers(HttpMethod.DELETE, "/api/sesiones/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.POST,"/api/ronda/uno/cerrar/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET,"/api/ronda/final/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers(HttpMethod.GET,"/api/ganador/**").hasRole("ADMINISTRADOR")
 
                 //Permisos para admin y docente
+                    .requestMatchers("/api/ronda/uno/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/asistencias/**").hasRole("ADMINISTRADOR")
                 .requestMatchers(HttpMethod.POST, "/api/talleresydiplomados/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
 
@@ -110,6 +117,7 @@ public class SecurityConfig {
                 //Permisos para admin y jurado
                 .requestMatchers("/api/evaluacion/**").hasAnyRole("ADMINISTRADOR","JURADO")
 
+
                 //ADMIN
                 .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
                                    // brenda lo tenía comentado:
@@ -118,9 +126,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/ganador/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/jurado/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/alumnos/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers("/api/ronda/**").hasRole("ADMINISTRADOR")
 
                 //.requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
-                .requestMatchers("/administrador/**").hasRole("ADMINISTRADOR")
+                //.requestMatchers("/administrador/**").hasRole("ADMINISTRADOR")
                 //.requestMatchers(HttpMethod.GET, "/api/usuarios/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/docente/**").hasRole("DOCENTE")
                 .requestMatchers("/auxiliar/**").hasRole("AUXILIAR")
@@ -129,7 +138,11 @@ public class SecurityConfig {
                 .requestMatchers("/jurado/**").hasRole("JURADO")
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFilter,
+
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable())
+                )
+                .addFilterBefore(jwtFilter,
                     org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
