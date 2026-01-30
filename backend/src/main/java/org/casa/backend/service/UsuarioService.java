@@ -17,4 +17,5 @@ public interface UsuarioService {
     void deleteUsuario(String usuarioId);
     //Exclusivo para editar el ultimo acceso
     void actualizarUltimoAcceso(String correo);
+    UsuarioDto updateActivo(String idUsuario,boolean activo);
 }

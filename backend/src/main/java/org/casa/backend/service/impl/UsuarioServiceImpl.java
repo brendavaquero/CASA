@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.casa.backend.dto.UsuarioDto;
 import org.casa.backend.entity.Usuario;
+import org.casa.backend.service.PasswordResetService;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.UsuarioMapper;
 import org.casa.backend.repository.UsuarioRepository;
@@ -21,11 +22,13 @@ import lombok.AllArgsConstructor;
 public class UsuarioServiceImpl implements UsuarioService{
     private UsuarioRepository usuarioRepository;
     private PasswordEncoder passwordEncoder;
+    private PasswordResetService PasswordResetService;
 
     @Override
     public UsuarioDto createUsuario(UsuarioDto usuarioDto) {
         Usuario usuario = UsuarioMapper.mapToUsuario(usuarioDto);
         //cifrar la contraseña
+        
         usuario.setContrasenia(
             passwordEncoder.encode(usuario.getContrasenia())
         );
@@ -37,6 +40,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
 
         Usuario savedUsuario = usuarioRepository.save(usuario);
+        PasswordResetService.enviarCorreoRecuperacion(usuario.getCorreo());
         return UsuarioMapper.mapToUsuarioDto(savedUsuario);
     }
 
@@ -119,4 +123,20 @@ public class UsuarioServiceImpl implements UsuarioService{
 
         return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);
     }
+
+    @Override
+    public UsuarioDto updateActivo(String idUsuario, boolean activo) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+            .orElseThrow(() ->
+                new ResourceNotFoundException(
+                    "Usuario no encontrado con ese id " + idUsuario
+                )
+            );
+
+        usuario.setActivo(activo);
+        Usuario updatedUsuarioObj = usuarioRepository.save(usuario);
+
+        return UsuarioMapper.mapToUsuarioDto(updatedUsuarioObj);
+    }
+
 }

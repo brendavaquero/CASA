@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
@@ -58,6 +59,16 @@ public class UsuarioController {
         UsuarioDto usuarioDto = usuarioService.updateUsuarioGeneral(usuarioId, updatedUsuario);
         return ResponseEntity.ok(usuarioDto);
     }
+    @PutMapping("/activo/{id}")
+    public ResponseEntity<UsuarioDto> actualizarActivo(
+            @PathVariable("id") String idUsuario,
+            @RequestParam boolean activo
+    ) {
+        UsuarioDto usuarioActualizado =
+            usuarioService.updateActivo(idUsuario, activo);
+
+        return ResponseEntity.ok(usuarioActualizado);
+    }
 
     /*
     @PutMapping("/me/ultimo-acceso")
@@ -75,4 +86,5 @@ public class UsuarioController {
         usuarioService.deleteUsuario(usuarioId);
         return ResponseEntity.ok("Usuario eliminado correctamente");
     }
+
 }
