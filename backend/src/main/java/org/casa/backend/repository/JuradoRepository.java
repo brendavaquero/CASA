@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.casa.backend.dto.JuradoConvocatoriaDto;
+import org.casa.backend.dto.JuradoDto;
 import org.casa.backend.entity.Jurado;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +45,7 @@ public interface JuradoRepository extends JpaRepository<Jurado, String>{
     List<JuradoConvocatoriaDto> findConvocatoriasByUsuario(@Param("idUsuario") String idUsuario);
 
     Optional<Jurado> findByIdJurado(String idJurado);
+    long countByConvocatoria_IdActividad(String idConvocatoria);
+    //long countByIdActividad(String idConvocatoria);
+    //JuradoDto save(JuradoDto juradoDto);
 }
