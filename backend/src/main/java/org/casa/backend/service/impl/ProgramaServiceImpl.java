@@ -39,8 +39,19 @@ public class ProgramaServiceImpl implements ProgramaService {
 
     @Override
     public ProgramaDto createPrograma(ProgramaDto dto) {
-        Programa programa = ProgramaMapper.mapToPrograma(dto, usuarioRepository);
+           Programa programa = new Programa();
+
+        programa.setNombre(dto.getNombre());
+        programa.setDescripcion(dto.getDescripcion());
+
+        // 🔹 Buscar responsables por IDs
+        List<Usuario> responsables = usuarioRepository
+            .findAllById(dto.getResponsablesIds());
+
+        programa.setResponsables(responsables);
+
         Programa savedPrograma = programaRepository.save(programa);
+
         return ProgramaMapper.mapProgramaToDto(savedPrograma);
     }
 
