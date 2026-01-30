@@ -26,17 +26,44 @@ public class JuradoServiceImpl implements JuradoService {
     private  UsuarioRepository usuarioRepo;
     private  ConvocatoriaResidenciaRepository convocatoriaRepo;
 
+//    @Override
+//    public JuradoDto crear(JuradoDto dto) {
+//        Jurado jurado = new Jurado();
+//        jurado.setUsuario(
+//            usuarioRepo.findById(dto.getIdUsuario()).orElseThrow()
+//        );
+//        jurado.setConvocatoria(
+//            convocatoriaRepo.findById(dto.getIdConvocatoria()).orElseThrow()
+//        );
+//        return JuradoMapper.mapToDto(repository.save(jurado));
+//    }
+
     @Override
     public JuradoDto crear(JuradoDto dto) {
+
         Jurado jurado = new Jurado();
         jurado.setUsuario(
-            usuarioRepo.findById(dto.getIdUsuario()).orElseThrow()
+                usuarioRepo.findById(dto.getIdUsuario())
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"))
         );
         jurado.setConvocatoria(
-            convocatoriaRepo.findById(dto.getIdConvocatoria()).orElseThrow()
+                convocatoriaRepo.findById(dto.getIdConvocatoria())
+                        .orElseThrow(() -> new ResourceNotFoundException("Convocatoria no encontrada"))
         );
+
+        // VALIDACIÓN DE NEGOCIO
+        long totalJurados = repository
+                .countByConvocatoria_IdActividad(dto.getIdConvocatoria());
+
+        if (totalJurados >= 5) {
+            throw new IllegalStateException(
+                    "La convocatoria ya cuenta con el máximo de 5 jurados"
+            );
+        }
+
         return JuradoMapper.mapToDto(repository.save(jurado));
     }
+
 
     @Override
     public List<JuradoDto> listarPorConvocatoria(String idConvocatoria) {
@@ -82,4 +109,19 @@ public class JuradoServiceImpl implements JuradoService {
        return repository.findConvocatoriasByUsuario(idUsuario);
     }
 
+    @Override
+    public Jurado guardarJurado(Jurado jurado) {
+
+        String idConvocatoria = jurado.getConvocatoria().getIdActividad();
+
+        long totalJurados = repository
+                .countByConvocatoria_IdActividad(idConvocatoria);
+
+        if (totalJurados >= 5) {
+            throw new IllegalStateException(
+                    "La convocatoria ya cuenta con el máximo de 5 jurados"
+            );
+        }
+        return repository.save(jurado);
+    }
 }
