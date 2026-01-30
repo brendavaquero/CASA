@@ -92,7 +92,7 @@ public class SecurityConfig {
 
                 //Permisos para admin y docente
                     .requestMatchers("/api/ronda/uno/**").hasRole("ADMINISTRADOR")
-                .requestMatchers("/api/asistencias/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/api/asistencias/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
                 .requestMatchers(HttpMethod.POST, "/api/talleresydiplomados/**").hasAnyRole("ADMINISTRADOR","DOCENTE")
 
                 //Permisos participante y admin

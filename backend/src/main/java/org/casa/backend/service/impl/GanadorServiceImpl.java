@@ -70,15 +70,20 @@ public class GanadorServiceImpl implements GanadorService {
     @Override
     public GanadorDto updateGanador(String idGanador, GanadorDto ganadorDto) {
         Ganador ganador = ganadorRepository.findById(idGanador)
-                .orElseThrow(() -> new ResourceNotFoundException("No existe un ganador con id: " + idGanador));
+                .orElseThrow(() -> new ResourceNotFoundException("No existe un ganador"));
 
-        ganador.setSemblanza(ganadorDto.getSemblanza());
-        ganador.setFoto(ganadorDto.getFoto());
+        if (ganadorDto.getSemblanza() != null) {
+            ganador.setSemblanza(ganadorDto.getSemblanza());
+        }
+
+        if (ganadorDto.getFoto() != null) {
+            ganador.setFoto(ganadorDto.getFoto());
+        }
 
         Ganador updated = ganadorRepository.save(ganador);
-
         return GanadorMapper.mapToGanadorDto(updated);
     }
+
 
     @Override
     @Transactional
@@ -109,7 +114,7 @@ public class GanadorServiceImpl implements GanadorService {
         ganadorRepository.save(ganador);
     }
 
-
+    @Transactional
     @Override
     public String uploadImagen(MultipartFile file, String idGanador) {
 
@@ -127,7 +132,7 @@ public class GanadorServiceImpl implements GanadorService {
             }
 
             // Carpeta donde guardar imágenes
-            String folder = "uploads/actividades/";
+            String folder = "uploads/ganadores/";
 
             File directory = new File(folder);
             if (!directory.exists()) {
