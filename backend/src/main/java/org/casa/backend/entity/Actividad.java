@@ -79,6 +79,14 @@ public abstract class Actividad {
     @Column(name = "infantil", nullable = false)
     private boolean infantil = false;
 
+    @OneToMany(
+            mappedBy = "actividad",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ActividadInstitucion> instituciones = new ArrayList<>();
+
+
     public Actividad(String idActividad, String titulo, String descripcion, TipoActividad tipo, LocalDate fechaInicio, LocalDate fechaCierre, LocalDate fechaResultados,  Instant fechaCreacion, String requisitos, EstadoActividad estado, String imagen, boolean requiereMuestraTrabajo, boolean visible, boolean infantil) {
         this.idActividad = idActividad;
         this.titulo = titulo;
