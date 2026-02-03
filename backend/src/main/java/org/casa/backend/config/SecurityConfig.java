@@ -120,6 +120,8 @@ public class SecurityConfig {
 
                 //ADMIN
                 .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers("/api/instituciones/**").hasRole("ADMINISTRADOR")
+
                                    // brenda lo tenía comentado:
                 .requestMatchers("/api/participantes/**").hasAnyRole("ADMINISTRADOR","PARTICIPANTE")
                 .requestMatchers("/api/docentes/**").hasAnyRole("ADMINISTRADOR","DOCENTE")

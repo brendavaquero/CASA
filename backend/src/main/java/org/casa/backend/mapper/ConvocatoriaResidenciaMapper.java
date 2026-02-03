@@ -1,5 +1,6 @@
 package org.casa.backend.mapper;
 
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
 import org.casa.backend.entity.ConvocatoriaResidencia;
 
@@ -20,6 +21,15 @@ public class ConvocatoriaResidenciaMapper {
                 c.isRequiereMuestraTrabajo(),
                 c.isVisible(),
                 c.isInfantil(),
+                c.getInstituciones().stream()
+                        .map(ai -> new ActividadInstitucionDTO(
+                                ai.getInstitucion().getId(),
+                                ai.getInstitucion().getNombre(),
+                                ai.getInstitucion().getLogoUrl(),
+                                ai.getOrden(),
+                                ai.isPrincipal()
+                        ))
+                        .toList(),
                 c.getBases(),
                 c.getPremio(),
                 c.getConvocantes(),

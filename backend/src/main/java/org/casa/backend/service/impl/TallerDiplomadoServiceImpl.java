@@ -4,21 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.casa.backend.dto.ActividadDto;
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.TallerDiplomadoDto;
-import org.casa.backend.entity.Actividad;
-import org.casa.backend.entity.Docente;
-import org.casa.backend.entity.Programa;
-import org.casa.backend.entity.Sesion;
-import org.casa.backend.entity.TallerDiplomado;
+import org.casa.backend.entity.*;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ActividadMapper;
 import org.casa.backend.mapper.TallerDiplomadoMapper;
-import org.casa.backend.repository.ActividadRepository;
-import org.casa.backend.repository.DocenteRepository;
-import org.casa.backend.repository.ProgramaRepository;
-import org.casa.backend.repository.SesionRepository;
-import org.casa.backend.repository.TallerDiplomadoRepository;
+import org.casa.backend.repository.*;
 import org.casa.backend.service.TallerDiplomadoService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -47,6 +40,9 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
     private ProgramaRepository programaRepository;
     private ActividadRepository actividadRepository;
     private SesionRepository sesionRepository;
+    private InstitucionRepository institucionRepository;
+    private ActividadInstitucionRepository actividadInstitucionRepository;
+
 
     private void validarFechas(TallerDiplomado t) {
         LocalDate hoy = LocalDate.now();
@@ -278,6 +274,51 @@ public class TallerDiplomadoServiceImpl implements TallerDiplomadoService {
                 taller.setEstado(nuevoEstado);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void asignarInstituciones(
+            String idActividad,
+            List<ActividadInstitucionDTO> institucionesDto
+    ) {
+        TallerDiplomado conv = tallerDiplomadoRepository.findById(idActividad)
+                .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
+
+        // limpiar asociaciones actuales
+        conv.getInstituciones().clear();
+
+        for (ActividadInstitucionDTO dto : institucionesDto) {
+            Institucion institucion = institucionRepository.findById(dto.getIdInstitucion())
+                    .orElseThrow(() -> new RuntimeException("Institución no encontrada"));
+
+            ActividadInstitucion ai = new ActividadInstitucion();
+            ai.setActividad(conv);
+            ai.setInstitucion(institucion);
+            ai.setOrden(dto.getOrden());
+            ai.setPrincipal(dto.isPrincipal());
+
+            conv.getInstituciones().add(ai);
+        }
+
+        tallerDiplomadoRepository.save(conv);
+    }
+
+    @Override
+    public List<ActividadInstitucionDTO> obtenerInstitucionesPorActividad(
+            String idActividad
+    ) {
+        return actividadInstitucionRepository
+                .findByActividad_IdActividad(idActividad)
+                .stream()
+                .map(ai -> new ActividadInstitucionDTO(
+                        ai.getInstitucion().getId(),
+                        ai.getInstitucion().getNombre(),
+                        ai.getInstitucion().getLogoUrl(),
+                        ai.getOrden(),
+                        ai.isPrincipal()
+                ))
+                .toList();
     }
 
 }

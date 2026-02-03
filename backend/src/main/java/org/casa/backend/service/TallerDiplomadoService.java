@@ -1,6 +1,7 @@
 package org.casa.backend.service;
 
 import org.casa.backend.dto.ActividadDto;
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.enums.EstadoActividad;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,4 +21,12 @@ public interface TallerDiplomadoService {
     ActividadDto updateEstadoAct(String idActividad, EstadoActividad estado);
     String uploadImagenActividad(MultipartFile file, String idActividad);
     void actualizarEstadosTalleres();
+
+    void asignarInstituciones(
+            String idActividad,
+            List<ActividadInstitucionDTO> institucionesDto
+    );
+    List<ActividadInstitucionDTO> obtenerInstitucionesPorActividad(
+            String idActividad
+    );
 }

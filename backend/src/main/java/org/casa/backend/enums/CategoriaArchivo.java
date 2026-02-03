@@ -2,7 +2,8 @@ package org.casa.backend.enums;
 
 public enum  CategoriaArchivo {
     RECURSO("Recurso"),
-    EVIDENCIA("Audio o Video");
+    EVIDENCIA("Audio o Video"),
+    LOGO("Logo");
 
     private final String nombre;
 
