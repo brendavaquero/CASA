@@ -102,6 +102,7 @@ public abstract class Actividad {
         this.requiereMuestraTrabajo = requiereMuestraTrabajo;
         this.visible = visible;
         this.infantil = infantil;
+        //this.instituciones = instituciones;
     }
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Archivo> archivos = new ArrayList<>();

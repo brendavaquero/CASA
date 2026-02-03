@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.casa.backend.entity.ActividadInstitucion;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 //import org.casa.backend.entity.ConvocatoriaResidencia;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,5 +32,5 @@ public class ActividadDto {
     private boolean requiereMuestraTrabajo;
     private boolean visible;
     private boolean infantil;
-
+    private List<ActividadInstitucionDTO> instituciones;
 }

@@ -2,6 +2,7 @@ package org.casa.backend.service;
 
 import java.util.List;
 
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
 import org.casa.backend.entity.ConvocatoriaResidencia;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,9 @@ public interface ConvocatoriaResidenciaService {
     ConvocatoriaResidenciaDto updateFechaRonda(String idConvocatoria, ConvocatoriaResidenciaDto updatedCR);
     void actualizarEstadosConvocatorias();
     void validarConvocatoriaDuplicada(ConvocatoriaResidencia c);
+    void asignarInstituciones(
+            String idActividad,
+            List<ActividadInstitucionDTO> institucionesDto
+    );
+    List<ActividadInstitucionDTO> obtenerInstitucionesPorActividad(String idActividad);
 }

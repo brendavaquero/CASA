@@ -1,12 +1,18 @@
 package org.casa.backend.controllers;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
-import org.casa.backend.dto.ActividadDto;
-import org.casa.backend.dto.DocenteDto;
-import org.casa.backend.dto.ProgramaDto;
-import org.casa.backend.dto.TallerDiplomadoDto;
+import org.casa.backend.dto.*;
+import org.casa.backend.entity.ActividadInstitucion;
+import org.casa.backend.entity.ConvocatoriaResidencia;
+import org.casa.backend.entity.Institucion;
+import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.enums.EstadoActividad;
+import org.casa.backend.repository.ActividadInstitucionRepository;
+import org.casa.backend.repository.ActividadRepository;
+import org.casa.backend.repository.InstitucionRepository;
+import org.casa.backend.repository.TallerDiplomadoRepository;
 import org.casa.backend.service.DocenteService;
 import org.casa.backend.service.ProgramaService;
 import org.casa.backend.service.TallerDiplomadoService;
@@ -28,7 +34,6 @@ public class TallerDiplomadoController {
     private TallerDiplomadoService tallerDiplomadoService;
     private DocenteService docenteService;
     private ProgramaService programaService;
-
     //Rest API ADD
     @PostMapping
     public ResponseEntity<TallerDiplomadoDto> createTallerDiplomado(@Valid @RequestBody TallerDiplomadoDto tallerDiplomadoDto) {
@@ -132,5 +137,27 @@ public class TallerDiplomadoController {
         String url = tallerDiplomadoService.uploadImagenActividad(file, idActividad);
         return ResponseEntity.ok(url);
     }
+
+    //asociar instituciones
+    @PutMapping("/{idActividad}/instituciones")
+    public ResponseEntity<Void> asignarInstituciones(
+            @PathVariable String idActividad,
+            @RequestBody List<ActividadInstitucionDTO> instituciones
+    ) {
+        tallerDiplomadoService.asignarInstituciones(idActividad, instituciones);
+        return ResponseEntity.ok().build();
+    }
+
+    //listar instituciones asignadas a una convocatoria
+    @GetMapping("/{idActividad}/instituciones")
+    public ResponseEntity<List<ActividadInstitucionDTO>> obtenerInstituciones(
+            @PathVariable String idActividad
+    ) {
+        return ResponseEntity.ok(
+                tallerDiplomadoService
+                        .obtenerInstitucionesPorActividad(idActividad)
+        );
+    }
+
 
 }

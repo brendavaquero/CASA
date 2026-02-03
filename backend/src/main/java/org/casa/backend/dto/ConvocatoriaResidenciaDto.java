@@ -2,7 +2,9 @@ package org.casa.backend.dto;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
+import org.casa.backend.entity.ActividadInstitucion;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.enums.TipoActividad;
 
@@ -35,13 +37,14 @@ public class ConvocatoriaResidenciaDto extends ActividadDto{
             boolean requiereMuestraTrabajo,
             boolean visible,
             boolean infantil,
+            List<ActividadInstitucionDTO> instituciones,
             String bases,
             String premio,
             String convocantes,
             LocalDate fechaInicioR1,
             LocalDate fechaLimiteR1
     ){
-        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil, instituciones);
         this.bases = bases;
         this.premio = premio;
         this.convocantes = convocantes;

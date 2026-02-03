@@ -3,6 +3,7 @@ package org.casa.backend.controllers;
 import java.util.List;
 
 import org.casa.backend.dto.ActaGanadorDto;
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
 import org.casa.backend.service.ActaService;
 import org.casa.backend.service.ConvocatoriaResidenciaService;
@@ -28,7 +29,8 @@ import lombok.AllArgsConstructor;
 @CrossOrigin(origins = "*")
 public class ConvocatoriaResidenciaController {
     private ConvocatoriaResidenciaService convocatoriaResidenciaService;
-    private final ActaService actaService;
+    private ActaService actaService;
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ConvocatoriaResidenciaDto> createConvocatoriaResi(
@@ -77,4 +79,26 @@ public class ConvocatoriaResidenciaController {
     public ActaGanadorDto obtenerActa(@PathVariable String idConvocatoria) {
         return actaService.generarActaPorConvocatoria(idConvocatoria);
     }
+
+    //asociar instituciones
+    @PutMapping("/{idActividad}/instituciones")
+    public ResponseEntity<Void> asignarInstituciones(
+            @PathVariable String idActividad,
+            @RequestBody List<ActividadInstitucionDTO> instituciones
+    ) {
+        convocatoriaResidenciaService.asignarInstituciones(idActividad, instituciones);
+        return ResponseEntity.ok().build();
+    }
+
+    //listar instituciones asignadas a una convocatoria
+    @GetMapping("/{idActividad}/instituciones")
+    public ResponseEntity<List<ActividadInstitucionDTO>> obtenerInstituciones(
+            @PathVariable String idActividad
+    ) {
+        return ResponseEntity.ok(
+                convocatoriaResidenciaService
+                        .obtenerInstitucionesPorActividad(idActividad)
+        );
+    }
+
 }

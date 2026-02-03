@@ -12,13 +12,19 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.ConvocatoriaResidenciaDto;
+import org.casa.backend.entity.Actividad;
+import org.casa.backend.entity.ActividadInstitucion;
 import org.casa.backend.entity.ConvocatoriaResidencia;
+import org.casa.backend.entity.Institucion;
 import org.casa.backend.enums.EstadoActividad;
 import org.casa.backend.exception.ConvocatoriaDuplicadaException;
 import org.casa.backend.exception.ResourceNotFoundException;
 import org.casa.backend.mapper.ConvocatoriaResidenciaMapper;
+import org.casa.backend.repository.ActividadInstitucionRepository;
 import org.casa.backend.repository.ConvocatoriaResidenciaRepository;
+import org.casa.backend.repository.InstitucionRepository;
 import org.casa.backend.service.ConvocatoriaResidenciaService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,6 +38,9 @@ import lombok.AllArgsConstructor;
 public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidenciaService {
 
     private ConvocatoriaResidenciaRepository convocatoriaResidenciaRepository;
+    private InstitucionRepository institucionRepository;
+    private final ActividadInstitucionRepository actividadInstitucionRepository;
+
     private void validarFechasConvocatoria(ConvocatoriaResidencia c) {
         LocalDate hoy = LocalDate.now();
 
@@ -362,4 +371,48 @@ public class ConvocatoriaResidenciaServiceImpl implements ConvocatoriaResidencia
         }
     }
 
+    @Override
+    @Transactional
+    public void asignarInstituciones(
+            String idActividad,
+            List<ActividadInstitucionDTO> institucionesDto
+    ) {
+        ConvocatoriaResidencia conv = convocatoriaResidenciaRepository.findById(idActividad)
+                .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
+
+        // limpiar asociaciones actuales
+        conv.getInstituciones().clear();
+
+        for (ActividadInstitucionDTO dto : institucionesDto) {
+            Institucion institucion = institucionRepository.findById(dto.getIdInstitucion())
+                    .orElseThrow(() -> new RuntimeException("Institución no encontrada"));
+
+            ActividadInstitucion ai = new ActividadInstitucion();
+            ai.setActividad(conv);
+            ai.setInstitucion(institucion);
+            ai.setOrden(dto.getOrden());
+            ai.setPrincipal(dto.isPrincipal());
+
+            conv.getInstituciones().add(ai);
+        }
+
+        convocatoriaResidenciaRepository.save(conv);
+    }
+
+    @Override
+    public List<ActividadInstitucionDTO> obtenerInstitucionesPorActividad(
+            String idActividad
+    ) {
+        return actividadInstitucionRepository
+                .findByActividad_IdActividad(idActividad)
+                .stream()
+                .map(ai -> new ActividadInstitucionDTO(
+                        ai.getInstitucion().getId(),
+                        ai.getInstitucion().getNombre(),
+                        ai.getInstitucion().getLogoUrl(),
+                        ai.getOrden(),
+                        ai.isPrincipal()
+                ))
+                .toList();
+    }
 }

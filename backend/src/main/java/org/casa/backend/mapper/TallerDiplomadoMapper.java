@@ -1,5 +1,6 @@
 package org.casa.backend.mapper;
 
+import org.casa.backend.dto.ActividadInstitucionDTO;
 import org.casa.backend.dto.TallerDiplomadoDto;
 import org.casa.backend.entity.TallerDiplomado;
 import org.casa.backend.entity.Docente;
@@ -32,6 +33,15 @@ public class TallerDiplomadoMapper {
                 t.isRequiereMuestraTrabajo(),
                 t.isVisible(),
                 t.isInfantil(),
+                t.getInstituciones().stream()
+                        .map(ai -> new ActividadInstitucionDTO(
+                                ai.getInstitucion().getId(),
+                                ai.getInstitucion().getNombre(),
+                                ai.getInstitucion().getLogoUrl(),
+                                ai.getOrden(),
+                                ai.isPrincipal()
+                        ))
+                        .toList(),
                 t.getCupo(),
                 t.getObjetivoGeneral(),
                 t.getObjetivosEspecificos(),

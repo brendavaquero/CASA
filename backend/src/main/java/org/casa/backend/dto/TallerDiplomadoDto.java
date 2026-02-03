@@ -8,6 +8,7 @@ import org.casa.backend.enums.TipoActividad;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,6 +42,8 @@ public class TallerDiplomadoDto extends ActividadDto{
             boolean requiereMuestraTrabajo,
             boolean visible,
             boolean infantil,
+            List<ActividadInstitucionDTO> instituciones,
+
             Integer cupo,
             String objetivoGeneral,
             String objetivosEspecificos,
@@ -52,7 +55,7 @@ public class TallerDiplomadoDto extends ActividadDto{
             String idPrograma,
             String idDocente
     ) {
-        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil);
+        super(idActividad, titulo, descripcion, tipo, fechaInicio, fechaCierre, fechaResultados, fechaCreacion, requisitos, estado, imagen, requiereMuestraTrabajo, visible, infantil, instituciones);
         this.cupo = cupo;
         this.objetivoGeneral = objetivoGeneral;
         this.objetivosEspecificos = objetivosEspecificos;
