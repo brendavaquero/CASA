@@ -1,6 +1,7 @@
 package org.casa.backend.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.casa.backend.entity.Ganador;
 
@@ -19,6 +20,7 @@ public class GanadorConvocatoriaDto {
     private String idGanador;
     private String semblanza;
     private String foto;
+    private LocalDate fechaCreacion;
 
     private String idResultado;
     private String idConvocatoria;
@@ -28,13 +30,13 @@ public class GanadorConvocatoriaDto {
     private Integer posicion;
     private Boolean finalista;
     private Boolean mencionHonorifica;
-
     private String idArchivo;
 
      public GanadorConvocatoriaDto(Ganador ganador) {
         this.idGanador = ganador.getIdGanador();
         this.semblanza = ganador.getSemblanza();
         this.foto = ganador.getFoto();
+        this.fechaCreacion = ganador.getFechaCreacion();
 
         if (ganador.getResultado() != null) {
             this.idResultado = ganador.getResultado().getIdResultado();
